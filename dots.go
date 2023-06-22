@@ -4,13 +4,24 @@
 package main
 
 import (
-	_ "embed"
 	"fmt"
+
+	"github.com/pwiecz/go-fltk"
 )
 
-//go:embed Version.dat
-var Version string
-
 func main() {
-	fmt.Printf("Hello dots v%s\n", Version)
+	defer func() {
+		if r := recover(); r != nil {
+			message := fmt.Sprintf("Unrecoverable error: %s", r)
+			fltk.MessageBox(fmt.Sprintf("Error — %s", appName), message)
+			fmt.Println(message)
+		}
+	}()
+	fltk.SetScheme("Oxy")
+	//config := newConfig()
+	//fltk.SetScreenScale(0, config.Scale)
+	fltk.SetScreenScale(0, 1.2) // TODO config
+	app := newApp( /*config*/ )
+	app.Show()
+	fltk.Run()
 }

@@ -4,6 +4,8 @@
 # 2. color syntax highlighting for the editor (see minicalc)
 
 dots.go
+app.go
+consts.go
 
 README.md
 
