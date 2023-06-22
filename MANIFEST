@@ -1,10 +1,12 @@
 # TODO
-# 1. Get basic UI with File menu (File→Open File→Quit) and toolbar
+# - Config to save/restore win size/pos
+# - Get basic UI with File menu (File→Open File→Quit) and toolbar
 #    (Open) with viewer on the left and editor on the right.
-# 2. color syntax highlighting for the editor (see minicalc)
+# - color syntax highlighting for the editor (see minicalc)
 
 dots.go
 app.go
+util.go
 consts.go
 
 README.md

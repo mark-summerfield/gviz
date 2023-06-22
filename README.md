@@ -1,6 +1,6 @@
 # Dots
 
-A GUI application for editing and viewing graphviz diagrams.
+A GUI application for editing and viewing GraphViz diagrams.
 
 ## License
 

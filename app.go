@@ -26,7 +26,7 @@ func newApp( /*config *Config*/ ) *App {
 	app.Window.Resizable(app.Window)
 	app.Window.SetEventHandler(app.onEvent)
 	app.Window.SetLabel(appName)
-	//addIcons(app.Window, iconSvg)
+	addIcon(app.Window, iconSvg)
 	app.addPanels()
 	app.Window.End()
 	return app

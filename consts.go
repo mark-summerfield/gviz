@@ -18,5 +18,5 @@ const (
 	pad          = 5
 )
 
-///go:embed images/icon.svg
-//var iconSvg string
+//go:embed images/icon.svg
+var iconSvg string
