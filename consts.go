@@ -20,3 +20,6 @@ const (
 
 //go:embed images/icon.svg
 var iconSvg string
+
+//go:embed images/open.svg
+var openSvg string

@@ -26,7 +26,7 @@ func newApp(config *Config) *App {
 	app.Window.Resizable(app.Window)
 	app.Window.SetEventHandler(app.onEvent)
 	app.Window.SetLabel(appName)
-	addIcon(app.Window, iconSvg)
+	addWindowIcon(app.Window, iconSvg)
 	app.addPanels()
 	app.Window.End()
 	return app
@@ -44,8 +44,9 @@ func (me *App) addPanels() {
 	menuBar := me.addMenuBar(width)
 	vbox.Fixed(menuBar, buttonHeight)
 	y += buttonHeight
-	// TODO toolbar
-	// y += buttonHeight
+	toolBar := me.addToolBar(y, width)
+	vbox.Fixed(toolBar, buttonHeight)
+	y += buttonHeight
 	height -= 2 * buttonHeight
 	hbox := fltk.NewFlex(x, 0, width, height)
 	// tile.resizable(hbox) // TODO if Tile added
@@ -81,6 +82,17 @@ func (me *App) addMenuBar(width int) *fltk.MenuBar {
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
 	return menuBar
+}
+
+func (me *App) addToolBar(y, width int) *fltk.Flex {
+	hbox := fltk.NewFlex(0, y, width, buttonHeight)
+	hbox.SetType(fltk.ROW)
+	openButton := makeToolbutton(openSvg)
+	openButton.SetCallback(func() { me.onFileOpen() })
+	hbox.Fixed(openButton, buttonHeight)
+	// TODO other toolbuttons
+	hbox.End()
+	return hbox
 }
 
 func (me *App) onEvent(event fltk.Event) bool {
