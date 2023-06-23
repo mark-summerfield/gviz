@@ -11,18 +11,18 @@ import (
 
 type App struct {
 	*fltk.Window
-	// config *Config
+	config *Config
 	editor *fltk.TextEditor
 	buffer *fltk.TextBuffer
 	view   *fltk.Box
 }
 
-func newApp( /*config *Config*/ ) *App {
-	app := &App{Window: nil}
-	app.Window = fltk.NewWindow(800, 600) // TODO config.Width, config.Height)
-	//if config.X > -1 && config.Y > -1 {
-	//	app.Window.SetPosition(config.X, config.Y)
-	//}
+func newApp(config *Config) *App {
+	app := &App{Window: nil, config: config}
+	app.Window = fltk.NewWindow(config.Width, config.Height)
+	if config.X > -1 && config.Y > -1 {
+		app.Window.SetPosition(config.X, config.Y)
+	}
 	app.Window.Resizable(app.Window)
 	app.Window.SetEventHandler(app.onEvent)
 	app.Window.SetLabel(appName)
@@ -36,19 +36,51 @@ func (me *App) addPanels() {
 	width := me.Window.W()
 	height := me.Window.H()
 	x := 0
+	y := 0
 	// tile := fltk.NewTile(x, 0, width, height) // TODO if Tile added
+	vbox := fltk.NewFlex(x, y, width, height)
+	vbox.SetType(fltk.COLUMN)
+	vbox.SetSpacing(pad)
+	menuBar := me.addMenuBar(width)
+	vbox.Fixed(menuBar, buttonHeight)
+	y += buttonHeight
+	// TODO toolbar
+	// y += buttonHeight
+	height -= 2 * buttonHeight
 	hbox := fltk.NewFlex(x, 0, width, height)
 	// tile.resizable(hbox) // TODO if Tile added
 	hbox.SetType(fltk.ROW)
 	hbox.SetSpacing(pad)
 	width /= 2
 	me.buffer = fltk.NewTextBuffer()
-	me.editor = fltk.NewTextEditor(x, 0, width, height)
+	if me.config.ViewOnLeft {
+		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
+		x += width
+		me.editor = fltk.NewTextEditor(x, y, width, height)
+	} else {
+		me.editor = fltk.NewTextEditor(x, y, width, height)
+		x += width
+		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
+	}
 	me.editor.SetBuffer(me.buffer)
-	x += width
-	me.view = fltk.NewBox(fltk.FLAT_BOX, x, 0, width, height)
 	hbox.End()
+	vbox.End()
 	// tile.end() // TODO if Tile added
+}
+
+func (me *App) addMenuBar(width int) *fltk.MenuBar {
+	menuBar := fltk.NewMenuBar(0, 0, width, buttonHeight)
+	menuBar.Activate()
+	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
+	menuBar.AddEx("File/&Open", fltk.CTRL+'o', me.onFileOpen,
+		fltk.MENU_VALUE)
+	// TODO separator
+	menuBar.Add("File/&Configure…", me.onFileConfigure)
+	// TODO separator
+	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onQuit, fltk.MENU_VALUE)
+	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
+	menuBar.Add("Help/&About", me.onHelpAbout)
+	return menuBar
 }
 
 func (me *App) onEvent(event fltk.Event) bool {
@@ -63,10 +95,6 @@ func (me *App) onEvent(event fltk.Event) bool {
 		case fltk.HELP, fltk.F1:
 			fmt.Println("F1")
 			return true
-		case 'q', 'Q':
-			if fltk.EventState()&fltk.CTRL != 0 {
-				me.onQuit()
-			}
 		}
 	case fltk.CLOSE:
 		me.onQuit()
@@ -74,26 +102,26 @@ func (me *App) onEvent(event fltk.Event) bool {
 	return false
 }
 
+func (me *App) onFileOpen() {
+	fmt.Println("onFileOpen") // TODO
+}
+
+func (me *App) onFileConfigure() {
+	fmt.Println("onFileConfigure") // TODO
+}
+
 func (me *App) onQuit() {
-	//	me.config.X = me.Window.X()
-	//	me.config.Y = me.Window.Y()
-	//	me.config.Width = me.Window.W()
-	//	me.config.Height = me.Window.H()
-	//	me.config.LastTab = me.tabs.Value()
-	//	me.config.LastCategory = me.categoryChoice.Value()
-	//	me.config.LastRegex = me.regexInput.Value()
-	//	me.config.LastRegexText = me.regexTextInput.Value()
-	//	me.config.LastUnhinted = me.accelTextBuffer.Text()
-	//	me.config.LastFromIndex = me.convFromChoice.Value()
-	//	me.config.LastToIndex = me.convToChoice.Value()
-	//	me.config.LastAmount = me.convAmountSpinner.Value()
-	//	me.config.Scale = fltk.ScreenScale(0)
-	//	// config.Theme is set in callback
-	//	me.config.ShowTooltips = me.showTooltipsCheckButton.Value()
-	//	me.config.ShowInitialHelpText = me.showInitialHelpCheckButton.Value()
-	//	me.config.CustomTitle = me.customTitleInput.Value()
-	//	me.config.CustomHtml = me.customTextBuffer.Text()
-	//	me.config.save()
+	me.config.X = me.Window.X()
+	me.config.Y = me.Window.Y()
+	me.config.Width = me.Window.W()
+	me.config.Height = me.Window.H()
+	// TODO:
+	// Scale & ViewOnLeft are set in config dialog
+	me.config.save()
 	me.Window.Destroy()
 	fmt.Println("onQuit") // TODO delete
+}
+
+func (me *App) onHelpAbout() {
+	fmt.Println("onHelpAbout") // TODO
 }

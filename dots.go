@@ -18,10 +18,9 @@ func main() {
 		}
 	}()
 	fltk.SetScheme("Oxy")
-	//config := newConfig()
-	//fltk.SetScreenScale(0, config.Scale)
-	fltk.SetScreenScale(0, 1.2) // TODO config
-	app := newApp( /*config*/ )
+	config := newConfig()
+	fltk.SetScreenScale(0, config.Scale)
+	app := newApp(config)
 	app.Show()
 	fltk.Run()
 }
