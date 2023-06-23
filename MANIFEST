@@ -1,6 +1,5 @@
 # TODO
-# - Get basic UI with File menu (File→Open File→Configure File→Quit) and
-#   toolbar (Open) with viewer on the left and editor on the right.
+# - Get toolbar (Open) with viewer on the left and editor on the right.
 # - color syntax highlighting for the editor (see minicalc)
 
 dots.go
