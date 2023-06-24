@@ -12,8 +12,8 @@ import (
 type App struct {
 	*fltk.Window
 	config *Config
-	editor *fltk.TextEditor
 	buffer *fltk.TextBuffer
+	editor *fltk.TextEditor
 	view   *fltk.Box
 }
 
@@ -27,32 +27,55 @@ func newApp(config *Config) *App {
 	app.Window.SetEventHandler(app.onEvent)
 	app.Window.SetLabel(appName)
 	addWindowIcon(app.Window, iconSvg)
-	app.addPanels()
+	app.addWidgets()
 	app.Window.End()
 	return app
 }
 
-func (me *App) addPanels() {
+func (me *App) addWidgets() {
 	width := me.Window.W()
 	height := me.Window.H()
-	x := 0
-	y := 0
-	// tile := fltk.NewTile(x, 0, width, height) // TODO if Tile added
-	vbox := fltk.NewFlex(x, y, width, height)
-	vbox.SetType(fltk.COLUMN)
-	vbox.SetSpacing(pad)
-	menuBar := me.addMenuBar(width)
-	vbox.Fixed(menuBar, buttonHeight)
+	var x, y int
+	// tile := fltk.NewTile(x, y, width, height) // TODO if Tile added
+	vbox := makeVBox(x, y, width, height, pad)
+	me.addMenuBar(vbox, width)
 	y += buttonHeight
-	toolBar := me.addToolBar(y, width)
-	vbox.Fixed(toolBar, buttonHeight)
+	me.addToolBar(vbox, y, width)
 	y += buttonHeight
 	height -= 2 * buttonHeight
-	hbox := fltk.NewFlex(x, 0, width, height)
+	hbox := makeHBox(x, 0, width, height, pad)
 	// tile.resizable(hbox) // TODO if Tile added
-	hbox.SetType(fltk.ROW)
-	hbox.SetSpacing(pad)
-	width /= 2
+	me.addPanels(x, y, width/2, height)
+	hbox.End()
+	vbox.End()
+	// tile.end() // TODO if Tile added
+}
+
+func (me *App) addMenuBar(vbox *fltk.Flex, width int) {
+	menuBar := fltk.NewMenuBar(0, 0, width, buttonHeight)
+	menuBar.Activate()
+	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
+	menuBar.AddEx("File/&Open", fltk.CTRL+'o', me.onFileOpen,
+		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
+	menuBar.AddEx("File/&Configure…", 0, me.onFileConfigure,
+		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
+	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onQuit, fltk.MENU_VALUE)
+	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
+	menuBar.Add("Help/&About", me.onHelpAbout)
+	vbox.Fixed(menuBar, buttonHeight)
+}
+
+func (me *App) addToolBar(vbox *fltk.Flex, y, width int) {
+	hbox := makeHBox(0, y, width, buttonHeight, 0)
+	openButton := makeToolbutton(openSvg)
+	openButton.SetCallback(func() { me.onFileOpen() })
+	hbox.Fixed(openButton, buttonHeight)
+	// TODO other toolbuttons
+	hbox.End()
+	vbox.Fixed(hbox, buttonHeight)
+}
+
+func (me *App) addPanels(x, y, width, height int) {
 	me.buffer = fltk.NewTextBuffer()
 	if me.config.ViewOnLeft {
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
@@ -64,35 +87,7 @@ func (me *App) addPanels() {
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
 	}
 	me.editor.SetBuffer(me.buffer)
-	hbox.End()
-	vbox.End()
-	// tile.end() // TODO if Tile added
-}
-
-func (me *App) addMenuBar(width int) *fltk.MenuBar {
-	menuBar := fltk.NewMenuBar(0, 0, width, buttonHeight)
-	menuBar.Activate()
-	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
-	menuBar.AddEx("File/&Open", fltk.CTRL+'o', me.onFileOpen,
-		fltk.MENU_VALUE)
-	// TODO separator
-	menuBar.Add("File/&Configure…", me.onFileConfigure)
-	// TODO separator
-	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onQuit, fltk.MENU_VALUE)
-	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
-	menuBar.Add("Help/&About", me.onHelpAbout)
-	return menuBar
-}
-
-func (me *App) addToolBar(y, width int) *fltk.Flex {
-	hbox := fltk.NewFlex(0, y, width, buttonHeight)
-	hbox.SetType(fltk.ROW)
-	openButton := makeToolbutton(openSvg)
-	openButton.SetCallback(func() { me.onFileOpen() })
-	hbox.Fixed(openButton, buttonHeight)
-	// TODO other toolbuttons
-	hbox.End()
-	return hbox
+	me.buffer.SetText(defaultText)
 }
 
 func (me *App) onEvent(event fltk.Event) bool {
@@ -105,8 +100,7 @@ func (me *App) onEvent(event fltk.Event) bool {
 	case fltk.KEY:
 		switch key {
 		case fltk.HELP, fltk.F1:
-			fmt.Println("F1")
-			return true
+			return true // ignore
 		}
 	case fltk.CLOSE:
 		me.onQuit()

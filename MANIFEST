@@ -1,6 +1,9 @@
 # TODO
-# - Get toolbar (Open) with viewer on the left and editor on the right.
+# - load file
+# - parse & display
 # - color syntax highlighting for the editor (see minicalc)
+# - remember & restore last file
+# - editing support
 
 dots.go
 app.go

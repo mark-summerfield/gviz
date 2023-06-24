@@ -3,19 +3,21 @@
 
 package main
 
-import (
-	_ "embed"
-)
+import _ "embed"
 
 //go:embed Version.dat
 var Version string
 
 const (
-	domain       = "qtrac.eu"
 	appName      = "Dots"
+	domain       = "qtrac.eu"
 	buttonHeight = 32
 	labelWidth   = 60
 	pad          = 5
+
+	defaultText = `graph graphname {
+    Dots [shape=tab]
+}`
 )
 
 //go:embed images/icon.svg
