@@ -9,11 +9,12 @@ import _ "embed"
 var Version string
 
 const (
-	appName      = "Dots"
-	domain       = "qtrac.eu"
-	buttonHeight = 32
-	labelWidth   = 60
-	pad          = 5
+	appName            = "Dots"
+	domain             = "qtrac.eu"
+	buttonHeight       = 32
+	toolbuttonIconSize = 24
+	labelWidth         = 60
+	pad                = 5
 
 	defaultText = `graph graphname {
     Dots [shape=tab]

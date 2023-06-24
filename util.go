@@ -16,8 +16,7 @@ func addWindowIcon(window *fltk.Window, svgText string) {
 func makeToolbutton(svgText string) *fltk.Button {
 	button := fltk.NewButton(0, 0, buttonHeight, buttonHeight, "")
 	button.ClearVisibleFocus()
-	const size = buttonHeight - pad
-	if image := imageForSvgText(svgText, size); image != nil {
+	if image := imageForSvgText(svgText, toolbuttonIconSize); image != nil {
 		button.SetImage(image)
 		button.SetAlign(fltk.ALIGN_IMAGE_BACKDROP)
 	}
