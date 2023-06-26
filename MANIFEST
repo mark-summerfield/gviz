@@ -1,6 +1,7 @@
 # TODO
 # - &Edit→&Refresh F5 (call onTextChanged() & drop F5 from onEvent())
 # - load file
+# - zoom support
 # - color syntax highlighting for the editor (see minicalc)
 # - remember & restore last file
 # - editing support

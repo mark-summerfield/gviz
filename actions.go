@@ -79,6 +79,7 @@ func (me *App) onTextChanged() {
 		return
 	}
 	me.clearView()
+	// TODO if zoom != 100% scale png
 	if me.view.W() < png.W() || me.view.H() < png.H() {
 		me.view.Resize(0, 0, png.W()+border, png.H()+border)
 	}
