@@ -4,8 +4,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 
+	"github.com/goccy/go-graphviz"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -18,6 +20,9 @@ func (me *App) onEvent(event fltk.Event) bool {
 		}
 	case fltk.KEY:
 		switch key {
+		case fltk.F5:
+			me.onTextChanged()
+			return true // done
 		case fltk.HELP, fltk.F1:
 			return true // ignore
 		}
@@ -49,4 +54,36 @@ func (me *App) onFileQuit() {
 
 func (me *App) onHelpAbout() {
 	fmt.Println("onHelpAbout") // TODO
+}
+
+func (me *App) onTextChanged() {
+	text := me.buffer.Text()
+	graph, err := graphviz.ParseBytes([]byte(text))
+	if err != nil {
+		me.onError(err)
+		return
+	}
+	gv := graphviz.New()
+	var raw bytes.Buffer
+	if err = gv.Render(graph, graphviz.PNG, &raw); err != nil {
+		me.onError(err)
+		return
+	}
+	png, err := fltk.NewPngImageFromData(raw.Bytes())
+	if err != nil {
+		me.onError(err)
+		return
+	}
+	me.clearView()
+	me.view.SetImage(png)
+}
+
+func (me *App) clearView() {
+	me.view.SetLabelColor(fltk.WHITE)
+	me.view.SetLabel("")
+}
+
+func (me *App) onError(err error) {
+	me.view.SetLabelColor(fltk.RED)
+	me.view.SetLabel(err.Error())
 }

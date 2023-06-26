@@ -1,6 +1,6 @@
 # TODO
-# - load file
 # - parse & display
+# - load file
 # - color syntax highlighting for the editor (see minicalc)
 # - remember & restore last file
 # - editing support

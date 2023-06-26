@@ -12,6 +12,7 @@ type App struct {
 	config *Config
 	buffer *fltk.TextBuffer
 	editor *fltk.TextEditor
+	scroll *fltk.Scroll
 	view   *fltk.Box
 }
 
@@ -20,6 +21,7 @@ func newApp(config *Config) *App {
 	app.makeMainWindow()
 	app.makeWidgets()
 	app.Window.End()
+	fltk.AddTimeout(0.1, func() { app.onTextChanged() })
 	return app
 }
 
@@ -81,14 +83,20 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 func (me *App) makePanels(x, y, width, height int) {
 	me.buffer = fltk.NewTextBuffer()
 	if me.config.ViewOnLeft {
+		me.scroll = fltk.NewScroll(x, y, width, height)
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
+		me.scroll.End()
 		x += width
 		me.editor = fltk.NewTextEditor(x, y, width, height)
 	} else {
 		me.editor = fltk.NewTextEditor(x, y, width, height)
 		x += width
+		me.scroll = fltk.NewScroll(x, y, width, height)
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
+		me.scroll.End()
 	}
 	me.editor.SetBuffer(me.buffer)
+	me.editor.SetCallback(func() { me.onTextChanged() })
+	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
 	me.buffer.SetText(defaultText)
 }
