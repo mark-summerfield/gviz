@@ -86,7 +86,7 @@ func (me *App) onTextChanged() {
 }
 
 func (me *App) clearView() {
-	me.view.SetLabelColor(fltk.WHITE)
+	me.view.SetLabelColor(fltk.BLACK)
 	me.view.SetLabel("")
 }
 

@@ -1,9 +1,10 @@
 # TODO
-# - parse & display
+# - &Edit→&Refresh F5 (call onTextChanged() & drop F5 from onEvent())
 # - load file
 # - color syntax highlighting for the editor (see minicalc)
 # - remember & restore last file
 # - editing support
+# - monofont + line numbers
 
 dots.go
 app.go

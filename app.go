@@ -95,8 +95,13 @@ func (me *App) makePanels(x, y, width, height int) {
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
 		me.scroll.End()
 	}
+	me.initializeEditor()
+}
+
+func (me *App) initializeEditor() {
 	me.editor.SetBuffer(me.buffer)
+	me.editor.SetLabelFont(fltk.COURIER)
 	me.editor.SetCallback(func() { me.onTextChanged() })
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
-	me.buffer.SetText(defaultText)
+	me.buffer.SetText(defaultText) // TODO last file's text
 }
