@@ -20,9 +20,6 @@ func (me *App) onEvent(event fltk.Event) bool {
 		}
 	case fltk.KEY:
 		switch key {
-		case fltk.F5:
-			me.onTextChanged()
-			return true // done
 		case fltk.HELP, fltk.F1:
 			return true // ignore
 		}
@@ -32,31 +29,8 @@ func (me *App) onEvent(event fltk.Event) bool {
 	return false
 }
 
-func (me *App) onFileOpen() {
-	fmt.Println("onFileOpen") // TODO
-}
-
-func (me *App) onFileConfigure() {
-	fmt.Println("onFileConfigure") // TODO
-}
-
-func (me *App) onFileQuit() {
-	me.config.X = me.Window.X()
-	me.config.Y = me.Window.Y()
-	me.config.Width = me.Window.W()
-	me.config.Height = me.Window.H()
-	// TODO:
-	// Scale & ViewOnLeft are set in config dialog
-	me.config.save()
-	me.Window.Destroy()
-	fmt.Println("onFileQuit") // TODO delete
-}
-
-func (me *App) onHelpAbout() {
-	fmt.Println("onHelpAbout") // TODO
-}
-
 func (me *App) onTextChanged() {
+	me.dirty = true
 	text := me.buffer.Text()
 	if text == "" {
 		me.onError(fmt.Errorf("Need image data, e.g.\n%s", defaultText))

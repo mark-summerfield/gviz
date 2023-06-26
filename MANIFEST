@@ -1,15 +1,18 @@
 # TODO
-# - &Edit→&Refresh F5 (call onTextChanged() & drop F5 from onEvent())
-# - load file
+# - ask unsaved changes in fileactions.go
+# - remember & restore last file
 # - zoom support
 # - color syntax highlighting for the editor (see minicalc)
-# - remember & restore last file
+# - &Edit→Copy Cut Paste Insert ...
 # - editing support
+# - completion
 # - monofont + line numbers
 
 dots.go
 app.go
 actions.go
+fileactions.go
+helpactions.go
 config.go
 util.go
 consts.go

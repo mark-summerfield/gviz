@@ -4,16 +4,21 @@
 package main
 
 import (
+	"os"
+
+	"github.com/mark-summerfield/gong"
 	"github.com/pwiecz/go-fltk"
 )
 
 type App struct {
 	*fltk.Window
-	config *Config
-	buffer *fltk.TextBuffer
-	editor *fltk.TextEditor
-	scroll *fltk.Scroll
-	view   *fltk.Box
+	config   *Config
+	filename string
+	dirty    bool
+	buffer   *fltk.TextBuffer
+	editor   *fltk.TextEditor
+	scroll   *fltk.Scroll
+	view     *fltk.Box
 }
 
 func newApp(config *Config) *App {
@@ -21,7 +26,11 @@ func newApp(config *Config) *App {
 	app.makeMainWindow()
 	app.makeWidgets()
 	app.Window.End()
-	fltk.AddTimeout(0.1, func() { app.onTextChanged() })
+	if len(os.Args) > 1 && gong.FileExists(os.Args[1]) {
+		fltk.AddTimeout(0.1, func() { app.loadFile(os.Args[1]) })
+	} else {
+		fltk.AddTimeout(0.1, func() { app.onTextChanged() })
+	}
 	return app
 }
 
@@ -61,10 +70,12 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
 	menuBar.AddEx("File/&Open", fltk.CTRL+'o', me.onFileOpen,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
+	// TODO Save & Save As
 	menuBar.AddEx("File/&Configure…", 0, me.onFileConfigure,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
+	// TODO Edit Cut Copy Paste etc
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
 	vbox.Fixed(menuBar, buttonHeight)
@@ -75,7 +86,7 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 	openButton := makeToolbutton(openSvg)
 	openButton.SetCallback(func() { me.onFileOpen() })
 	hbox.Fixed(openButton, buttonHeight)
-	// TODO other toolbuttons
+	// TODO other toolbuttons, e.g., Cut Copy Paste etc
 	hbox.End()
 	vbox.Fixed(hbox, buttonHeight)
 }
@@ -103,5 +114,5 @@ func (me *App) initializeEditor() {
 	me.editor.SetLabelFont(fltk.COURIER)
 	me.editor.SetCallback(func() { me.onTextChanged() })
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
-	me.buffer.SetText(defaultText) // TODO last file's text
+	me.buffer.SetText(defaultText)
 }

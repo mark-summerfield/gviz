@@ -4,6 +4,9 @@
 package main
 
 import (
+	"os"
+	"path/filepath"
+
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -47,4 +50,16 @@ func makeVHBox(kind fltk.FlexType, x, y, width, height,
 	box.SetType(kind)
 	box.SetSpacing(spacing)
 	return box
+}
+
+func getPath(filename string) string {
+	if filename != "" {
+		return filepath.Dir(filename)
+	} else {
+		path, err := os.UserHomeDir()
+		if err == nil {
+			return path
+		}
+		return "./"
+	}
 }
