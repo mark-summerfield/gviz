@@ -75,6 +75,9 @@ func (me *App) onTextChanged() {
 		return
 	}
 	me.clearView()
+	if me.view.W() < png.W() || me.view.H() < png.H() {
+		me.view.Resize(0, 0, png.W()+pad, png.H()+pad)
+	}
 	me.view.SetImage(png)
 }
 
