@@ -1,2 +1,2 @@
 ./build.sh
-yes|mv dots ~/opt/bin
+yes|mv gviz ~/opt/bin

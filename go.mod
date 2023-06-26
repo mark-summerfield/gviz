@@ -1,4 +1,4 @@
-module github.com/mark-summerfield/dots
+module github.com/mark-summerfield/gviz
 
 go 1.20
 

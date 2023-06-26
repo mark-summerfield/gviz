@@ -47,14 +47,16 @@ func (me *App) onFileConfigure() {
 }
 
 func (me *App) onFileQuit() {
-	if !me.maybeSave() { // TODO change to if Do you want to save unsaved changes && !me.maybeSave()
+	if me.dirty &&
+		fltk.ChoiceDialog("Save unsaved changes?", "&No", "&Yes") == 1 &&
+		!me.maybeSave() {
 		return
 	}
 	me.config.X = me.Window.X()
 	me.config.Y = me.Window.Y()
 	me.config.Width = me.Window.W()
 	me.config.Height = me.Window.H()
-	// TODO:
+	// TODO
 	// App Scale & Image Zoom & ViewOnLeft are set in config dialog
 	me.config.save()
 	me.Window.Destroy()
@@ -99,6 +101,7 @@ func (me *App) loadFile(filename string) {
 		me.onTextChanged()
 		me.updateTitle()
 		me.dirty = false
+		fltk.AddTimeout(0.1, func() { me.scroll.ScrollTo(0, 0) })
 	} else {
 		me.onError(err)
 	}

@@ -1,2 +1,2 @@
-go build -o dots .
-strip dots
+go build -o gviz .
+strip gviz

@@ -9,7 +9,7 @@ import _ "embed"
 var Version string
 
 const (
-	appName            = "Dots"
+	appName            = "Gviz"
 	domain             = "qtrac.eu"
 	buttonHeight       = 32
 	toolbuttonIconSize = 24
@@ -18,7 +18,7 @@ const (
 	border             = 8
 
 	defaultText = `graph graphname {
-    Dots [shape=tab]
+    Gviz [shape=tab]
 }`
 )
 
