@@ -15,6 +15,7 @@ const (
 	toolbuttonIconSize = 24
 	labelWidth         = 60
 	pad                = 5
+	border             = 8
 
 	defaultText = `graph graphname {
     Dots [shape=tab]

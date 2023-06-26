@@ -58,13 +58,17 @@ func (me *App) onHelpAbout() {
 
 func (me *App) onTextChanged() {
 	text := me.buffer.Text()
+	if text == "" {
+		me.onError(fmt.Errorf("Need image data, e.g.\n%s", defaultText))
+		return
+	}
 	graph, err := graphviz.ParseBytes([]byte(text))
 	if err != nil {
 		me.onError(err)
 		return
 	}
 	gv := graphviz.New()
-	var raw bytes.Buffer
+	var raw bytes.Buffer // Tried SVG but text doesn't appear
 	if err = gv.Render(graph, graphviz.PNG, &raw); err != nil {
 		me.onError(err)
 		return
@@ -76,7 +80,7 @@ func (me *App) onTextChanged() {
 	}
 	me.clearView()
 	if me.view.W() < png.W() || me.view.H() < png.H() {
-		me.view.Resize(0, 0, png.W()+pad, png.H()+pad)
+		me.view.Resize(0, 0, png.W()+border, png.H()+border)
 	}
 	me.view.SetImage(png)
 }
