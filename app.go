@@ -75,7 +75,7 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
-	// TODO Edit Cut Copy Paste etc
+	// TODO Edit Cut Copy Paste & Insert etc
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
 	vbox.Fixed(menuBar, buttonHeight)
