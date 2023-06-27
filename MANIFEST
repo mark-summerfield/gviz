@@ -1,5 +1,5 @@
 # TODO
-# - ask unsaved changes in fileactions.go
+# - File→Save →Save As... →Export As...
 # - remember & restore last file
 # - zoom support
 # - color syntax highlighting for the editor (see minicalc)

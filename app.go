@@ -29,7 +29,10 @@ func newApp(config *Config) *App {
 	if len(os.Args) > 1 && gong.FileExists(os.Args[1]) {
 		fltk.AddTimeout(0.1, func() { app.loadFile(os.Args[1]) })
 	} else {
-		fltk.AddTimeout(0.1, func() { app.onTextChanged() })
+		fltk.AddTimeout(0.1, func() {
+			app.onTextChanged()
+			app.dirty = false
+		})
 	}
 	return app
 }
@@ -49,19 +52,16 @@ func (me *App) makeWidgets() {
 	width := me.Window.W()
 	height := me.Window.H()
 	var x, y int
-	// tile := fltk.NewTile(x, y, width, height) // TODO if Tile added
 	vbox := makeVBox(x, y, width, height, pad)
 	me.makeMenuBar(vbox, width)
 	y += buttonHeight
 	me.makeToolBar(vbox, y, width)
 	y += buttonHeight
 	height -= 2 * buttonHeight
-	hbox := makeHBox(x, 0, width, height, pad)
-	// tile.resizable(hbox) // TODO if Tile added
+	tile := fltk.NewTile(x, y, width, height)
 	me.makePanels(x, y, width/2, height)
-	hbox.End()
+	tile.End()
 	vbox.End()
-	// tile.end() // TODO if Tile added
 }
 
 func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
