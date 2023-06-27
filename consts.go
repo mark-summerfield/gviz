@@ -25,5 +25,8 @@ var iconSvg string
 //go:embed images/open.svg
 var openSvg string
 
+//go:embed images/gtk-close.svg
+var closeSvg string
+
 //go:embed images/dummy.png
 var dummyPng []byte

@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/go-ini/ini v1.67.0
 	github.com/goccy/go-graphviz v0.1.1
+	github.com/gonutz/w32/v2 v2.10.0
 	github.com/mark-summerfield/gong v1.4.2
 	github.com/pwiecz/go-fltk v0.0.0-20230626194013-39848df95953
 )
