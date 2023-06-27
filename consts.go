@@ -16,10 +16,7 @@ const (
 	labelWidth         = 60
 	pad                = 5
 	border             = 8
-
-	defaultText = `graph graphname {
-    Gviz [shape=tab]
-}`
+	defaultText        = "graph {\n    Gviz [shape=tab]\n}"
 )
 
 //go:embed images/icon.svg
@@ -27,3 +24,6 @@ var iconSvg string
 
 //go:embed images/open.svg
 var openSvg string
+
+//go:embed images/dummy.png
+var dummyPng []byte

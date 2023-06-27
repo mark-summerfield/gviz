@@ -68,13 +68,21 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar := fltk.NewMenuBar(0, 0, width, buttonHeight)
 	menuBar.Activate()
 	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
+	menuBar.AddEx("File/&New", fltk.CTRL+'n', me.onFileNew,
+		fltk.MENU_VALUE)
 	menuBar.AddEx("File/&Open", fltk.CTRL+'o', me.onFileOpen,
+		fltk.MENU_VALUE)
+	menuBar.AddEx("File/&Save", fltk.CTRL+'s', me.onFileSave,
+		fltk.MENU_VALUE)
+	menuBar.AddEx("File/Save &As…", 0, me.onFileSaveAs,
+		fltk.MENU_VALUE)
+	menuBar.AddEx("File/&Export…", 0, me.onFileExport,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	// TODO Save & Save As & Export As
 	menuBar.AddEx("File/&Configure…", 0, me.onFileConfigure,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
+	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
 	// TODO Edit Cut Copy Paste & Insert etc
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
@@ -86,7 +94,7 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 	openButton := makeToolbutton(openSvg)
 	openButton.SetCallback(func() { me.onFileOpen() })
 	hbox.Fixed(openButton, buttonHeight)
-	// TODO other toolbuttons, e.g., Cut Copy Paste etc
+	// TODO other toolbuttons, e.g., Save Cut Copy Paste etc
 	hbox.End()
 	vbox.Fixed(hbox, buttonHeight)
 }
@@ -106,6 +114,8 @@ func (me *App) makePanels(x, y, width, height int) {
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
 		me.scroll.End()
 	}
+	me.view.SetAlign(fltk.ALIGN_CENTER | fltk.ALIGN_INSIDE |
+		fltk.ALIGN_TEXT_OVER_IMAGE)
 	me.initializeEditor()
 }
 

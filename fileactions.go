@@ -13,6 +13,13 @@ import (
 	"github.com/pwiecz/go-fltk"
 )
 
+func (me *App) onFileNew() {
+	if !me.maybeSave() {
+		return
+	}
+	me.clear()
+}
+
 func (me *App) onFileOpen() {
 	if !me.maybeSave() {
 		return
@@ -42,12 +49,16 @@ func (me *App) onFileSaveAs() {
 	}
 }
 
+func (me *App) onFileExport() {
+	fmt.Println("onFileExport") // TODO
+}
+
 func (me *App) onFileConfigure() {
 	fmt.Println("onFileConfigure") // TODO
 }
 
 func (me *App) onFileQuit() {
-	if me.dirty &&
+	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
 		fltk.ChoiceDialog("Save unsaved changes?", "&No", "&Yes") == 1 &&
 		!me.maybeSave() {
 		return
@@ -114,4 +125,17 @@ func (me *App) updateTitle() {
 	} else {
 		me.Window.SetLabel(appName)
 	}
+}
+
+func (me *App) clear() {
+	me.filename = ""
+	me.buffer.SetText(defaultText)
+	me.updateTitle()
+	if png, err := fltk.NewPngImageFromData(dummyPng); err == nil {
+		me.view.SetImage(png)
+	}
+	me.view.SetLabelColor(fltk.BLUE)
+	me.view.SetLabel("Edit graphviz text")
+	me.dirty = false
+	me.view.Redraw()
 }

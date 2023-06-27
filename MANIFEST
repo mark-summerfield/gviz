@@ -1,5 +1,5 @@
 # TODO
-# - File→Save →Save As... →Export As...
+# - About
 # - remember & restore last file
 # - zoom support
 # - color syntax highlighting for the editor (see minicalc)
@@ -7,6 +7,7 @@
 # - editing support
 # - completion
 # - monofont + line numbers
+# - File→Open &Recent...
 
 gviz.go
 app.go
