@@ -23,7 +23,6 @@ func (me *App) onHelpAbout() {
 
 func makeAboutForm() *fltk.Window {
 	window := fltk.NewWindow(width, height)
-	window.Resizable(window)
 	window.SetLabel(fmt.Sprintf("About — %s", appName))
 	addWindowIcon(window, iconSvg)
 	vbox := makeVBox(0, 0, width, height, pad)
@@ -33,8 +32,8 @@ func makeAboutForm() *fltk.Window {
 	y := height - buttonHeight
 	hbox := makeHBox(0, y, width, buttonHeight, pad)
 	spacerWidth := (width - buttonWidth) / 2
-	spacer := makeHBox(0, y, spacerWidth, buttonHeight, 0)
-	spacer.End()
+	leftSpacer := makeHBox(0, y, spacerWidth, buttonHeight, 0)
+	leftSpacer.End()
 	button := fltk.NewButton(0, 0, buttonHeight, buttonWidth, " &Close")
 	if image := imageForSvgText(closeSvg,
 		toolbuttonIconSize); image != nil {
@@ -42,7 +41,9 @@ func makeAboutForm() *fltk.Window {
 		button.SetAlign(fltk.ALIGN_IMAGE_NEXT_TO_TEXT)
 	}
 	button.SetCallback(func() { window.Destroy() })
-	hbox.Fixed(spacer, spacerWidth)
+	righttSpacer := makeHBox(spacerWidth+buttonWidth, y, spacerWidth,
+		buttonHeight, 0)
+	righttSpacer.End()
 	hbox.Fixed(button, buttonWidth)
 	hbox.End()
 	vbox.Fixed(hbox, buttonHeight)
