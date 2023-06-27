@@ -93,7 +93,12 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 	hbox := makeHBox(0, y, width, buttonHeight, 0)
 	openButton := makeToolbutton(openSvg)
 	openButton.SetCallback(func() { me.onFileOpen() })
+	openButton.SetTooltip("Open")
 	hbox.Fixed(openButton, buttonHeight)
+	saveButton := makeToolbutton(saveSvg)
+	saveButton.SetCallback(func() { me.onFileSave() })
+	saveButton.SetTooltip("Save")
+	hbox.Fixed(saveButton, buttonHeight)
 	// TODO other toolbuttons, e.g., Save Cut Copy Paste etc
 	hbox.End()
 	vbox.Fixed(hbox, buttonHeight)

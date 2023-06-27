@@ -30,7 +30,11 @@ func makeAboutForm() *fltk.Window {
 	view := fltk.NewHelpView(0, 0, width, height-buttonHeight)
 	view.TextFont(fltk.HELVETICA)
 	view.SetValue(aboutHtml())
-	hbox := makeHBox(0, height-buttonHeight, width, buttonHeight, pad)
+	y := height - buttonHeight
+	hbox := makeHBox(0, y, width, buttonHeight, pad)
+	spacerWidth := (width - buttonWidth) / 2
+	spacer := makeHBox(0, y, spacerWidth, buttonHeight, 0)
+	spacer.End()
 	button := fltk.NewButton(0, 0, buttonHeight, buttonWidth, " &Close")
 	if image := imageForSvgText(closeSvg,
 		toolbuttonIconSize); image != nil {
@@ -38,6 +42,7 @@ func makeAboutForm() *fltk.Window {
 		button.SetAlign(fltk.ALIGN_IMAGE_NEXT_TO_TEXT)
 	}
 	button.SetCallback(func() { window.Destroy() })
+	hbox.Fixed(spacer, spacerWidth)
 	hbox.Fixed(button, buttonWidth)
 	hbox.End()
 	vbox.Fixed(hbox, buttonHeight)

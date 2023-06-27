@@ -1,5 +1,5 @@
 # TODO
-# - About
+# - askYesNo() # create a modal dialog with the app icon & use instead of ChoiceDialog
 # - remember & restore last file
 # - zoom support
 # - color syntax highlighting for the editor (see minicalc)
@@ -12,8 +12,8 @@
 gviz.go
 app.go
 actions.go
-fileactions.go
-helpactions.go
+file_actions.go
+help_actions.go
 about_html_linux.go
 about_html_win.go
 config.go
