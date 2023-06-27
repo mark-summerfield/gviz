@@ -70,7 +70,7 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
 	menuBar.AddEx("File/&Open", fltk.CTRL+'o', me.onFileOpen,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	// TODO Save & Save As
+	// TODO Save & Save As & Export As
 	menuBar.AddEx("File/&Configure…", 0, me.onFileConfigure,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
