@@ -1,5 +1,5 @@
 # TODO
-# - zoom support
+# - config form (app scale, line nums, ...)
 # - color syntax highlighting for the editor (see minicalc)
 # - &Edit→Copy Cut Paste Insert ...
 # - editing support
@@ -12,6 +12,7 @@ gviz.go
 app.go
 actions.go
 file_actions.go
+view_actions.go
 help_actions.go
 about_html_linux.go
 about_html_win.go

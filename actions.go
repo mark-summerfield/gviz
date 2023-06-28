@@ -6,8 +6,10 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"math"
 
 	"github.com/goccy/go-graphviz"
+	"github.com/mark-summerfield/gong"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -29,8 +31,10 @@ func (me *App) onEvent(event fltk.Event) bool {
 	return false
 }
 
-func (me *App) onTextChanged() {
-	me.dirty = true
+func (me *App) onTextChanged(changed bool) {
+	if changed {
+		me.dirty = true
+	}
 	text := me.buffer.Text()
 	if text == "" {
 		me.onError(fmt.Errorf("Need image data, e.g.\n%s", defaultText))
@@ -53,8 +57,13 @@ func (me *App) onTextChanged() {
 		return
 	}
 	me.clearView()
-	// TODO if zoom != 100% scale png
-	if me.view.W() < png.W() || me.view.H() < png.H() {
+	if !gong.IsRealClose(1.0, me.zoomLevel) {
+		w := int(math.Round(float64(png.W()) * me.zoomLevel))
+		h := int(math.Round(float64(png.H()) * me.zoomLevel))
+		png.Scale(w, h, true, true)
+	}
+	if me.view.W() < max(me.scroll.W(), png.W()) ||
+		me.view.H() < max(me.scroll.H(), png.H()) {
 		me.view.Resize(0, 0, png.W()+border, png.H()+border)
 	}
 	me.view.SetImage(png)

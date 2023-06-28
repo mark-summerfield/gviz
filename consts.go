@@ -15,6 +15,7 @@ const (
 	toolbuttonIconSize = 24
 	labelWidth         = 60
 	buttonWidth        = labelWidth + (labelWidth / 2)
+	linoWidth          = 32
 	pad                = 5
 	border             = 8
 	defaultText        = "graph {\n    Gviz [shape=tab]\n}"
@@ -28,6 +29,15 @@ var openSvg string
 
 //go:embed images/save.svg
 var saveSvg string
+
+//go:embed images/zoom-in.svg
+var zoomInSvg string
+
+//go:embed images/zoom-original.svg
+var zoomRestoreSvg string
+
+//go:embed images/zoom-out.svg
+var zoomOutSvg string
 
 //go:embed images/question.svg
 var questionSvg string

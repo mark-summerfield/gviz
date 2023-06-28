@@ -74,3 +74,11 @@ func int8ToStr(raw []int8) string {
 	}
 	return string(data)
 }
+
+// TODO drop once go 1.21 in use
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}

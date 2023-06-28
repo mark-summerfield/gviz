@@ -12,17 +12,18 @@ import (
 
 type App struct {
 	*fltk.Window
-	config   *Config
-	filename string
-	dirty    bool
-	buffer   *fltk.TextBuffer
-	editor   *fltk.TextEditor
-	scroll   *fltk.Scroll
-	view     *fltk.Box
+	config    *Config
+	filename  string
+	dirty     bool
+	buffer    *fltk.TextBuffer
+	editor    *fltk.TextEditor
+	scroll    *fltk.Scroll
+	view      *fltk.Box
+	zoomLevel float64
 }
 
 func newApp(config *Config) *App {
-	app := &App{Window: nil, config: config}
+	app := &App{Window: nil, config: config, zoomLevel: 1}
 	app.makeMainWindow()
 	app.makeWidgets()
 	app.Window.End()
@@ -30,7 +31,7 @@ func newApp(config *Config) *App {
 		fltk.AddTimeout(0.1, func() { app.loadFile(os.Args[1]) })
 	} else {
 		fltk.AddTimeout(0.1, func() {
-			app.onTextChanged()
+			app.onTextChanged(false)
 			app.dirty = false
 		})
 	}
@@ -84,6 +85,10 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
 	// TODO Edit Cut Copy Paste & Insert etc
+	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
+	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
+	menuBar.Add("View/Zoom &Restore", me.onViewZoomRestore)
+	menuBar.Add("View/Zoom &Out", me.onViewZoomOut)
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
 	vbox.Fixed(menuBar, buttonHeight)
@@ -99,6 +104,20 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 	saveButton.SetCallback(func() { me.onFileSave() })
 	saveButton.SetTooltip("Save")
 	hbox.Fixed(saveButton, buttonHeight)
+	sep := fltk.NewBox(fltk.THIN_DOWN_BOX, 0, y, pad, buttonHeight)
+	hbox.Fixed(sep, pad)
+	zoomInButton := makeToolbutton(zoomInSvg)
+	zoomInButton.SetCallback(func() { me.onViewZoomIn() })
+	zoomInButton.SetTooltip("Zoom In")
+	hbox.Fixed(zoomInButton, buttonHeight)
+	zoomRestoreButton := makeToolbutton(zoomRestoreSvg)
+	zoomRestoreButton.SetCallback(func() { me.onViewZoomRestore() })
+	zoomRestoreButton.SetTooltip("Zoom Restore")
+	hbox.Fixed(zoomRestoreButton, buttonHeight)
+	zoomOutButton := makeToolbutton(zoomOutSvg)
+	zoomOutButton.SetCallback(func() { me.onViewZoomOut() })
+	zoomOutButton.SetTooltip("Zoom Out")
+	hbox.Fixed(zoomOutButton, buttonHeight)
 	// TODO other toolbuttons, e.g., Save Cut Copy Paste etc
 	hbox.End()
 	vbox.Fixed(hbox, buttonHeight)
@@ -130,9 +149,12 @@ func (me *App) initializeView() {
 }
 
 func (me *App) initializeEditor() {
+	me.buffer.SetText(defaultText)
 	me.editor.SetBuffer(me.buffer)
 	me.editor.SetTextFont(fltk.COURIER)
-	me.editor.SetCallback(func() { me.onTextChanged() })
+	me.editor.SetLinenumberWidth(linoWidth)
+	me.editor.SetLinenumberAlign(fltk.ALIGN_RIGHT)
+	me.editor.SetLinenumberFgcolor(fltk.DARK3)
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
-	me.buffer.SetText(defaultText)
+	me.editor.SetCallback(func() { me.onTextChanged(true) })
 }
