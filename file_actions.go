@@ -59,7 +59,7 @@ func (me *App) onFileConfigure() {
 
 func (me *App) onFileQuit() {
 	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
-		fltk.ChoiceDialog("Save unsaved changes?", "&No", "&Yes") == 1 &&
+		askYesNo("Unsaved Changes", "Save unsaved changes?") == ASK_YES &&
 		!me.maybeSave() {
 		return
 	}

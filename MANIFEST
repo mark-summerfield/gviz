@@ -1,5 +1,4 @@
 # TODO
-# - askYesNo() # create a modal dialog with the app icon & use instead of ChoiceDialog
 # - remember & restore last file
 # - zoom support
 # - color syntax highlighting for the editor (see minicalc)
@@ -16,6 +15,7 @@ file_actions.go
 help_actions.go
 about_html_linux.go
 about_html_win.go
+ask_form.go
 config.go
 util.go
 consts.go

@@ -119,9 +119,14 @@ func (me *App) makePanels(x, y, width, height int) {
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
 		me.scroll.End()
 	}
-	me.view.SetAlign(fltk.ALIGN_CENTER | fltk.ALIGN_INSIDE |
-		fltk.ALIGN_TEXT_OVER_IMAGE)
+	me.initializeView()
 	me.initializeEditor()
+}
+
+func (me *App) initializeView() {
+	me.view.SetColor(fltk.ColorFromRgb(0xFF, 0xFF, 0xEB))
+	me.view.SetAlign(fltk.ALIGN_TOP | fltk.ALIGN_LEFT | fltk.ALIGN_INSIDE |
+		fltk.ALIGN_TEXT_OVER_IMAGE)
 }
 
 func (me *App) initializeEditor() {

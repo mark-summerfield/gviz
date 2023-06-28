@@ -9,12 +9,6 @@ import (
 	"github.com/pwiecz/go-fltk"
 )
 
-const (
-	width       = 360
-	height      = 280
-	buttonWidth = labelWidth + (labelWidth / 2)
-)
-
 func (me *App) onHelpAbout() {
 	form := makeAboutForm()
 	form.SetModal()
@@ -22,6 +16,10 @@ func (me *App) onHelpAbout() {
 }
 
 func makeAboutForm() *fltk.Window {
+	const (
+		width  = 360
+		height = 280
+	)
 	window := fltk.NewWindow(width, height)
 	window.SetLabel(fmt.Sprintf("About — %s", appName))
 	addWindowIcon(window, iconSvg)
