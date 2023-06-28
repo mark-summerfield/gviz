@@ -33,11 +33,6 @@ func makeAboutForm() *fltk.Window {
 	leftSpacer := makeHBox(0, y, spacerWidth, buttonHeight, 0)
 	leftSpacer.End()
 	button := fltk.NewButton(0, 0, buttonHeight, buttonWidth, " &Close")
-	if image := imageForSvgText(closeSvg,
-		toolbuttonIconSize); image != nil {
-		button.SetImage(image)
-		button.SetAlign(fltk.ALIGN_IMAGE_NEXT_TO_TEXT)
-	}
 	button.SetCallback(func() { window.Destroy() })
 	righttSpacer := makeHBox(spacerWidth+buttonWidth, y, spacerWidth,
 		buttonHeight, 0)

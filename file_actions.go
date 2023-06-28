@@ -4,11 +4,13 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 
+	"github.com/goccy/go-graphviz"
 	"github.com/mark-summerfield/gong"
 	"github.com/pwiecz/go-fltk"
 )
@@ -50,7 +52,36 @@ func (me *App) onFileSaveAs() {
 }
 
 func (me *App) onFileExport() {
-	fmt.Println("onFileExport") // TODO
+	text := strings.TrimSpace(me.buffer.Text())
+	if text == "" {
+		me.onError(errors.New("nothing to export"))
+		return
+	}
+	chooser := fltk.NewFileChooser(getPath(me.filename),
+		"PNG Files (*.png)\tSVG Files (*.svg)", fltk.FileChooser_CREATE,
+		fmt.Sprintf("Export — %s", appName))
+	defer chooser.Destroy()
+	chooser.Popup()
+	names := chooser.Selection()
+	if len(names) == 1 {
+		filename := names[0]
+		format := graphviz.PNG
+		if strings.HasSuffix(filename, "svg") {
+			format = graphviz.SVG
+		}
+		graph, err := graphviz.ParseBytes([]byte(text))
+		if err != nil {
+			me.onError(err)
+			return
+		}
+		gv := graphviz.New()
+		if err = gv.RenderFilename(graph, format, filename); err != nil {
+			me.onError(err)
+			return
+		} else {
+			me.onInfo(fmt.Sprintf("Exported to %q", filename))
+		}
+	}
 }
 
 func (me *App) onFileConfigure() {
@@ -80,8 +111,8 @@ func (me *App) maybeSave() bool {
 	}
 	if me.dirty {
 		if me.filename == "" {
-			chooser := fltk.NewFileChooser(getPath(me.filename), "*.gv",
-				fltk.FileChooser_CREATE,
+			chooser := fltk.NewFileChooser(getPath(me.filename),
+				"Graphviz Files (*.gv)", fltk.FileChooser_CREATE,
 				fmt.Sprintf("Save As — %s", appName))
 			defer chooser.Destroy()
 			chooser.Popup()

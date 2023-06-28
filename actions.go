@@ -69,3 +69,9 @@ func (me *App) onError(err error) {
 	me.view.SetLabelColor(fltk.RED)
 	me.view.SetLabel(err.Error())
 }
+
+func (me *App) onInfo(info string) {
+	me.view.SetLabelColor(fltk.BLUE)
+	me.view.SetLabel(info)
+	fltk.AddTimeout(5, func() { me.clearView() })
+}

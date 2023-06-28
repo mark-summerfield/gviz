@@ -131,7 +131,7 @@ func (me *App) initializeView() {
 
 func (me *App) initializeEditor() {
 	me.editor.SetBuffer(me.buffer)
-	me.editor.SetLabelFont(fltk.COURIER)
+	me.editor.SetTextFont(fltk.COURIER)
 	me.editor.SetCallback(func() { me.onTextChanged() })
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
 	me.buffer.SetText(defaultText)

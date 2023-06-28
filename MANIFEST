@@ -1,11 +1,11 @@
 # TODO
-# - remember & restore last file
 # - zoom support
 # - color syntax highlighting for the editor (see minicalc)
 # - &Edit→Copy Cut Paste Insert ...
 # - editing support
 # - completion
 # - monofont + line numbers
+# - remember & restore last file
 # - File→Open &Recent...
 
 gviz.go

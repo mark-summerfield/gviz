@@ -29,9 +29,6 @@ var openSvg string
 //go:embed images/save.svg
 var saveSvg string
 
-//go:embed images/close.svg
-var closeSvg string
-
 //go:embed images/question.svg
 var questionSvg string
 
