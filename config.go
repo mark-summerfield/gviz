@@ -22,12 +22,14 @@ type Config struct {
 	Height     int
 	Scale      float32
 	ViewOnLeft bool
+	Linos      bool
+	LastFile   string
 }
 
 func newConfig() *Config {
 	filename, found := gong.GetIniFile(domain, appName)
 	config := &Config{filename: filename, X: -1, Width: 800, Height: 600,
-		Scale: 1.0}
+		Scale: 1.0, Linos: true}
 	if found {
 		cfg, err := ini.Load(filename)
 		if err != nil {

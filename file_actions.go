@@ -84,10 +84,6 @@ func (me *App) onFileExport() {
 	}
 }
 
-func (me *App) onFileConfigure() {
-	fmt.Println("onFileConfigure") // TODO
-}
-
 func (me *App) onFileQuit() {
 	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
 		askYesNo("Unsaved Changes", "Save unsaved changes?") == ASK_YES &&
@@ -98,8 +94,9 @@ func (me *App) onFileQuit() {
 	me.config.Y = me.Window.Y()
 	me.config.Width = me.Window.W()
 	me.config.Height = me.Window.H()
+	me.config.LastFile = me.filename
 	// TODO
-	// App Scale & Image Zoom & ViewOnLeft are set in config dialog
+	// App Scale & ViewOnLeft & Linos are set in config dialog
 	me.config.save()
 	me.Window.Destroy()
 }

@@ -29,6 +29,8 @@ func newApp(config *Config) *App {
 	app.Window.End()
 	if len(os.Args) > 1 && gong.FileExists(os.Args[1]) {
 		fltk.AddTimeout(0.1, func() { app.loadFile(os.Args[1]) })
+	} else if config.LastFile != "" && gong.FileExists(config.LastFile) {
+		fltk.AddTimeout(0.1, func() { app.loadFile(config.LastFile) })
 	} else {
 		fltk.AddTimeout(0.1, func() {
 			app.onTextChanged(false)
@@ -78,8 +80,6 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("File/Save &As…", 0, me.onFileSaveAs,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("File/&Export…", 0, me.onFileExport,
-		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	menuBar.AddEx("File/&Configure…", 0, me.onFileConfigure,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
@@ -152,9 +152,17 @@ func (me *App) initializeEditor() {
 	me.buffer.SetText(defaultText)
 	me.editor.SetBuffer(me.buffer)
 	me.editor.SetTextFont(fltk.COURIER)
-	me.editor.SetLinenumberWidth(linoWidth)
-	me.editor.SetLinenumberAlign(fltk.ALIGN_RIGHT)
-	me.editor.SetLinenumberFgcolor(fltk.DARK3)
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
 	me.editor.SetCallback(func() { me.onTextChanged(true) })
+	me.setLinos()
+}
+
+func (me *App) setLinos() {
+	if me.config.Linos {
+		me.editor.SetLinenumberWidth(linoWidth)
+		me.editor.SetLinenumberAlign(fltk.ALIGN_RIGHT)
+		me.editor.SetLinenumberFgcolor(fltk.DARK3)
+	} else {
+		me.editor.SetLinenumberWidth(0)
+	}
 }

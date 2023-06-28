@@ -1,11 +1,14 @@
 # TODO
-# - config form (app scale, line nums, ...)
+# - Instead of config form have
+#   &Options→Scale Up [0.1 increments]
+#	    →Scale Restore [1]
+#	    →Scale Down [0.1 increments]
+#	    ----
+#	    →[X] Line Numbers
 # - color syntax highlighting for the editor (see minicalc)
 # - &Edit→Copy Cut Paste Insert ...
-# - editing support
+# - editing support specifically for graphviz format
 # - completion
-# - monofont + line numbers
-# - remember & restore last file
 # - File→Open &Recent...
 
 gviz.go
