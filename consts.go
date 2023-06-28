@@ -32,9 +32,6 @@ var saveSvg string
 //go:embed images/close.svg
 var closeSvg string
 
-//go:embed images/ok.svg
-var okSvg string
-
 //go:embed images/question.svg
 var questionSvg string
 

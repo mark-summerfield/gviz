@@ -21,9 +21,9 @@ func askYesNo(title, bodyText string) int {
 	return ask(title, bodyText, "&Yes", "&No")
 }
 
-func askOkCancel(title, bodyText string) int {
-	return ask(title, bodyText, "&OK", "&Cancel")
-}
+// func askOkCancel(title, bodyText string) int {
+// 	return ask(title, bodyText, "&OK", "&Cancel")
+// }
 
 func ask(title, bodyText, text1, text2 string) int {
 	result := ASK_CANCELED
