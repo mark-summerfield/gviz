@@ -1,5 +1,5 @@
 # TODO
-# - color syntax highlighting for the editor (see minicalc)
+# - Use config.TextSize in YesNo form
 # - &Edit→Copy Cut Paste Insert ...
 # - editing support specifically for graphviz format
 # - completion

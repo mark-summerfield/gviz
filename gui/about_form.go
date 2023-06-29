@@ -9,23 +9,26 @@ import (
 	"github.com/pwiecz/go-fltk"
 )
 
-func ShowAbout(appName, descHtml, iconSvg string) {
-	form := makeAboutForm(appName, descHtml, iconSvg)
+func ShowAbout(appName, descHtml, iconSvg string, textSize int) {
+	form := makeAboutForm(appName, descHtml, iconSvg, textSize)
 	form.SetModal()
 	form.Show()
 }
 
-func makeAboutForm(appName, descHtml, iconSvg string) *fltk.Window {
+func makeAboutForm(appName, descHtml, iconSvg string,
+	textSize int) *fltk.Window {
 	const (
-		width  = 360
-		height = 280
+		width  = 440
+		height = 320
 	)
 	window := fltk.NewWindow(width, height)
+	window.Resizable(window)
 	window.SetLabel(fmt.Sprintf("About — %s", appName))
 	AddWindowIcon(window, iconSvg)
 	vbox := MakeVBox(0, 0, width, height, Pad)
 	view := fltk.NewHelpView(0, 0, width, height-ButtonHeight)
 	view.TextFont(fltk.HELVETICA)
+	view.TextSize(textSize)
 	view.SetValue(descHtml)
 	y := height - ButtonHeight
 	hbox := MakeHBox(0, y, width, ButtonHeight, Pad)

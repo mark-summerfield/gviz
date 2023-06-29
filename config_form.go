@@ -12,7 +12,7 @@ const (
 	rowHeight = 32
 	colWidth  = 60
 	width     = 200
-	height    = 115
+	height    = 190
 )
 
 func (me *App) onConfigure() {
@@ -34,7 +34,11 @@ func makeWidgets(window *fltk.Window, app *App) {
 	vbox := gui.MakeVBox(0, 0, width, height, gui.Pad)
 	hbox := makeScaleRow()
 	vbox.Fixed(hbox, rowHeight)
+	hbox = makeTextSizeRow(app)
+	vbox.Fixed(hbox, rowHeight)
 	button := makeLinosRow(app)
+	vbox.Fixed(button, rowHeight)
+	button = makeViewOnLeftRow(app)
 	vbox.Fixed(button, rowHeight)
 	hbox = makeButtonRow(window)
 	vbox.Fixed(hbox, rowHeight)
@@ -66,6 +70,28 @@ func makeScaleSpinner() *fltk.Spinner {
 	return spinner
 }
 
+func makeTextSizeRow(app *App) *fltk.Flex {
+	hbox := gui.MakeHBox(0, 0, width, rowHeight, gui.Pad)
+	sizeLabel := gui.MakeAccelLabel(gui.LabelWidth, gui.ButtonHeight,
+		"&Text Size")
+	spinner := fltk.NewSpinner(0, 0, gui.LabelWidth, gui.ButtonHeight)
+	spinner.SetTooltip("Set the size of the editor's text")
+	spinner.SetType(fltk.SPINNER_INT_INPUT)
+	spinner.SetMinimum(10)
+	spinner.SetMaximum(20)
+	spinner.SetValue(float64(app.config.TextSize))
+	spinner.SetCallback(func() {
+		size := int(spinner.Value())
+		app.config.TextSize = size
+		app.editor.SetTextSize(size)
+		app.editor.Redraw()
+	})
+	sizeLabel.SetCallback(func() { spinner.TakeFocus() })
+	hbox.Fixed(sizeLabel, gui.LabelWidth)
+	hbox.End()
+	return hbox
+}
+
 func makeLinosRow(app *App) *fltk.CheckButton {
 	button := fltk.NewCheckButton(0, 0, width, rowHeight,
 		"Show &Line Numbers")
@@ -75,6 +101,19 @@ func makeLinosRow(app *App) *fltk.CheckButton {
 		app.config.Linos = button.Value()
 		app.onLinosChange()
 		app.editor.Redraw()
+	})
+	return button
+}
+
+func makeViewOnLeftRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, width, rowHeight,
+		"&View on Left")
+	button.SetTooltip("if checked the view is on the left and the editor " +
+		"is on the right. If changed, quit and rerun for the setting to " +
+		"take effect")
+	button.SetValue(app.config.ViewOnLeft)
+	button.SetCallback(func() {
+		app.config.ViewOnLeft = button.Value()
 	})
 	return button
 }

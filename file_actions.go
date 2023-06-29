@@ -91,8 +91,7 @@ func (me *App) onFileQuit() {
 	me.config.Width = me.Window.W()
 	me.config.Height = me.Window.H()
 	me.config.LastFile = me.filename
-	// TODO
-	// App Scale & ViewOnLeft & Linos are set in config dialog
+	me.config.Scale = fltk.ScreenScale(0)
 	me.config.save()
 	me.Window.Destroy()
 }

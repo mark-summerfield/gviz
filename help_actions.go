@@ -8,5 +8,5 @@ import (
 )
 
 func (me *App) onHelpAbout() {
-	gui.ShowAbout(appName, aboutHtml(), iconSvg)
+	gui.ShowAbout(appName, aboutHtml(), iconSvg, me.config.TextSize)
 }

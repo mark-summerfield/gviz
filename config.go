@@ -21,6 +21,7 @@ type Config struct {
 	Width      int
 	Height     int
 	Scale      float32
+	TextSize   int
 	ViewOnLeft bool
 	Linos      bool
 	LastFile   string
@@ -29,7 +30,7 @@ type Config struct {
 func newConfig() *Config {
 	filename, found := gong.GetIniFile(domain, appName)
 	config := &Config{filename: filename, X: -1, Width: 800, Height: 600,
-		Scale: 1.0, Linos: true}
+		Scale: 1.0, TextSize: 14, Linos: true}
 	if found {
 		cfg, err := ini.Load(filename)
 		if err != nil {
@@ -48,6 +49,10 @@ func newConfig() *Config {
 				}
 				if config.Scale < 0.5 || config.Scale > 5 {
 					config.Scale = 1
+				}
+				if config.TextSize < 10 ||
+					config.TextSize > 20 {
+					config.TextSize = 14
 				}
 			}
 
