@@ -55,7 +55,7 @@ func makeAskForm(title, bodyText, text1, text2 string,
 	spacerWidth := (width - (2 * buttonWidth)) / 2
 	leftSpacer := makeHBox(0, y, spacerWidth, buttonHeight, 0)
 	leftSpacer.End()
-	button1 := fltk.NewButton(0, 0, buttonHeight, buttonWidth, text1)
+	button1 := fltk.NewReturnButton(0, 0, buttonHeight, buttonWidth, text1)
 	button1.SetCallback(func() { *result = ASK_YES; window.Destroy() })
 	button1.TakeFocus()
 	button2 := fltk.NewButton(0, 0, buttonHeight, buttonWidth, text2)

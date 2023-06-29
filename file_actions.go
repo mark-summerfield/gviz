@@ -16,14 +16,14 @@ import (
 )
 
 func (me *App) onFileNew() {
-	if !me.maybeSave() {
+	if !me.maybeSave(false) {
 		return
 	}
 	me.clear()
 }
 
 func (me *App) onFileOpen() {
-	if !me.maybeSave() {
+	if !me.maybeSave(false) {
 		return
 	}
 	chooser := fltk.NewFileChooser(getPath(me.filename), "*.gv",
@@ -37,18 +37,12 @@ func (me *App) onFileOpen() {
 }
 
 func (me *App) onFileSave() {
-	me.maybeSave()
+	me.maybeSave(false)
 }
 
 func (me *App) onFileSaveAs() {
-	filename := me.filename
-	me.filename = ""
-	me.dirty = true
-	if me.maybeSave() {
-		me.updateTitle()
-	} else {
-		me.filename = filename
-	}
+	me.maybeSave(true)
+	me.updateTitle()
 }
 
 func (me *App) onFileExport() {
@@ -87,7 +81,7 @@ func (me *App) onFileExport() {
 func (me *App) onFileQuit() {
 	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
 		askYesNo("Unsaved Changes", "Save unsaved changes?") == ASK_YES &&
-		!me.maybeSave() {
+		!me.maybeSave(false) {
 		return
 	}
 	me.config.X = me.Window.X()
@@ -101,13 +95,13 @@ func (me *App) onFileQuit() {
 	me.Window.Destroy()
 }
 
-func (me *App) maybeSave() bool {
+func (me *App) maybeSave(saveAs bool) bool {
 	text := strings.TrimSpace(me.buffer.Text())
 	if text == "" || text == strings.TrimSpace(defaultText) {
 		return true // don't bother to save empty or default
 	}
-	if me.dirty {
-		if me.filename == "" {
+	if me.dirty || saveAs {
+		if me.filename == "" || saveAs {
 			chooser := fltk.NewFileChooser(getPath(me.filename),
 				"Graphviz Files (*.gv)", fltk.FileChooser_CREATE,
 				fmt.Sprintf("Save As — %s", appName))
