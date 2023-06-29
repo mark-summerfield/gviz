@@ -82,6 +82,8 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 		fltk.MENU_VALUE)
 	menuBar.AddEx("File/&Export…", 0, me.onFileExport,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
+	menuBar.AddEx("File/&Configure…", 0, me.onConfigure,
+		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
@@ -155,15 +157,5 @@ func (me *App) initializeEditor() {
 	me.editor.SetTextFont(fltk.COURIER)
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
 	me.editor.SetCallback(func() { me.onTextChanged(true) })
-	me.setLinos()
-}
-
-func (me *App) setLinos() {
-	if me.config.Linos {
-		me.editor.SetLinenumberWidth(linoWidth)
-		me.editor.SetLinenumberAlign(fltk.ALIGN_RIGHT)
-		me.editor.SetLinenumberFgcolor(fltk.DARK3)
-	} else {
-		me.editor.SetLinenumberWidth(0)
-	}
+	me.onLinosChange()
 }

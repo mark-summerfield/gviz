@@ -161,5 +161,5 @@ func (me *App) clear() {
 	me.view.SetLabelColor(fltk.BLUE)
 	me.view.SetLabel("Edit graphviz text")
 	me.dirty = false
-	me.view.Redraw()
+	fltk.AddTimeout(0.1, func() { me.onTextChanged(false) })
 }

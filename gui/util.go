@@ -33,6 +33,14 @@ func MakeToolbutton(svgText string) *fltk.Button {
 	return button
 }
 
+func MakeAccelLabel(width, height int, label string) *fltk.Button {
+	button := fltk.NewButton(0, 0, width, height, label)
+	button.SetAlign(fltk.ALIGN_INSIDE | fltk.ALIGN_LEFT)
+	button.SetBox(fltk.NO_BOX)
+	button.ClearVisibleFocus()
+	return button
+}
+
 func MakeHBox(x, y, width, height, spacing int) *fltk.Flex {
 	return makeVHBox(fltk.ROW, x, y, width, height, spacing)
 }

@@ -32,7 +32,8 @@ func makeAboutForm(appName, descHtml, iconSvg string) *fltk.Window {
 	spacerWidth := (width - ButtonWidth) / 2
 	leftSpacer := MakeHBox(0, y, spacerWidth, ButtonHeight, 0)
 	leftSpacer.End()
-	button := fltk.NewButton(0, 0, ButtonHeight, ButtonWidth, " &Close")
+	button := fltk.NewReturnButton(0, 0, ButtonHeight, ButtonWidth,
+		"&Close")
 	button.SetCallback(func() { window.Destroy() })
 	righttSpacer := MakeHBox(spacerWidth+ButtonWidth, y, spacerWidth,
 		ButtonHeight, 0)

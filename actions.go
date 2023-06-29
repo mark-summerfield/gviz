@@ -69,6 +69,17 @@ func (me *App) onTextChanged(changed bool) {
 		me.view.Resize(0, 0, png.W()+gui.Border, png.H()+gui.Border)
 	}
 	me.view.SetImage(png)
+	me.view.Redraw()
+}
+
+func (me *App) onLinosChange() {
+	if me.config.Linos {
+		me.editor.SetLinenumberWidth(linoWidth)
+		me.editor.SetLinenumberAlign(fltk.ALIGN_RIGHT)
+		me.editor.SetLinenumberFgcolor(fltk.DARK3)
+	} else {
+		me.editor.SetLinenumberWidth(0)
+	}
 }
 
 func (me *App) clearView() {

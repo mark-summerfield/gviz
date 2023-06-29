@@ -1,7 +1,4 @@
 # TODO
-# - Config Form
-#	Scale [ 1.0^v]
-#	[X] Line Numbers
 # - color syntax highlighting for the editor (see minicalc)
 # - &Edit→Copy Cut Paste Insert ...
 # - editing support specifically for graphviz format
@@ -17,6 +14,7 @@ help_actions.go
 about_html_linux.go
 about_html_win.go
 config.go
+config_form.go
 consts.go
 u/util.go
 gui/util.go
