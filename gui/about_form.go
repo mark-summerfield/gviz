@@ -22,7 +22,6 @@ func makeAboutForm(appName, descHtml, iconSvg string,
 		height = 320
 	)
 	window := fltk.NewWindow(width, height)
-	window.Resizable(window)
 	window.SetLabel(fmt.Sprintf("About — %s", appName))
 	AddWindowIcon(window, iconSvg)
 	vbox := MakeVBox(0, 0, width, height, Pad)

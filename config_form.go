@@ -84,7 +84,7 @@ func makeTextSizeRow(app *App) *fltk.Flex {
 		size := int(spinner.Value())
 		app.config.TextSize = size
 		app.editor.SetTextSize(size)
-		app.editor.Redraw()
+		fltk.AddTimeout(tinyTimeout, func() { app.editor.Redraw() })
 	})
 	sizeLabel.SetCallback(func() { spinner.TakeFocus() })
 	hbox.Fixed(sizeLabel, gui.LabelWidth)
@@ -100,7 +100,7 @@ func makeLinosRow(app *App) *fltk.CheckButton {
 	button.SetCallback(func() {
 		app.config.Linos = button.Value()
 		app.onLinosChange()
-		app.editor.Redraw()
+		fltk.AddTimeout(tinyTimeout, func() { app.editor.Redraw() })
 	})
 	return button
 }

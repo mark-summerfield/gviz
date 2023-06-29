@@ -60,10 +60,10 @@ func (me *App) applySyntaxHighlighting() {
 		maybeHighlight(highlight, 'H', 18, subIndexes)
 		maybeHighlight(highlight, 'G', 16, subIndexes)
 		maybeHighlight(highlight, 'F', 14, subIndexes)
-		maybeHighlight(highlight, 'E', 12, subIndexes)
-		maybeHighlight(highlight, 'D', 10, subIndexes)
 		maybeHighlight(highlight, 'C', 6, subIndexes)
 		maybeHighlight(highlight, 'B', 2, subIndexes)
+		maybeHighlight(highlight, 'E', 12, subIndexes) // must be pre-last
+		maybeHighlight(highlight, 'D', 10, subIndexes) // must be last
 	}
 	me.highlightBuffer.SetText(string(highlight))
 }

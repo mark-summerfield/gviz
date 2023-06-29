@@ -13,6 +13,7 @@ const (
 	domain      = "qtrac.eu"
 	linoWidth   = 32
 	defaultText = "graph {\n    Gviz [shape=tab]\n}"
+	tinyTimeout = 0.005
 )
 
 //go:embed images/icon.svg

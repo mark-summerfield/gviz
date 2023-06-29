@@ -70,7 +70,7 @@ func (me *App) onTextChanged(changed bool) {
 		me.view.Resize(0, 0, png.W()+gui.Border, png.H()+gui.Border)
 	}
 	me.view.SetImage(png)
-	me.view.Redraw()
+	fltk.AddTimeout(tinyTimeout, func() { me.view.Redraw() })
 }
 
 func (me *App) onLinosChange() {
