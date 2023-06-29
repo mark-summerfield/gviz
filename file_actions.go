@@ -12,6 +12,8 @@ import (
 
 	"github.com/goccy/go-graphviz"
 	"github.com/mark-summerfield/gong"
+	"github.com/mark-summerfield/gviz/gui"
+	"github.com/mark-summerfield/gviz/u"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -26,7 +28,7 @@ func (me *App) onFileOpen() {
 	if !me.maybeSave(false) {
 		return
 	}
-	chooser := fltk.NewFileChooser(getPath(me.filename), "*.gv",
+	chooser := fltk.NewFileChooser(u.GetPath(me.filename), "*.gv",
 		fltk.FileChooser_SINGLE, fmt.Sprintf("Open — %s", appName))
 	defer chooser.Destroy()
 	chooser.Popup()
@@ -51,7 +53,7 @@ func (me *App) onFileExport() {
 		me.onError(errors.New("nothing to export"))
 		return
 	}
-	chooser := fltk.NewFileChooser(getPath(me.filename),
+	chooser := fltk.NewFileChooser(u.GetPath(me.filename),
 		"PNG Files (*.png)\tSVG Files (*.svg)", fltk.FileChooser_CREATE,
 		fmt.Sprintf("Export — %s", appName))
 	defer chooser.Destroy()
@@ -80,8 +82,8 @@ func (me *App) onFileExport() {
 
 func (me *App) onFileQuit() {
 	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
-		askYesNo("Unsaved Changes", "Save unsaved changes?") == ASK_YES &&
-		!me.maybeSave(false) {
+		gui.YesNo("Unsaved Changes — "+appName, "Save unsaved changes?",
+			iconSvg) == gui.YES && !me.maybeSave(false) {
 		return
 	}
 	me.config.X = me.Window.X()
@@ -102,7 +104,7 @@ func (me *App) maybeSave(saveAs bool) bool {
 	}
 	if me.dirty || saveAs {
 		if me.filename == "" || saveAs {
-			chooser := fltk.NewFileChooser(getPath(me.filename),
+			chooser := fltk.NewFileChooser(u.GetPath(me.filename),
 				"Graphviz Files (*.gv)", fltk.FileChooser_CREATE,
 				fmt.Sprintf("Save As — %s", appName))
 			defer chooser.Destroy()

@@ -1,10 +1,7 @@
 # TODO
-# - Instead of config form have
-#   &Options→Scale Up [0.1 increments]
-#	    →Scale Restore [1]
-#	    →Scale Down [0.1 increments]
-#	    ----
-#	    →[X] Line Numbers
+# - Config Form
+#	Scale [ 1.0^v]
+#	[X] Line Numbers
 # - color syntax highlighting for the editor (see minicalc)
 # - &Edit→Copy Cut Paste Insert ...
 # - editing support specifically for graphviz format
@@ -19,13 +16,17 @@ view_actions.go
 help_actions.go
 about_html_linux.go
 about_html_win.go
-ask_form.go
 config.go
-util.go
 consts.go
+u/util.go
+gui/util.go
+gui/ask_form.go
+gui/consts.go
 
 README.md
 
 st.sh
+
+go.mod
 
 # vim: syn=yaml

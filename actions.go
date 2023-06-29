@@ -10,6 +10,8 @@ import (
 
 	"github.com/goccy/go-graphviz"
 	"github.com/mark-summerfield/gong"
+	"github.com/mark-summerfield/gviz/gui"
+	"github.com/mark-summerfield/gviz/u"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -62,9 +64,9 @@ func (me *App) onTextChanged(changed bool) {
 		h := int(math.Round(float64(png.H()) * me.zoomLevel))
 		png.Scale(w, h, true, true)
 	}
-	if me.view.W() < max(me.scroll.W(), png.W()) ||
-		me.view.H() < max(me.scroll.H(), png.H()) {
-		me.view.Resize(0, 0, png.W()+border, png.H()+border)
+	if me.view.W() < u.Max(me.scroll.W(), png.W()) ||
+		me.view.H() < u.Max(me.scroll.H(), png.H()) {
+		me.view.Resize(0, 0, png.W()+gui.Border, png.H()+gui.Border)
 	}
 	me.view.SetImage(png)
 }

@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/mark-summerfield/gong"
+	"github.com/mark-summerfield/gviz/gui"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -48,19 +49,19 @@ func (me *App) makeMainWindow() {
 	me.Window.Resizable(me.Window)
 	me.Window.SetEventHandler(me.onEvent)
 	me.Window.SetLabel(appName)
-	addWindowIcon(me.Window, iconSvg)
+	gui.AddWindowIcon(me.Window, iconSvg)
 }
 
 func (me *App) makeWidgets() {
 	width := me.Window.W()
 	height := me.Window.H()
 	var x, y int
-	vbox := makeVBox(x, y, width, height, pad)
+	vbox := gui.MakeVBox(x, y, width, height, gui.Pad)
 	me.makeMenuBar(vbox, width)
-	y += buttonHeight
+	y += gui.ButtonHeight
 	me.makeToolBar(vbox, y, width)
-	y += buttonHeight
-	height -= 2 * buttonHeight
+	y += gui.ButtonHeight
+	height -= 2 * gui.ButtonHeight
 	tile := fltk.NewTile(x, y, width, height)
 	me.makePanels(x, y, width/2, height)
 	tile.End()
@@ -68,7 +69,7 @@ func (me *App) makeWidgets() {
 }
 
 func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
-	menuBar := fltk.NewMenuBar(0, 0, width, buttonHeight)
+	menuBar := fltk.NewMenuBar(0, 0, width, gui.ButtonHeight)
 	menuBar.Activate()
 	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
 	menuBar.AddEx("File/&New", fltk.CTRL+'n', me.onFileNew,
@@ -91,36 +92,36 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.Add("View/Zoom &Out", me.onViewZoomOut)
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
-	vbox.Fixed(menuBar, buttonHeight)
+	vbox.Fixed(menuBar, gui.ButtonHeight)
 }
 
 func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
-	hbox := makeHBox(0, y, width, buttonHeight, 0)
-	openButton := makeToolbutton(openSvg)
+	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
+	openButton := gui.MakeToolbutton(openSvg)
 	openButton.SetCallback(func() { me.onFileOpen() })
 	openButton.SetTooltip("Open")
-	hbox.Fixed(openButton, buttonHeight)
-	saveButton := makeToolbutton(saveSvg)
+	hbox.Fixed(openButton, gui.ButtonHeight)
+	saveButton := gui.MakeToolbutton(saveSvg)
 	saveButton.SetCallback(func() { me.onFileSave() })
 	saveButton.SetTooltip("Save")
-	hbox.Fixed(saveButton, buttonHeight)
-	sep := fltk.NewBox(fltk.THIN_DOWN_BOX, 0, y, pad, buttonHeight)
-	hbox.Fixed(sep, pad)
-	zoomInButton := makeToolbutton(zoomInSvg)
+	hbox.Fixed(saveButton, gui.ButtonHeight)
+	sep := fltk.NewBox(fltk.THIN_DOWN_BOX, 0, y, gui.Pad, gui.ButtonHeight)
+	hbox.Fixed(sep, gui.Pad)
+	zoomInButton := gui.MakeToolbutton(zoomInSvg)
 	zoomInButton.SetCallback(func() { me.onViewZoomIn() })
 	zoomInButton.SetTooltip("Zoom In")
-	hbox.Fixed(zoomInButton, buttonHeight)
-	zoomRestoreButton := makeToolbutton(zoomRestoreSvg)
+	hbox.Fixed(zoomInButton, gui.ButtonHeight)
+	zoomRestoreButton := gui.MakeToolbutton(zoomRestoreSvg)
 	zoomRestoreButton.SetCallback(func() { me.onViewZoomRestore() })
 	zoomRestoreButton.SetTooltip("Zoom Restore")
-	hbox.Fixed(zoomRestoreButton, buttonHeight)
-	zoomOutButton := makeToolbutton(zoomOutSvg)
+	hbox.Fixed(zoomRestoreButton, gui.ButtonHeight)
+	zoomOutButton := gui.MakeToolbutton(zoomOutSvg)
 	zoomOutButton.SetCallback(func() { me.onViewZoomOut() })
 	zoomOutButton.SetTooltip("Zoom Out")
-	hbox.Fixed(zoomOutButton, buttonHeight)
+	hbox.Fixed(zoomOutButton, gui.ButtonHeight)
 	// TODO other toolbuttons, e.g., Save Cut Copy Paste etc
 	hbox.End()
-	vbox.Fixed(hbox, buttonHeight)
+	vbox.Fixed(hbox, gui.ButtonHeight)
 }
 
 func (me *App) makePanels(x, y, width, height int) {

@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/mark-summerfield/gviz/gui"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -22,24 +23,25 @@ func makeAboutForm() *fltk.Window {
 	)
 	window := fltk.NewWindow(width, height)
 	window.SetLabel(fmt.Sprintf("About — %s", appName))
-	addWindowIcon(window, iconSvg)
-	vbox := makeVBox(0, 0, width, height, pad)
-	view := fltk.NewHelpView(0, 0, width, height-buttonHeight)
+	gui.AddWindowIcon(window, iconSvg)
+	vbox := gui.MakeVBox(0, 0, width, height, gui.Pad)
+	view := fltk.NewHelpView(0, 0, width, height-gui.ButtonHeight)
 	view.TextFont(fltk.HELVETICA)
 	view.SetValue(aboutHtml())
-	y := height - buttonHeight
-	hbox := makeHBox(0, y, width, buttonHeight, pad)
-	spacerWidth := (width - buttonWidth) / 2
-	leftSpacer := makeHBox(0, y, spacerWidth, buttonHeight, 0)
+	y := height - gui.ButtonHeight
+	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, gui.Pad)
+	spacerWidth := (width - gui.ButtonWidth) / 2
+	leftSpacer := gui.MakeHBox(0, y, spacerWidth, gui.ButtonHeight, 0)
 	leftSpacer.End()
-	button := fltk.NewButton(0, 0, buttonHeight, buttonWidth, " &Close")
+	button := fltk.NewButton(0, 0, gui.ButtonHeight, gui.ButtonWidth,
+		" &Close")
 	button.SetCallback(func() { window.Destroy() })
-	righttSpacer := makeHBox(spacerWidth+buttonWidth, y, spacerWidth,
-		buttonHeight, 0)
+	righttSpacer := gui.MakeHBox(spacerWidth+gui.ButtonWidth, y,
+		spacerWidth, gui.ButtonHeight, 0)
 	righttSpacer.End()
-	hbox.Fixed(button, buttonWidth)
+	hbox.Fixed(button, gui.ButtonWidth)
 	hbox.End()
-	vbox.Fixed(hbox, buttonHeight)
+	vbox.Fixed(hbox, gui.ButtonHeight)
 	vbox.End()
 	window.End()
 	return window

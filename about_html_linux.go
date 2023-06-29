@@ -13,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/mark-summerfield/gviz/u"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -32,10 +33,10 @@ func aboutHtml() string {
 	var utsname syscall.Utsname
 	_ = syscall.Uname(&utsname)
 	if distro == "" {
-		distro = int8ToStr(utsname.Sysname[:]) + " " +
-			int8ToStr(utsname.Release[:])
+		distro = u.Int8ToStr(utsname.Sysname[:]) + " " +
+			u.Int8ToStr(utsname.Release[:])
 	} else {
-		distro += " " + int8ToStr(utsname.Release[:])
+		distro += " " + u.Int8ToStr(utsname.Release[:])
 	}
 	return fmt.Sprintf(
 		`<center><h3><font color=navy>%s v%s</font></h3></center>

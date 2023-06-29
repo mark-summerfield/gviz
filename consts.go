@@ -9,16 +9,10 @@ import _ "embed"
 var Version string
 
 const (
-	appName            = "Gviz"
-	domain             = "qtrac.eu"
-	buttonHeight       = 32
-	toolbuttonIconSize = 24
-	labelWidth         = 60
-	buttonWidth        = labelWidth + (labelWidth / 2)
-	linoWidth          = 32
-	pad                = 5
-	border             = 8
-	defaultText        = "graph {\n    Gviz [shape=tab]\n}"
+	appName     = "Gviz"
+	domain      = "qtrac.eu"
+	linoWidth   = 32
+	defaultText = "graph {\n    Gviz [shape=tab]\n}"
 )
 
 //go:embed images/icon.svg
@@ -38,9 +32,6 @@ var zoomRestoreSvg string
 
 //go:embed images/zoom-out.svg
 var zoomOutSvg string
-
-//go:embed images/question.svg
-var questionSvg string
 
 //go:embed images/dummy.png
 var dummyPng []byte
