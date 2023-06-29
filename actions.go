@@ -42,6 +42,7 @@ func (me *App) onTextChanged(changed bool) {
 		me.onError(fmt.Errorf("Need image data, e.g.\n%s", defaultText))
 		return
 	}
+	me.applySyntaxHighlighting()
 	graph, err := graphviz.ParseBytes([]byte(text))
 	if err != nil {
 		me.onError(err)

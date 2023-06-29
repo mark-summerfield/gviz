@@ -13,14 +13,16 @@ import (
 
 type App struct {
 	*fltk.Window
-	config    *Config
-	filename  string
-	dirty     bool
-	buffer    *fltk.TextBuffer
-	editor    *fltk.TextEditor
-	scroll    *fltk.Scroll
-	view      *fltk.Box
-	zoomLevel float64
+	config          *Config
+	filename        string
+	dirty           bool
+	editor          *fltk.TextEditor
+	buffer          *fltk.TextBuffer
+	highlightBuffer *fltk.TextBuffer
+	textStyles      []fltk.StyleTableEntry
+	scroll          *fltk.Scroll
+	view            *fltk.Box
+	zoomLevel       float64
 }
 
 func newApp(config *Config) *App {
@@ -127,7 +129,6 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 }
 
 func (me *App) makePanels(x, y, width, height int) {
-	me.buffer = fltk.NewTextBuffer()
 	if me.config.ViewOnLeft {
 		me.scroll = fltk.NewScroll(x, y, width, height)
 		me.view = fltk.NewBox(fltk.FLAT_BOX, x, y, width, height)
@@ -149,13 +150,4 @@ func (me *App) initializeView() {
 	me.view.SetColor(fltk.ColorFromRgb(0xFF, 0xFF, 0xEB))
 	me.view.SetAlign(fltk.ALIGN_TOP | fltk.ALIGN_LEFT | fltk.ALIGN_INSIDE |
 		fltk.ALIGN_TEXT_OVER_IMAGE)
-}
-
-func (me *App) initializeEditor() {
-	me.buffer.SetText(defaultText)
-	me.editor.SetBuffer(me.buffer)
-	me.editor.SetTextFont(fltk.COURIER)
-	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
-	me.editor.SetCallback(func() { me.onTextChanged(true) })
-	me.onLinosChange()
 }
