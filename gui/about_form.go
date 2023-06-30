@@ -5,6 +5,8 @@ package gui
 
 import (
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/pwiecz/go-fltk"
 )
@@ -13,6 +15,15 @@ func ShowAbout(appName, descHtml, iconSvg string, textSize int) {
 	form := makeAboutForm(appName, descHtml, iconSvg, textSize)
 	form.SetModal()
 	form.Show()
+}
+
+func AboutYear(year int) string {
+	y := time.Now().Year()
+	if y == year {
+		return strconv.Itoa(year)
+	} else {
+		return fmt.Sprintf("%d-%d", year, y-2000)
+	}
 }
 
 func makeAboutForm(appName, descHtml, iconSvg string,

@@ -3,7 +3,7 @@
 
 //go:build !windows
 
-package main
+package gui
 
 import (
 	"fmt"
@@ -11,20 +11,12 @@ import (
 	"runtime"
 	"strings"
 	"syscall"
-	"time"
 
 	"github.com/mark-summerfield/gviz/u"
 	"github.com/pwiecz/go-fltk"
 )
 
-func aboutHtml() string {
-	var year string
-	y := time.Now().Year()
-	if y == 2023 {
-		year = fmt.Sprintf("%d", y)
-	} else {
-		year = fmt.Sprintf("2023-%d", y-2000)
-	}
+func DescHtml(appName, version, desc, url, author, year string) string {
 	distro := ""
 	if out, err := exec.Command("lsb_release",
 		"-ds").Output(); err == nil {
@@ -40,13 +32,10 @@ func aboutHtml() string {
 	}
 	return fmt.Sprintf(
 		`<center><h3><font color=navy>%s v%s</font></h3></center>
-<p><center><font color=navy>An application for editing and viewing GraphViz diagrams.</font></center></p>
+<p><center><font color=navy>%s</font></center></p>
+<p><center><a href="%s">%s</a></center></p>
 <p><center>
-<a
-href="https://github.com/mark-summerfield/gviz">https://github.com/mark-summerfield/gviz</a>
-</center></p>
-<p><center>
-<font color=green>Copyright © %s Mark Summerfield.<br>
+<font color=green>Copyright © %s %s.<br>
 All rights reserved.<br>
 License: GPLv3.
 </center></p>
@@ -54,6 +43,7 @@ License: GPLv3.
 <center><font color=#222>go-fltk %s • FLTK
 %s</font></center><br>
 <center><font color=#222>%s</font></center></p>`,
-		appName, Version, year, runtime.Version(), runtime.GOOS,
-		runtime.GOARCH, fltk.GoVersion(), fltk.Version(), distro)
+		appName, version, desc, url, url, author, year, runtime.Version(),
+		runtime.GOOS, runtime.GOARCH, fltk.GoVersion(), fltk.Version(),
+		distro)
 }
