@@ -28,6 +28,15 @@ var openSvg string
 //go:embed images/save.svg
 var saveSvg string
 
+//go:embed images/edit-copy.svg
+var copySvg string
+
+//go:embed images/edit-cut.svg
+var cutSvg string
+
+//go:embed images/edit-paste.svg
+var pasteSvg string
+
 //go:embed images/zoom-in.svg
 var zoomInSvg string
 
