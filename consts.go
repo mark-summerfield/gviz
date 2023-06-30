@@ -11,6 +11,9 @@ var Version string
 const (
 	appName     = "Gviz"
 	domain      = "qtrac.eu"
+	description = "Edit, view, and export GraphViz diagrams."
+	url         = "https://github.com/mark-summerfield/gviz"
+	author      = "Mark Summerfield"
 	linoWidth   = 32
 	defaultText = "graph {\n    Gviz [shape=tab]\n}"
 	tinyTimeout = 0.005

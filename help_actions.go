@@ -8,9 +8,7 @@ import (
 )
 
 func (me *App) onHelpAbout() {
-	descHtml := gui.DescHtml(appName, Version,
-		"An application for editing and viewing GraphViz diagrams.", // desc
-		"https://github.com/mark-summerfield/gviz",                  // url
-		"Mark Summerfield", gui.AboutYear(2023)) // author, year
+	descHtml := gui.DescHtml(appName, Version, description, url, author,
+		gui.AboutYear(2023))
 	gui.ShowAbout(appName, descHtml, iconSvg, me.config.TextSize-1)
 }

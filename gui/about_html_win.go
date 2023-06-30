@@ -26,8 +26,8 @@ func DescHtml(appName, version, desc, url, author, year string) string {
 All rights reserved.<br>
 License: GPLv3.
 </center></p>
-<p><center><font color=#222>%s • %s/%s</font></center><br>
-<center><font color=#222>go-fltk %s • FLTK
+<p><center><font color=#222>%s %s/%s</font></center><br>
+<center><font color=#222>go-fltk %s FLTK
 %s</font></center><br>
 <center><font color=#222>%s</font></center></p>`,
 		appName, version, desc, url, url, author, year, runtime.Version(),
