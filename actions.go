@@ -7,8 +7,11 @@ import (
 	"bytes"
 	"fmt"
 	"math"
+	"strconv"
+	"strings"
 
 	"github.com/goccy/go-graphviz"
+	"github.com/goccy/go-graphviz/cgraph"
 	"github.com/mark-summerfield/gong"
 	"github.com/mark-summerfield/gviz/gui"
 	"github.com/mark-summerfield/gviz/u"
@@ -54,11 +57,29 @@ func (me *App) onTextChanged(changed bool) {
 		me.onError(err)
 		return
 	}
+	me.updateNextNodeId(graph)
 	png, err := fltk.NewPngImageFromData(raw.Bytes())
 	if err != nil {
 		me.onError(err)
 		return
 	}
+	me.updateView(png)
+}
+
+func (me *App) updateNextNodeId(graph *cgraph.Graph) {
+	node := graph.FirstNode()
+	for node != nil {
+		name := node.Name()
+		if strings.HasPrefix(name, "n") {
+			if n, err := strconv.Atoi(name[1:]); err == nil {
+				me.nextNodeId = u.Max(n+1, me.nextNodeId)
+			}
+		}
+		node = graph.NextNode(node)
+	}
+}
+
+func (me *App) updateView(png *fltk.PngImage) {
 	me.clearView()
 	if !gong.IsRealClose(1.0, me.zoomLevel) {
 		w := int(math.Round(float64(png.W()) * me.zoomLevel))

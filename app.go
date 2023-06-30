@@ -23,10 +23,11 @@ type App struct {
 	scroll          *fltk.Scroll
 	view            *fltk.Box
 	zoomLevel       float64
+	nextNodeId      int
 }
 
 func newApp(config *Config) *App {
-	app := &App{Window: nil, config: config, zoomLevel: 1}
+	app := &App{Window: nil, config: config, zoomLevel: 1, nextNodeId: 1}
 	app.makeMainWindow()
 	app.makeWidgets()
 	app.Window.End()

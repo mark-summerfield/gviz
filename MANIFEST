@@ -1,8 +1,9 @@
 # TODO
-# - &Edit→Copy Cut Paste Insert ...
+# - &Insert ... shapes each with node id of nextNodeId
 # - editing support specifically for graphviz format
-# - completion
+# - completion?
 # - File→Open &Recent...
+# See: http://magjac.com/graphviz-visual-editor/
 
 gviz.go
 app.go
