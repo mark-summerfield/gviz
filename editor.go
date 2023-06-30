@@ -15,6 +15,8 @@ func (me *App) initializeEditor() {
 	me.buffer.SetText(defaultText)
 	me.editor.SetBuffer(me.buffer)
 	me.editor.SetTextFont(fltk.COURIER)
+	me.editor.SetTextSize(me.config.TextSize)
+	me.editor.SetLinenumberSize(me.config.TextSize - 1)
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
 	me.highlightBuffer = fltk.NewTextBuffer()
 	me.makeTextStyles()

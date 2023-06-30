@@ -75,7 +75,8 @@ func makeTextSizeRow(app *App) *fltk.Flex {
 	sizeLabel := gui.MakeAccelLabel(gui.LabelWidth, gui.ButtonHeight,
 		"&Text Size")
 	spinner := fltk.NewSpinner(0, 0, gui.LabelWidth, gui.ButtonHeight)
-	spinner.SetTooltip("Set the size of the editor's text")
+	spinner.SetTooltip("Set the size of the editor's text; you may need " +
+		"to quit and rerun for this to take effect")
 	spinner.SetType(fltk.SPINNER_INT_INPUT)
 	spinner.SetMinimum(10)
 	spinner.SetMaximum(20)
@@ -84,6 +85,7 @@ func makeTextSizeRow(app *App) *fltk.Flex {
 		size := int(spinner.Value())
 		app.config.TextSize = size
 		app.editor.SetTextSize(size)
+		app.editor.SetLinenumberSize(size - 1)
 		fltk.AddTimeout(tinyTimeout, func() { app.editor.Redraw() })
 	})
 	sizeLabel.SetCallback(func() { spinner.TakeFocus() })

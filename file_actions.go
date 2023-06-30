@@ -83,7 +83,8 @@ func (me *App) onFileExport() {
 func (me *App) onFileQuit() {
 	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
 		gui.YesNo("Unsaved Changes — "+appName, "Save unsaved changes?",
-			iconSvg) == gui.YES && !me.maybeSave(false) {
+			iconSvg, me.config.TextSize) == gui.YES &&
+		!me.maybeSave(false) {
 		return
 	}
 	me.config.X = me.Window.X()

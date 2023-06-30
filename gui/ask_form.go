@@ -15,17 +15,19 @@ const (
 	NO       = 2
 )
 
-func YesNo(title, bodyText, iconSvg string) int {
-	return ask(title, bodyText, iconSvg, "&Yes", "&No")
+func YesNo(title, bodyText, iconSvg string, textSize int) int {
+	return ask(title, bodyText, iconSvg, textSize, "&Yes", "&No")
 }
 
-// func OkCancel(title, bodyText, iconSvg string) int {
-// 	return ask(title, bodyText, iconSvg, "&OK", "&Cancel")
+// func OkCancel(title, bodyText, iconSvg string, textSize int) int {
+// 	return ask(title, bodyText, iconSvg, textSize, "&OK", "&Cancel")
 // }
 
-func ask(title, bodyText, iconSvg, text1, text2 string) int {
+func ask(title, bodyText, iconSvg string, textSize int, text1,
+	text2 string) int {
 	result := CANCELED
-	form := makeAskForm(title, bodyText, iconSvg, text1, text2, &result)
+	form := makeAskForm(title, bodyText, iconSvg, textSize, text1, text2,
+		&result)
 	form.SetModal()
 	form.Show()
 	for form.IsShown() {
@@ -34,8 +36,8 @@ func ask(title, bodyText, iconSvg, text1, text2 string) int {
 	return result
 }
 
-func makeAskForm(title, bodyText, iconSvg, text1, text2 string,
-	result *int) *fltk.Window {
+func makeAskForm(title, bodyText, iconSvg string, textSize int, text1,
+	text2 string, result *int) *fltk.Window {
 	const (
 		width  = 320
 		height = 140
@@ -48,6 +50,7 @@ func makeAskForm(title, bodyText, iconSvg, text1, text2 string,
 	bodyBox.SetImage(ImageForSvgText(questionSvg, 64))
 	bodyBox.SetAlign(fltk.ALIGN_IMAGE_NEXT_TO_TEXT)
 	bodyBox.SetLabel(bodyText)
+	bodyBox.SetLabelSize(textSize)
 	y := height - ButtonHeight
 	hbox := MakeHBox(0, y, width, ButtonHeight, Pad)
 	spacerWidth := (width - (2 * ButtonWidth)) / 2
