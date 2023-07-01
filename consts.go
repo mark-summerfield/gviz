@@ -37,6 +37,12 @@ var cutSvg string
 //go:embed images/edit-paste.svg
 var pasteSvg string
 
+//go:embed images/edit-redo.svg
+var redoSvg string
+
+//go:embed images/edit-undo.svg
+var undoSvg string
+
 //go:embed images/zoom-in.svg
 var zoomInSvg string
 

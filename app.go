@@ -90,6 +90,10 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
+	menuBar.AddEx("Edit/&Undo", fltk.CTRL+'z', func() { me.editor.Undo() },
+		fltk.MENU_VALUE)
+	menuBar.AddEx("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z',
+		func() { me.editor.Redo() }, fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("Edit/&Copy", fltk.CTRL+'c', func() { me.editor.Copy() },
 		fltk.MENU_VALUE)
 	menuBar.AddEx("Edit/Cu&t", fltk.CTRL+'x', func() { me.editor.Cut() },
@@ -116,6 +120,14 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 	saveButton.SetTooltip("Save")
 	sep := fltk.NewBox(fltk.THIN_DOWN_BOX, 0, y, gui.Pad, gui.ButtonHeight)
 	hbox.Fixed(sep, gui.Pad)
+	undoButton := gui.MakeToolbutton(undoSvg)
+	undoButton.SetCallback(func() { me.editor.Undo() })
+	undoButton.SetTooltip("Undo")
+	redoButton := gui.MakeToolbutton(redoSvg)
+	redoButton.SetCallback(func() { me.editor.Redo() })
+	redoButton.SetTooltip("Redo")
+	sep = fltk.NewBox(fltk.THIN_DOWN_BOX, 0, y, gui.Pad, gui.ButtonHeight)
+	hbox.Fixed(sep, gui.Pad)
 	copyButton := gui.MakeToolbutton(copySvg)
 	copyButton.SetCallback(func() { me.editor.Copy() })
 	copyButton.SetTooltip("Copy")
@@ -137,8 +149,8 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 	zoomOutButton.SetCallback(func() { me.onViewZoomOut() })
 	zoomOutButton.SetTooltip("Zoom Out")
 	for _, button := range []*fltk.Button{openButton, saveButton,
-		copyButton, cutButton, pasteButton, zoomInButton, zoomRestoreButton,
-		zoomOutButton} {
+		undoButton, redoButton, copyButton, cutButton, pasteButton,
+		zoomInButton, zoomRestoreButton, zoomOutButton} {
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()
