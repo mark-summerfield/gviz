@@ -53,7 +53,8 @@ func (me *App) onTextChanged(changed bool) {
 			i := strings.LastIndexByte(text[:j-1], '\n')
 			if i > -1 {
 				if prevLine := text[i:j]; prevLine != "" {
-					// TODO look for ws
+					// TODO look for ws & if found replace text[i]'s \n with
+					// same as first found & add rest
 					// for k := i; k < j;
 				}
 			}
