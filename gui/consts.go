@@ -10,6 +10,7 @@ const (
 	ToolbuttonIconSize = 24
 	LabelWidth         = 60
 	ButtonWidth        = LabelWidth + (LabelWidth / 2)
+	ReturnButtonWidth  = ButtonWidth + Pad
 	Pad                = 5
 	Border             = 8
 )

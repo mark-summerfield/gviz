@@ -41,6 +41,11 @@ func MakeAccelLabel(width, height int, label string) *fltk.Button {
 	return button
 }
 
+func MakeSep(y int, hbox *fltk.Flex) {
+	sep := fltk.NewBox(fltk.THIN_DOWN_BOX, 0, y, Pad, ButtonHeight)
+	hbox.Fixed(sep, Pad)
+}
+
 func MakeHBox(x, y, width, height, spacing int) *fltk.Flex {
 	return makeVHBox(fltk.ROW, x, y, width, height, spacing)
 }
