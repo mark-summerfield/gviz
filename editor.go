@@ -105,16 +105,14 @@ func (me *App) onEditorBackspace() bool {
 			for ; n > 0 && k > 0 && raw[k] == ' '; k-- {
 				n--
 			}
-			if k < i && n == 0 {
-				newRaw := raw[:k]
-				newRaw = append(newRaw, raw[j:]...)
-				me.buffer.SetText(string(newRaw))
-				me.editor.SetInsertPosition(k)
+			if n == 0 {
+				me.buffer.Select(k, j+1)
+				me.buffer.ReplaceSelection("")
 				me.dirty = true
 				return true
 			}
 		} else if i > j {
-			return false
+			break
 		}
 	}
 	return false

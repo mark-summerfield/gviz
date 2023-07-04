@@ -1,4 +1,6 @@
 # TODO
+# - Ctrl+Del (delete word forward)
+#   Ctrl+Backspace (delete word backward)
 # - &Insert ... shapes each with node id of nextNodeId
 #   Use me.editor.Insert("new text")
 # - editing support specifically for graphviz format
