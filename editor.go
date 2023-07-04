@@ -5,6 +5,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"regexp"
 
 	"github.com/pwiecz/go-fltk"
@@ -18,6 +19,7 @@ func (me *App) initializeEditor() {
 	me.editor.SetTextSize(me.config.TextSize)
 	me.editor.SetLinenumberSize(me.config.TextSize - 1)
 	me.editor.SetCallbackCondition(fltk.WhenEnterKeyChanged)
+	me.editor.SetEventHandler(me.onEditorEvent)
 	me.highlightBuffer = fltk.NewTextBuffer()
 	me.makeTextStyles()
 	me.editor.SetHighlightData(me.highlightBuffer, me.textStyles)
@@ -75,3 +77,39 @@ func maybeHighlight(highlight []byte, style byte, j int, indexes []int) {
 		highlight[k] = style
 	}
 }
+
+func (me *App) onEditorEvent(event fltk.Event) bool {
+	key := fltk.EventKey()
+	switch fltk.EventType() {
+	case fltk.KEY:
+		switch key {
+		case fltk.BACKSPACE:
+			fmt.Println("onEditorEvent BS") // TODO if on space, unindent
+		case fltk.TAB:
+			fmt.Println("onEditorEvent TAB") // TODO completion?
+		case fltk.ENTER_KEY:
+			fmt.Println("onEditorEvent NL") // TODO add prev indent if any
+		default:
+			fmt.Println("onEditorEvent", key)
+			return false
+		}
+	}
+	return false
+}
+
+/* // TODO on '\n' above
+if changed {
+	j := me.editor.GetInsertPosition()
+	if j > -1 && text[j] == '\n' {
+		i := strings.LastIndexByte(text[:j-1], '\n')
+		if i > -1 {
+			if prevLine := text[i:j]; prevLine != "" {
+				// TODO look for ws & if found replace text[i]'s \n with
+				// same as first found & add rest
+				// for k := i; k < j;
+			}
+		}
+	}
+}
+
+*/

@@ -7,7 +7,7 @@
 
 gviz.go
 app.go
-editor.go
+editor.go # TODO
 actions.go
 file_actions.go
 view_actions.go

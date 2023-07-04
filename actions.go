@@ -45,22 +45,6 @@ func (me *App) onTextChanged(changed bool) {
 		me.onError(fmt.Errorf("Need image data, e.g.\n%s", defaultText))
 		return
 	}
-
-	// TODO refactor
-	if changed {
-		j := me.editor.GetInsertPosition()
-		if j > -1 && text[j] == '\n' {
-			i := strings.LastIndexByte(text[:j-1], '\n')
-			if i > -1 {
-				if prevLine := text[i:j]; prevLine != "" {
-					// TODO look for ws & if found replace text[i]'s \n with
-					// same as first found & add rest
-					// for k := i; k < j;
-				}
-			}
-		}
-	}
-
 	me.applySyntaxHighlighting()
 	graph, err := graphviz.ParseBytes([]byte(text))
 	if err != nil {
