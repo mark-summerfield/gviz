@@ -5,8 +5,10 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"regexp"
 
+	"github.com/mark-summerfield/gong"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -125,7 +127,10 @@ func (me *App) onEditorEdit(key int) bool {
 		return false
 	case fltk.ENTER_KEY: // TODO
 		n := 1
+		os.WriteFile("/tmp/1", raw, gong.ModeUserRW)
 		newRaw := raw[:j]
+		newRaw = append(newRaw, 'X')
+		newRaw = append(newRaw, '\n')
 		if i := bytes.LastIndexByte(raw[:j-1], '\n'); i > -1 {
 			prev := raw[i+1 : j]
 			for k := 0; k < len(prev); k++ {
@@ -137,8 +142,9 @@ func (me *App) onEditorEdit(key int) bool {
 				}
 			}
 		}
-		newRaw = append(newRaw, '\n')
+		newRaw = append(newRaw, 'Y')
 		newRaw = append(newRaw, raw[j:]...)
+		os.WriteFile("/tmp/2", raw, gong.ModeUserRW)
 		me.buffer.SetText(string(newRaw))
 		me.editor.SetInsertPosition(j + n)
 		me.dirty = true
