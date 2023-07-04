@@ -97,23 +97,16 @@ func (me *App) onEditorBackspace() bool {
 		return false
 	}
 	raw := []byte(text)
-	j--
-	for i, r := range text {
-		if i == j && r == ' ' {
-			k := i
-			n := 3
-			for ; n > 0 && k > 0 && raw[k] == ' '; k-- {
-				n--
-			}
-			if n == 0 {
-				me.buffer.Select(k, j+1)
-				me.buffer.ReplaceSelection("")
-				me.dirty = true
-				return true
-			}
-		} else if i > j {
-			break
-		}
+	n := 3
+	i := j - 1
+	for ; n > 0 && i > 0 && raw[i] == ' '; i-- {
+		n--
+	}
+	if n == 0 {
+		me.buffer.Select(i, j)
+		me.buffer.ReplaceSelection("")
+		me.dirty = true
+		return true
 	}
 	return false
 }
@@ -130,8 +123,9 @@ func (me *App) onEditorEnter() bool {
 	if i := bytes.LastIndexByte(raw[:j-1], '\n'); i > -1 {
 		prev := raw[i+1 : j]
 		for k := 0; k < len(prev); k++ {
-			if prev[k] == ' ' || prev[k] == '\t' {
-				insert += string(prev[k])
+			c := prev[k]
+			if c == ' ' || c == '\t' {
+				insert += string(c)
 			} else {
 				break
 			}
