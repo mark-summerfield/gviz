@@ -5,10 +5,8 @@ package main
 
 import (
 	"bytes"
-	"os"
 	"regexp"
 
-	"github.com/mark-summerfield/gong"
 	"github.com/pwiecz/go-fltk"
 )
 
@@ -80,74 +78,70 @@ func maybeHighlight(highlight []byte, style byte, j int, indexes []int) {
 }
 
 func (me *App) onEditorEvent(event fltk.Event) bool {
-	key := fltk.EventKey()
 	switch fltk.EventType() {
 	case fltk.KEY:
+		key := fltk.EventKey()
 		switch key {
 		case fltk.BACKSPACE:
-			fallthrough
+			return me.onEditorBackspace()
 		case fltk.ENTER_KEY:
-			return me.onEditorEdit(key)
-		default:
-			return false
+			return me.onEditorEnter()
 		}
 	}
 	return false
 }
 
-func (me *App) onEditorEdit(key int) bool {
+// If backspace on 4+ spaces, unindent by 4 spaces.
+func (me *App) onEditorBackspace() bool {
 	j := me.editor.GetInsertPosition()
 	text := me.buffer.Text()
 	if j < 0 || text == "" {
 		return false
 	}
 	raw := []byte(text)
-	switch key {
-	case fltk.BACKSPACE:
-		j--
-		for i, r := range text {
-			if i == j && r == ' ' {
-				k := i
-				n := 3
-				for ; n > 0 && k > 0 && raw[k] == ' '; k-- {
-					n--
-				}
-				if k < i && n == 0 { // unindent
-					newRaw := raw[:k]
-					newRaw = append(newRaw, raw[j:]...)
-					me.buffer.SetText(string(newRaw))
-					me.editor.SetInsertPosition(k)
-					me.dirty = true
-					return true
-				}
-			} else if i > j {
-				return false
+	j--
+	for i, r := range text {
+		if i == j && r == ' ' {
+			k := i
+			n := 3
+			for ; n > 0 && k > 0 && raw[k] == ' '; k-- {
+				n--
 			}
-		}
-		return false
-	case fltk.ENTER_KEY: // TODO
-		n := 1
-		os.WriteFile("/tmp/1", raw, gong.ModeUserRW)
-		newRaw := raw[:j]
-		newRaw = append(newRaw, 'X')
-		newRaw = append(newRaw, '\n')
-		if i := bytes.LastIndexByte(raw[:j-1], '\n'); i > -1 {
-			prev := raw[i+1 : j]
-			for k := 0; k < len(prev); k++ {
-				if prev[k] == ' ' || prev[k] == '\t' {
-					newRaw = append(newRaw, prev[k])
-					n++
-				} else {
-					break
-				}
+			if k < i && n == 0 {
+				newRaw := raw[:k]
+				newRaw = append(newRaw, raw[j:]...)
+				me.buffer.SetText(string(newRaw))
+				me.editor.SetInsertPosition(k)
+				me.dirty = true
+				return true
 			}
+		} else if i > j {
+			return false
 		}
-		newRaw = append(newRaw, 'Y')
-		newRaw = append(newRaw, raw[j:]...)
-		os.WriteFile("/tmp/2", raw, gong.ModeUserRW)
-		me.buffer.SetText(string(newRaw))
-		me.editor.SetInsertPosition(j + n)
-		me.dirty = true
 	}
+	return false
+}
+
+// Copy previous line's leading indentation if any.
+func (me *App) onEditorEnter() bool {
+	j := me.editor.GetInsertPosition()
+	text := me.buffer.Text()
+	if j < 0 || text == "" {
+		return false
+	}
+	raw := []byte(text)
+	insert := "\n"
+	if i := bytes.LastIndexByte(raw[:j-1], '\n'); i > -1 {
+		prev := raw[i+1 : j]
+		for k := 0; k < len(prev); k++ {
+			if prev[k] == ' ' || prev[k] == '\t' {
+				insert += string(prev[k])
+			} else {
+				break
+			}
+		}
+	}
+	me.editor.InsertText(insert)
+	me.dirty = true
 	return true
 }
