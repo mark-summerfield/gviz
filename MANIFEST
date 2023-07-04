@@ -1,4 +1,5 @@
 # TODO
+# - smartindent
 # - &Insert ... shapes each with node id of nextNodeId
 # - editing support specifically for graphviz format
 # - completion?

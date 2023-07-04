@@ -83,13 +83,9 @@ func (me *App) onEditorEvent(event fltk.Event) bool {
 	case fltk.KEY:
 		switch key {
 		case fltk.BACKSPACE:
-			return false // TODO
-			//fallthrough
-		case fltk.TAB:
 			fallthrough
 		case fltk.ENTER_KEY:
-			me.onEditorEdit(key)
-			return true
+			return me.onEditorEdit(key)
 		default:
 			return false
 		}
@@ -97,61 +93,55 @@ func (me *App) onEditorEvent(event fltk.Event) bool {
 	return false
 }
 
-func (me *App) onEditorEdit(key int) {
+func (me *App) onEditorEdit(key int) bool {
 	j := me.editor.GetInsertPosition()
 	text := me.buffer.Text()
+	if j < 0 || text == "" {
+		return false
+	}
 	raw := []byte(text)
 	switch key {
 	case fltk.BACKSPACE:
-		/* // TODO find & delete rune at j-1 but note j is byte count but we
-			//  have runes...
-		runes := []rune(text)
-		if len(runes) > 0 {
-
-		}
-		r, size := utf8.DecodeLastRuneInString(text)
-		if size > 0 {
-			if r == ' ' || r == '\t' {
-				fmt.Println("onEditorEdit BS over WS") // maybe unindent
-			} // else
-			if r != utf8.RuneError {
-				me.buffer.SetText(string(raw[:len(raw)-size]))
-				me.editor.SetInsertPosition(j - size)
-				me.dirty = true
+		j--
+		for i, r := range text {
+			if i == j && r == ' ' {
+				k := i
+				n := 3
+				for ; n > 0 && k > 0 && raw[k] == ' '; k-- {
+					n--
+				}
+				if k < i && n == 0 { // unindent
+					newRaw := raw[:k]
+					newRaw = append(newRaw, raw[j:]...)
+					me.buffer.SetText(string(newRaw))
+					me.editor.SetInsertPosition(k)
+					me.dirty = true
+					return true
+				}
+			} else if i > j {
+				return false
 			}
 		}
-		*/
-	case fltk.TAB:
+		return false
+	case fltk.ENTER_KEY: // TODO
+		n := 1
 		newRaw := raw[:j]
-		newRaw = append(newRaw, '\t')
-		newRaw = append(newRaw, raw[j:]...)
-		me.buffer.SetText(string(newRaw))
-		me.editor.SetInsertPosition(j + 1)
-		me.dirty = true
-	case fltk.ENTER_KEY:
-		newRaw := raw[:j]
-		// TODO add copy of prev line's WS (if any)
+		if i := bytes.LastIndexByte(raw[:j-1], '\n'); i > -1 {
+			prev := raw[i+1 : j]
+			for k := 0; k < len(prev); k++ {
+				if prev[k] == ' ' || prev[k] == '\t' {
+					newRaw = append(newRaw, prev[k])
+					n++
+				} else {
+					break
+				}
+			}
+		}
 		newRaw = append(newRaw, '\n')
 		newRaw = append(newRaw, raw[j:]...)
 		me.buffer.SetText(string(newRaw))
-		me.editor.SetInsertPosition(j + 1)
+		me.editor.SetInsertPosition(j + n)
 		me.dirty = true
 	}
+	return true
 }
-
-/* // TODO on '\n' above
-if changed {
-	j := me.editor.GetInsertPosition()
-	if j > -1 && text[j] == '\n' {
-		i := strings.LastIndexByte(text[:j-1], '\n')
-		if i > -1 {
-			if prevLine := text[i:j]; prevLine != "" {
-				// TODO look for ws & if found replace text[i]'s \n with
-				// same as first found & add rest
-				// for k := i; k < j;
-			}
-		}
-	}
-}
-
-*/
