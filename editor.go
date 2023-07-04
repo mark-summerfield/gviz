@@ -5,7 +5,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"regexp"
 
 	"github.com/pwiecz/go-fltk"
@@ -84,17 +83,60 @@ func (me *App) onEditorEvent(event fltk.Event) bool {
 	case fltk.KEY:
 		switch key {
 		case fltk.BACKSPACE:
-			fmt.Println("onEditorEvent BS") // TODO if on space, unindent
+			return false // TODO
+			//fallthrough
 		case fltk.TAB:
-			fmt.Println("onEditorEvent TAB") // TODO completion?
+			fallthrough
 		case fltk.ENTER_KEY:
-			fmt.Println("onEditorEvent NL") // TODO add prev indent if any
+			me.onEditorEdit(key)
+			return true
 		default:
-			fmt.Println("onEditorEvent", key)
 			return false
 		}
 	}
 	return false
+}
+
+func (me *App) onEditorEdit(key int) {
+	j := me.editor.GetInsertPosition()
+	text := me.buffer.Text()
+	raw := []byte(text)
+	switch key {
+	case fltk.BACKSPACE:
+		/* // TODO find & delete rune at j-1 but note j is byte count but we
+			//  have runes...
+		runes := []rune(text)
+		if len(runes) > 0 {
+
+		}
+		r, size := utf8.DecodeLastRuneInString(text)
+		if size > 0 {
+			if r == ' ' || r == '\t' {
+				fmt.Println("onEditorEdit BS over WS") // maybe unindent
+			} // else
+			if r != utf8.RuneError {
+				me.buffer.SetText(string(raw[:len(raw)-size]))
+				me.editor.SetInsertPosition(j - size)
+				me.dirty = true
+			}
+		}
+		*/
+	case fltk.TAB:
+		newRaw := raw[:j]
+		newRaw = append(newRaw, '\t')
+		newRaw = append(newRaw, raw[j:]...)
+		me.buffer.SetText(string(newRaw))
+		me.editor.SetInsertPosition(j + 1)
+		me.dirty = true
+	case fltk.ENTER_KEY:
+		newRaw := raw[:j]
+		// TODO add copy of prev line's WS (if any)
+		newRaw = append(newRaw, '\n')
+		newRaw = append(newRaw, raw[j:]...)
+		me.buffer.SetText(string(newRaw))
+		me.editor.SetInsertPosition(j + 1)
+		me.dirty = true
+	}
 }
 
 /* // TODO on '\n' above
