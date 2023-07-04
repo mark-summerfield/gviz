@@ -78,10 +78,8 @@ func maybeHighlight(highlight []byte, style byte, j int, indexes []int) {
 }
 
 func (me *App) onEditorEvent(event fltk.Event) bool {
-	switch fltk.EventType() {
-	case fltk.KEY:
-		key := fltk.EventKey()
-		switch key {
+	if fltk.EventType() == fltk.KEY {
+		switch fltk.EventKey() {
 		case fltk.BACKSPACE:
 			return me.onEditorBackspace()
 		case fltk.ENTER_KEY:
