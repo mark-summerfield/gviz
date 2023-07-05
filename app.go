@@ -107,6 +107,7 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.Add("View/Zoom &Out", me.onViewZoomOut)
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
+	menuBar.AddEx("Help/&Help", fltk.F1, me.onHelpHelp, fltk.MENU_VALUE)
 	vbox.Fixed(menuBar, gui.ButtonHeight)
 }
 

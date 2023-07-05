@@ -19,38 +19,41 @@ const (
 	tinyTimeout = 0.005
 )
 
-//go:embed images/icon.svg
+//go:embed data/icon.svg
 var iconSvg string
 
-//go:embed images/open.svg
+//go:embed data/open.svg
 var openSvg string
 
-//go:embed images/save.svg
+//go:embed data/save.svg
 var saveSvg string
 
-//go:embed images/edit-copy.svg
+//go:embed data/edit-copy.svg
 var copySvg string
 
-//go:embed images/edit-cut.svg
+//go:embed data/edit-cut.svg
 var cutSvg string
 
-//go:embed images/edit-paste.svg
+//go:embed data/edit-paste.svg
 var pasteSvg string
 
-//go:embed images/edit-redo.svg
+//go:embed data/edit-redo.svg
 var redoSvg string
 
-//go:embed images/edit-undo.svg
+//go:embed data/edit-undo.svg
 var undoSvg string
 
-//go:embed images/zoom-in.svg
+//go:embed data/zoom-in.svg
 var zoomInSvg string
 
-//go:embed images/zoom-original.svg
+//go:embed data/zoom-original.svg
 var zoomRestoreSvg string
 
-//go:embed images/zoom-out.svg
+//go:embed data/zoom-out.svg
 var zoomOutSvg string
 
-//go:embed images/dummy.png
+//go:embed data/dummy.png
 var dummyPng []byte
+
+//go:embed data/help.html
+var helpHtml string

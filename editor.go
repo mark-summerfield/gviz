@@ -6,6 +6,7 @@ package main
 import (
 	"bytes"
 	"regexp"
+	"unicode"
 
 	"github.com/pwiecz/go-fltk"
 )
@@ -79,34 +80,15 @@ func maybeHighlight(highlight []byte, style byte, j int, indexes []int) {
 
 func (me *App) onEditorEvent(event fltk.Event) bool {
 	if fltk.EventType() == fltk.KEY {
+		ctrl := (fltk.EventState() & fltk.CTRL) != 0
 		switch fltk.EventKey() {
-		case fltk.BACKSPACE:
-			return me.onEditorBackspace()
 		case fltk.ENTER_KEY:
 			return me.onEditorEnter()
+		case fltk.BACKSPACE:
+			return me.onEditorBackspace(ctrl)
+		case fltk.DELETE:
+			return me.onEditorDelete(ctrl)
 		}
-	}
-	return false
-}
-
-// If backspace on 4+ spaces, unindent by 4 spaces.
-func (me *App) onEditorBackspace() bool {
-	j := me.editor.GetInsertPosition()
-	text := me.buffer.Text()
-	if j < 0 || text == "" {
-		return false
-	}
-	raw := []byte(text)
-	n := 3
-	i := j - 1
-	for ; n > 0 && i > 0 && raw[i] == ' '; i-- {
-		n--
-	}
-	if n == 0 {
-		me.buffer.Select(i, j)
-		me.buffer.ReplaceSelection("")
-		me.dirty = true
-		return true
 	}
 	return false
 }
@@ -134,4 +116,60 @@ func (me *App) onEditorEnter() bool {
 	me.editor.InsertText(insert)
 	me.dirty = true
 	return true
+}
+
+// If backspace on 4+ spaces, unindent by 4 spaces; otherwise,
+// if Ctrl+Backspace do delete prev word.
+func (me *App) onEditorBackspace(ctrl bool) bool {
+	j := me.editor.GetInsertPosition()
+	text := me.buffer.Text()
+	if j < 0 || text == "" {
+		return false
+	}
+	raw := []byte(text)
+	n := 3
+	i := j - 1
+	for ; n > 0 && i > 0 && raw[i] == ' '; i-- {
+		n--
+	}
+	if n == 0 {
+		me.buffer.Select(i, j)
+		me.buffer.ReplaceSelection("")
+		me.dirty = true
+		return true
+	}
+	if i := bytes.LastIndexFunc(raw[:j-1], func(r rune) bool {
+		return r != '_' && (unicode.IsSpace(r) || unicode.IsPunct(r) ||
+			unicode.IsSymbol(r))
+	}); i > -1 {
+		me.buffer.Select(i+1, j)
+		me.buffer.ReplaceSelection("")
+		me.dirty = true
+		return true
+	}
+	return false
+}
+
+// if Ctrl+Delete do delete next word.
+func (me *App) onEditorDelete(ctrl bool) bool {
+	i := me.editor.GetInsertPosition()
+	text := me.buffer.Text()
+	if i < 0 || text == "" {
+		return false
+	}
+	raw := []byte(text)
+	if j := bytes.IndexFunc(raw[i:], func(r rune) bool {
+		return r != '_' && (unicode.IsSpace(r) || unicode.IsPunct(r) ||
+			unicode.IsSymbol(r))
+	}); j > -1 {
+		j += i
+		if j <= i {
+			return false
+		}
+		me.buffer.Select(i, j)
+		me.buffer.ReplaceSelection("")
+		me.dirty = true
+		return true
+	}
+	return false
 }

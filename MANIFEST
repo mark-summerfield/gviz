@@ -1,6 +1,4 @@
 # TODO
-# - Ctrl+Del (delete word forward)
-#   Ctrl+Backspace (delete word backward)
 # - &Insert... shapes each with node id of nextNodeId
 #   Use me.editor.InsertText("new text")
 #   + toolbox in hideable/showable side window
@@ -22,10 +20,13 @@ consts.go
 u/util.go
 gui/util.go
 gui/ask_form.go
+gui/info_form.go
 gui/about_form.go
 gui/about_html_linux.go
 gui/about_html_win.go
 gui/consts.go
+
+data/help.html
 
 README.md
 

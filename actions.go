@@ -27,8 +27,9 @@ func (me *App) onEvent(event fltk.Event) bool {
 		}
 	case fltk.KEY:
 		switch key {
-		case fltk.HELP, fltk.F1:
-			return true // ignore
+		case fltk.HELP:
+			me.onHelpHelp()
+			return true
 		}
 	case fltk.CLOSE:
 		me.onFileQuit()
