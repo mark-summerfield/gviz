@@ -8,7 +8,12 @@ import (
 )
 
 func (me *App) onInsertShape(shape string) {
-	me.editor.InsertText(fmt.Sprintf("n%d [shape=%s]", me.nextNodeId,
-		shape))
+	text := ""
+	if shape == "polygon" {
+		text = fmt.Sprintf("n%d [shape=%s sides=5]", me.nextNodeId, shape)
+	} else {
+		text = fmt.Sprintf("n%d [shape=%s]", me.nextNodeId, shape)
+	}
+	me.editor.InsertText(text)
 	me.onTextChanged(true)
 }

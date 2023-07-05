@@ -103,7 +103,14 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("Edit/&Paste", fltk.CTRL+'v', me.editor.Paste,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
+	// TODO node & edge attributes
+	//menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Insert/&Box", func() { me.onInsertShape(boxShape) })
+	menuBar.Add("Insert/&Circle", func() { me.onInsertShape(circleShape) })
+	menuBar.Add("Insert/&Oval (ellipse)",
+		func() { me.onInsertShape(ovalShape) })
+	menuBar.Add("Insert/&Polygon",
+		func() { me.onInsertShape(polygonShape) })
 	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
 	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
 	menuBar.Add("View/Zoom &Restore", me.onViewZoomRestore)
@@ -163,7 +170,17 @@ func (me *App) makeShapeToolBar(vbox *fltk.Flex, y, width int) {
 	boxButton := gui.MakeToolbutton(boxSvg)
 	boxButton.SetCallback(func() { me.onInsertShape(boxShape) })
 	boxButton.SetTooltip("Insert Box")
-	for _, button := range []*fltk.Button{boxButton} {
+	circleButton := gui.MakeToolbutton(circleSvg)
+	circleButton.SetCallback(func() { me.onInsertShape(circleShape) })
+	circleButton.SetTooltip("Insert Circle")
+	ovalButton := gui.MakeToolbutton(ovalSvg)
+	ovalButton.SetCallback(func() { me.onInsertShape(ovalShape) })
+	ovalButton.SetTooltip("Insert Oval (ellipse)")
+	polygonButton := gui.MakeToolbutton(polygonSvg)
+	polygonButton.SetCallback(func() { me.onInsertShape(polygonShape) })
+	polygonButton.SetTooltip("Insert Polygon")
+	for _, button := range []*fltk.Button{boxButton, circleButton,
+		ovalButton, polygonButton} {
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()

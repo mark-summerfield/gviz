@@ -138,14 +138,16 @@ func (me *App) onEditorBackspace(ctrl bool) bool {
 		me.dirty = true
 		return true
 	}
-	if i := bytes.LastIndexFunc(raw[:j-1], func(r rune) bool {
-		return r != '_' && (unicode.IsSpace(r) || unicode.IsPunct(r) ||
-			unicode.IsSymbol(r))
-	}); i > -1 {
-		me.buffer.Select(i+1, j)
-		me.buffer.ReplaceSelection("")
-		me.dirty = true
-		return true
+	if ctrl {
+		if i := bytes.LastIndexFunc(raw[:j-1], func(r rune) bool {
+			return r != '_' && (unicode.IsSpace(r) || unicode.IsPunct(r) ||
+				unicode.IsSymbol(r))
+		}); i > -1 {
+			me.buffer.Select(i+1, j)
+			me.buffer.ReplaceSelection("")
+			me.dirty = true
+			return true
+		}
 	}
 	return false
 }
@@ -157,19 +159,21 @@ func (me *App) onEditorDelete(ctrl bool) bool {
 	if i < 0 || text == "" {
 		return false
 	}
-	raw := []byte(text)
-	if j := bytes.IndexFunc(raw[i:], func(r rune) bool {
-		return r != '_' && (unicode.IsSpace(r) || unicode.IsPunct(r) ||
-			unicode.IsSymbol(r))
-	}); j > -1 {
-		j += i
-		if j <= i {
-			return false
+	if ctrl {
+		raw := []byte(text)
+		if j := bytes.IndexFunc(raw[i:], func(r rune) bool {
+			return r != '_' && (unicode.IsSpace(r) || unicode.IsPunct(r) ||
+				unicode.IsSymbol(r))
+		}); j > -1 {
+			j += i
+			if j <= i {
+				return false
+			}
+			me.buffer.Select(i, j)
+			me.buffer.ReplaceSelection("")
+			me.dirty = true
+			return true
 		}
-		me.buffer.Select(i, j)
-		me.buffer.ReplaceSelection("")
-		me.dirty = true
-		return true
 	}
 	return false
 }

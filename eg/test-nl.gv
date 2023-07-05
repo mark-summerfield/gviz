@@ -1,7 +1,9 @@
 graph {
-	A
-	B
+	rankdir=RL
 
-	C
+	n1 [shape=box]
+	n2 [shape=circle]
+		
+	n3 [shape=oval]
+	"poly-\ngon" [shape=polygon sides=6]
 }
-            

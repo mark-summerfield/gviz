@@ -18,7 +18,10 @@ const (
 	defaultText = "graph {\n    Gviz [shape=tab]\n}"
 	tinyTimeout = 0.005
 
-	boxShape = "box"
+	boxShape     = "box"
+	polygonShape = "polygon"
+	ovalShape    = "oval"
+	circleShape  = "circle"
 )
 
 //go:embed data/icon.svg
@@ -62,3 +65,12 @@ var helpHtml string
 
 //go:embed data/box.svg
 var boxSvg string
+
+//go:embed data/circle.svg
+var circleSvg string
+
+//go:embed data/oval.svg
+var ovalSvg string
+
+//go:embed data/polygon.svg
+var polygonSvg string
