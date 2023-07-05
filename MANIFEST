@@ -1,6 +1,7 @@
 # TODO
-# - &Insert ... shapes each with node id of nextNodeId
-#   Use me.editor.Insert("new text")
+# - &Insert... shapes each with node id of nextNodeId
+#   Use me.editor.InsertText("new text")
+#   + toolbox in hideable/showable side window
 # - editing support specifically for graphviz format
 # - completion: could do in onEditEvent()
 # - File→Open &Recent...
