@@ -17,6 +17,8 @@ const (
 	linoWidth   = 32
 	defaultText = "graph {\n    Gviz [shape=tab]\n}"
 	tinyTimeout = 0.005
+
+	boxShape = "box"
 )
 
 //go:embed data/icon.svg
@@ -57,3 +59,6 @@ var dummyPng []byte
 
 //go:embed data/help.html
 var helpHtml string
+
+//go:embed data/box.svg
+var boxSvg string

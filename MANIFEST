@@ -1,7 +1,6 @@
 # TODO
 # - &Insert... shapes each with node id of nextNodeId
-#   Use me.editor.InsertText("new text")
-#   + toolbox in hideable/showable side window
+#   + insert note & edge attributes
 # - editing support specifically for graphviz format
 # - completion: could do in onEditEvent()
 # - File→Open &Recent...
@@ -12,6 +11,7 @@ app.go
 editor.go
 actions.go
 file_actions.go
+insert_actions.go
 view_actions.go
 help_actions.go
 config.go

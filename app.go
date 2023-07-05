@@ -62,7 +62,9 @@ func (me *App) makeWidgets() {
 	vbox := gui.MakeVBox(x, y, width, height, gui.Pad)
 	me.makeMenuBar(vbox, width)
 	y += gui.ButtonHeight
-	me.makeToolBar(vbox, y, width)
+	me.makeStandardToolBar(vbox, y, width)
+	y += gui.ButtonHeight
+	me.makeShapeToolBar(vbox, y, width)
 	y += gui.ButtonHeight
 	height -= 2 * gui.ButtonHeight
 	tile := fltk.NewTile(x, y, width, height)
@@ -90,17 +92,18 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
-	menuBar.AddEx("Edit/&Undo", fltk.CTRL+'z', func() { me.editor.Undo() },
+	menuBar.AddEx("Edit/&Undo", fltk.CTRL+'z', me.editor.Undo,
 		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z',
-		func() { me.editor.Redo() }, fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	menuBar.AddEx("Edit/&Copy", fltk.CTRL+'c', func() { me.editor.Copy() },
+	menuBar.AddEx("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z', me.editor.Redo,
+		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
+	menuBar.AddEx("Edit/&Copy", fltk.CTRL+'c', me.editor.Copy,
 		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/Cu&t", fltk.CTRL+'x', func() { me.editor.Cut() },
+	menuBar.AddEx("Edit/Cu&t", fltk.CTRL+'x', me.editor.Cut,
 		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/&Paste", fltk.CTRL+'v',
-		func() { me.editor.Paste() }, fltk.MENU_VALUE)
-	// TODO Edit Insert etc
+	menuBar.AddEx("Edit/&Paste", fltk.CTRL+'v', me.editor.Paste,
+		fltk.MENU_VALUE)
+	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
+	menuBar.Add("Insert/&Box", func() { me.onInsertShape(boxShape) })
 	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
 	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
 	menuBar.Add("View/Zoom &Restore", me.onViewZoomRestore)
@@ -111,44 +114,56 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	vbox.Fixed(menuBar, gui.ButtonHeight)
 }
 
-func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
+func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
 	openButton := gui.MakeToolbutton(openSvg)
-	openButton.SetCallback(func() { me.onFileOpen() })
+	openButton.SetCallback(me.onFileOpen)
 	openButton.SetTooltip("Open")
 	saveButton := gui.MakeToolbutton(saveSvg)
-	saveButton.SetCallback(func() { me.onFileSave() })
+	saveButton.SetCallback(me.onFileSave)
 	saveButton.SetTooltip("Save")
 	gui.MakeSep(y, hbox)
 	undoButton := gui.MakeToolbutton(undoSvg)
-	undoButton.SetCallback(func() { me.editor.Undo() })
+	undoButton.SetCallback(me.editor.Undo)
 	undoButton.SetTooltip("Undo")
 	redoButton := gui.MakeToolbutton(redoSvg)
-	redoButton.SetCallback(func() { me.editor.Redo() })
+	redoButton.SetCallback(me.editor.Redo)
 	redoButton.SetTooltip("Redo")
 	gui.MakeSep(y, hbox)
 	copyButton := gui.MakeToolbutton(copySvg)
-	copyButton.SetCallback(func() { me.editor.Copy() })
+	copyButton.SetCallback(me.editor.Copy)
 	copyButton.SetTooltip("Copy")
 	cutButton := gui.MakeToolbutton(cutSvg)
-	cutButton.SetCallback(func() { me.editor.Cut() })
+	cutButton.SetCallback(me.editor.Cut)
 	cutButton.SetTooltip("Cut")
 	pasteButton := gui.MakeToolbutton(pasteSvg)
-	pasteButton.SetCallback(func() { me.editor.Paste() })
+	pasteButton.SetCallback(me.editor.Paste)
 	pasteButton.SetTooltip("Paste")
 	gui.MakeSep(y, hbox)
 	zoomInButton := gui.MakeToolbutton(zoomInSvg)
-	zoomInButton.SetCallback(func() { me.onViewZoomIn() })
+	zoomInButton.SetCallback(me.onViewZoomIn)
 	zoomInButton.SetTooltip("Zoom In")
 	zoomRestoreButton := gui.MakeToolbutton(zoomRestoreSvg)
-	zoomRestoreButton.SetCallback(func() { me.onViewZoomRestore() })
+	zoomRestoreButton.SetCallback(me.onViewZoomRestore)
 	zoomRestoreButton.SetTooltip("Zoom Restore")
 	zoomOutButton := gui.MakeToolbutton(zoomOutSvg)
-	zoomOutButton.SetCallback(func() { me.onViewZoomOut() })
+	zoomOutButton.SetCallback(me.onViewZoomOut)
 	zoomOutButton.SetTooltip("Zoom Out")
 	for _, button := range []*fltk.Button{openButton, saveButton,
 		undoButton, redoButton, copyButton, cutButton, pasteButton,
 		zoomInButton, zoomRestoreButton, zoomOutButton} {
+		hbox.Fixed(button, gui.ButtonHeight)
+	}
+	hbox.End()
+	vbox.Fixed(hbox, gui.ButtonHeight)
+}
+
+func (me *App) makeShapeToolBar(vbox *fltk.Flex, y, width int) {
+	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
+	boxButton := gui.MakeToolbutton(boxSvg)
+	boxButton.SetCallback(func() { me.onInsertShape(boxShape) })
+	boxButton.SetTooltip("Insert Box")
+	for _, button := range []*fltk.Button{boxButton} {
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()
