@@ -13,6 +13,7 @@ import (
 
 func (me *App) initializeEditor() {
 	me.buffer = fltk.NewTextBuffer()
+	me.buffer.SetTabWidth(4)
 	me.buffer.SetText(defaultText)
 	me.editor.SetBuffer(me.buffer)
 	me.editor.SetTextFont(fltk.COURIER)

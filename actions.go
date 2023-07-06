@@ -41,18 +41,20 @@ func (me *App) onTextChanged(changed bool) {
 	temppng := fmt.Sprintf("gviz-%d.png", os.Getpid())
 	if err := me.exportGraph(temppng); err != nil {
 		me.onError(err)
+		me.updateView()
 		return
 	}
 	defer os.Remove(temppng)
 	png, err := fltk.NewPngImageLoad(temppng)
 	if err != nil {
 		me.onError(err)
+		me.updateView()
 		return
 	}
-	me.updateView(png)
+	me.updateImage(png)
 }
 
-func (me *App) updateView(png *fltk.PngImage) {
+func (me *App) updateImage(png *fltk.PngImage) {
 	me.clearView()
 	if !gong.IsRealClose(1.0, me.zoomLevel) {
 		w := int(math.Round(float64(png.W()) * me.zoomLevel))
@@ -64,7 +66,14 @@ func (me *App) updateView(png *fltk.PngImage) {
 		me.view.Resize(0, 0, png.W()+gui.Border, png.H()+gui.Border)
 	}
 	me.view.SetImage(png)
-	fltk.AddTimeout(tinyTimeout, func() { me.view.Redraw() })
+	me.updateView()
+}
+
+func (me *App) updateView() {
+	fltk.AddTimeout(tinyTimeout, func() {
+		me.view.Redraw()
+		me.scroll.ScrollTo(0, 0)
+	})
 }
 
 func (me *App) onLinosChange() {
@@ -84,7 +93,7 @@ func (me *App) clearView() {
 
 func (me *App) onError(err error) {
 	me.view.SetLabelColor(fltk.RED)
-	me.view.SetLabel(err.Error())
+	me.view.SetLabel(gong.Wrapped(err.Error(), 40))
 }
 
 func (me *App) onInfo(info string) {

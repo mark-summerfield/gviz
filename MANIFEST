@@ -1,6 +1,6 @@
 # TODO
 # - &Insert... shapes each with node id of nextNodeId
-#   + insert note & edge attributes
+#   + insert node & edge attributes
 #   + insert keyword: strict|graph|digraph|node|edge|subgraph
 # - editing support specifically for graphviz format
 # - completion: could do in onEditEvent()
