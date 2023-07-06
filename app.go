@@ -92,9 +92,9 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
-	menuBar.AddEx("Edit/&Undo", fltk.CTRL+'z', me.editor.Undo,
+	menuBar.AddEx("Edit/&Undo", fltk.CTRL+'z', me.onEditUndo,
 		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z', me.editor.Redo,
+	menuBar.AddEx("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z', me.onEditRedo,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("Edit/&Copy", fltk.CTRL+'c', me.editor.Copy,
 		fltk.MENU_VALUE)

@@ -12,6 +12,7 @@ app.go
 editor.go
 actions.go
 file_actions.go
+edit_actions.go
 insert_actions.go
 view_actions.go
 help_actions.go
