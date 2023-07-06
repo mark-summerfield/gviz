@@ -105,11 +105,14 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
 	// TODO node & edge attributes
 	//menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
-	menuBar.Add("Insert/&Box", func() { me.onInsertShape(boxShape) })
-	menuBar.Add("Insert/&Circle", func() { me.onInsertShape(circleShape) })
-	menuBar.Add("Insert/&Oval (ellipse)",
+	//menuBar.AddEx("Insert/&Keyword", 0, nil, fltk.SUBMENU)
+	menuBar.AddEx("Insert/&Shape", 0, nil, fltk.SUBMENU)
+	menuBar.Add("Insert/Shape/&Box", func() { me.onInsertShape(boxShape) })
+	menuBar.Add("Insert/Shape/&Circle",
+		func() { me.onInsertShape(circleShape) })
+	menuBar.Add("Insert/Shape/&Oval (ellipse)",
 		func() { me.onInsertShape(ovalShape) })
-	menuBar.Add("Insert/&Polygon",
+	menuBar.Add("Insert/Shape/&Polygon",
 		func() { me.onInsertShape(polygonShape) })
 	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
 	menuBar.Add("View/Zoom &In", me.onViewZoomIn)

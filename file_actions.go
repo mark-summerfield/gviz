@@ -6,11 +6,14 @@ package main
 import (
 	"errors"
 	"fmt"
+	"math"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strconv"
 	"strings"
 
-	"github.com/goccy/go-graphviz"
+	"github.com/awalterschulze/gographviz"
 	"github.com/mark-summerfield/gong"
 	"github.com/mark-summerfield/gviz/gui"
 	"github.com/mark-summerfield/gviz/u"
@@ -61,19 +64,8 @@ func (me *App) onFileExport() {
 	names := chooser.Selection()
 	if len(names) == 1 {
 		filename := names[0]
-		format := graphviz.PNG
-		if strings.HasSuffix(filename, "svg") {
-			format = graphviz.SVG
-		}
-		graph, err := graphviz.ParseBytes([]byte(text))
-		if err != nil {
+		if err := me.exportGraph(filename); err != nil {
 			me.onError(err)
-			return
-		}
-		gv := graphviz.New()
-		if err = gv.RenderFilename(graph, format, filename); err != nil {
-			me.onError(err)
-			return
 		} else {
 			me.onInfo(fmt.Sprintf("Exported to %q", filename))
 		}
@@ -162,4 +154,55 @@ func (me *App) clear() {
 	me.view.SetLabel("Edit graphviz text")
 	me.dirty = false
 	fltk.AddTimeout(0.1, func() { me.onTextChanged(false) })
+}
+
+func (me *App) exportGraph(filename string) error {
+	tempdot, err := me.getTempGraph()
+	if err != nil {
+		return err
+	}
+	defer os.Remove(tempdot.Name())
+	format := "png"
+	if strings.HasSuffix(filename, "svg") {
+		format = "svg"
+	}
+	cmd := exec.Command("dot", "-T"+format, "-o"+filename, tempdot.Name())
+	if err = cmd.Run(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (me *App) getTempGraph() (*os.File, error) {
+	graphAst, err := gographviz.ParseString(me.buffer.Text())
+	if err != nil {
+		return nil, err
+	}
+	graph := gographviz.NewGraph()
+	if err = gographviz.Analyse(graphAst, graph); err != nil {
+		return nil, err
+	}
+	me.updateNextNodeId(graph)
+	dot := graph.String()
+	tempdot, err := os.CreateTemp("", "*.gv")
+	if err != nil {
+		return nil, err
+	}
+	if _, err = tempdot.Write([]byte(dot)); err != nil {
+		return nil, err
+	}
+	if err = tempdot.Close(); err != nil {
+		return nil, err
+	}
+	return tempdot, nil
+}
+
+func (me *App) updateNextNodeId(graph *gographviz.Graph) {
+	for i := me.nextNodeId; i < math.MaxInt; i++ {
+		name := "n" + strconv.Itoa(i)
+		if !graph.IsNode(name) {
+			me.nextNodeId = i
+			break
+		}
+	}
 }

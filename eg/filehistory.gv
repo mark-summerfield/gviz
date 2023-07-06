@@ -1,0 +1,7 @@
+digraph "File History" {
+	node [shape=record]
+	config [label="{key|value}|{string|any}"]
+	states [label="{Filename|value}|{string|StateVal}"]
+	
+	config -> states [style=invis]
+}

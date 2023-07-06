@@ -4,14 +4,10 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"math"
-	"strconv"
-	"strings"
+	"os"
 
-	"github.com/goccy/go-graphviz"
-	"github.com/goccy/go-graphviz/cgraph"
 	"github.com/mark-summerfield/gong"
 	"github.com/mark-summerfield/gviz/gui"
 	"github.com/mark-summerfield/gviz/u"
@@ -41,43 +37,19 @@ func (me *App) onTextChanged(changed bool) {
 	if changed {
 		me.dirty = true
 	}
-	text := me.buffer.Text()
-	if text == "" {
-		me.onError(fmt.Errorf("Need image data, e.g.\n%s", defaultText))
-		return
-	}
 	me.applySyntaxHighlighting()
-	graph, err := graphviz.ParseBytes([]byte(text))
-	if err != nil {
+	temppng := fmt.Sprintf("gviz-%d.png", os.Getpid())
+	if err := me.exportGraph(temppng); err != nil {
 		me.onError(err)
 		return
 	}
-	gv := graphviz.New()
-	var raw bytes.Buffer // Tried SVG but text doesn't appear
-	if err = gv.Render(graph, graphviz.PNG, &raw); err != nil {
-		me.onError(err)
-		return
-	}
-	me.updateNextNodeId(graph)
-	png, err := fltk.NewPngImageFromData(raw.Bytes())
+	defer os.Remove(temppng)
+	png, err := fltk.NewPngImageLoad(temppng)
 	if err != nil {
 		me.onError(err)
 		return
 	}
 	me.updateView(png)
-}
-
-func (me *App) updateNextNodeId(graph *cgraph.Graph) {
-	node := graph.FirstNode()
-	for node != nil {
-		name := node.Name()
-		if strings.HasPrefix(name, "n") {
-			if n, err := strconv.Atoi(name[1:]); err == nil {
-				me.nextNodeId = u.Max(n+1, me.nextNodeId)
-			}
-		}
-		node = graph.NextNode(node)
-	}
 }
 
 func (me *App) updateView(png *fltk.PngImage) {
