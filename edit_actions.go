@@ -8,12 +8,14 @@ import "fmt"
 func (me *App) onEditUndo() {
 	if me.editor.Changed() != 0 {
 		me.editor.Undo()
+		me.applySyntaxHighlighting()
 	}
 }
 
 func (me *App) onEditRedo() {
 	if me.editor.Changed() != 0 {
 		me.editor.Redo()
+		me.applySyntaxHighlighting()
 	}
 }
 

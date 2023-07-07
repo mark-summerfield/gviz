@@ -10,25 +10,25 @@ import (
 )
 
 func (me *App) onInsertShape(shape string) {
-	me.updateNextNodeId()
+	nodeId := me.getNextNodeId()
 	text := ""
 	if shape == "polygon" {
-		text = fmt.Sprintf("n%d [shape=%s sides=5]", me.nextNodeId, shape)
+		text = fmt.Sprintf("n%d [shape=%s sides=5]", nodeId, shape)
 	} else {
-		text = fmt.Sprintf("n%d [shape=%s]", me.nextNodeId, shape)
+		text = fmt.Sprintf("n%d [shape=%s]", nodeId, shape)
 	}
 	me.editor.InsertText(text)
 	me.onTextChanged(true)
 }
 
-func (me *App) updateNextNodeId() {
+func (me *App) getNextNodeId() int {
 	if graph, err := me.getGraph(); err == nil {
-		for i := me.nextNodeId; i < math.MaxInt; i++ {
+		for i := 1; i < math.MaxInt; i++ {
 			name := "n" + strconv.Itoa(i)
 			if !graph.IsNode(name) {
-				me.nextNodeId = i
-				break
+				return i
 			}
 		}
 	}
+	return 0
 }
