@@ -2,7 +2,7 @@ digraph {
 	n1 [shape=box]
 	n2 [shape=circle]
 		
-	n3 [shape=oval color=darkgreen]
+	n3 [shape=oval color=blue]
 	n4 [shape=polygon sides=6 label="poly\ngon"]
 	
 	n1 -> n2

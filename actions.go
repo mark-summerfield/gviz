@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"regexp"
+	"strings"
 
 	"github.com/mark-summerfield/gong"
 	"github.com/mark-summerfield/gviz/gui"
@@ -92,8 +94,24 @@ func (me *App) clearView() {
 }
 
 func (me *App) onError(err error) {
+	rx := regexp.MustCompile(`Pos\s*[(]\s*offset\s*=\s*\d+,` +
+		`\s*line\s*=\s*(\d+),\s*column\s*=(\d+)\s*[)]\s*(.*)$`)
 	me.view.SetLabelColor(fltk.RED)
-	me.view.SetLabel(gong.Wrapped(err.Error(), 40))
+	text := err.Error()
+	if matches := rx.FindAllStringSubmatch(text, -1); len(matches) == 1 {
+		match := matches[0]
+		if len(match) == 4 {
+			lino := match[1]
+			column := match[2]
+			message := strings.TrimLeft(match[3], ", ")
+			text = fmt.Sprintf("#%s:%s: %s", lino, column, message)
+		}
+	}
+	text = gong.Wrapped(text, 40)
+	if !strings.HasSuffix(text, ".") {
+		text += "."
+	}
+	me.view.SetLabel(text)
 }
 
 func (me *App) onInfo(info string) {

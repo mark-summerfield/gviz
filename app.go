@@ -23,6 +23,8 @@ type App struct {
 	scroll          *fltk.Scroll
 	view            *fltk.Box
 	zoomLevel       float64
+	findText        string
+	findMatchCase   bool
 	nextNodeId      int
 }
 
@@ -101,6 +103,10 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("Edit/Cu&t", fltk.CTRL+'x', me.editor.Cut,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("Edit/&Paste", fltk.CTRL+'v', me.editor.Paste,
+		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
+	menuBar.AddEx("Edit/&Find…", fltk.CTRL+'f', me.onEditFind,
+		fltk.MENU_VALUE)
+	menuBar.AddEx("Edit/Find &Again", fltk.F3, me.onEditFindAgain,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
 	// TODO node & edge attributes
@@ -149,6 +155,7 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	pasteButton := gui.MakeToolbutton(pasteSvg)
 	pasteButton.SetCallback(me.editor.Paste)
 	pasteButton.SetTooltip("Paste")
+	// TODO sep + find & find again
 	gui.MakeSep(y, hbox)
 	zoomInButton := gui.MakeToolbutton(zoomInSvg)
 	zoomInButton.SetCallback(me.onViewZoomIn)

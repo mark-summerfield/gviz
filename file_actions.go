@@ -67,7 +67,7 @@ func (me *App) onFileExport() {
 		if err := me.saveGraph(filename); err != nil {
 			me.onError(err)
 		} else {
-			me.onInfo(fmt.Sprintf("Exported to %q", filename))
+			me.onInfo(fmt.Sprintf("Exported to %q.", filename))
 		}
 	}
 }
