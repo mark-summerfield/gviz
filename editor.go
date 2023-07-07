@@ -40,7 +40,7 @@ func (me *App) makeTextStyles() {
 	me.textStyles = []fltk.StyleTableEntry{
 		{Color: fltk.BLACK, Font: roman, Size: size},        // A default
 		{Color: navy, Font: bold, Size: size},               // B keyword
-		{Color: fltk.DARK_RED, Font: roman, Size: size},     // C compass
+		{Color: fltk.DARK_RED, Font: roman, Size: size},     // C extra kw
 		{Color: fltk.DARK_GREEN, Font: italic, Size: size},  // D comment
 		{Color: fltk.DARK_YELLOW, Font: roman, Size: size},  // E string
 		{Color: fltk.DARK_MAGENTA, Font: roman, Size: size}, // F attrib
@@ -53,7 +53,8 @@ func (me *App) makeTextStyles() {
 func (me *App) applySyntaxHighlighting() {
 	rx := regexp.MustCompile(
 		`(\b(:?strict|graph|digraph|node|edge|subgraph)\b)` + // B keyword
-			`|(\b(:?n|ne|e|se|s|sw|w|nw|c)\b)` + // C compass
+			`|(\b(:?n|ne|e|se|s|sw|w|nw|c` + // C extra keyword
+			`|true|false)\b)` + // C extra keyword
 			`|(#.*?)\n` + // D comment
 			`|("[^"]+?")` + // E string
 			`|(\w+=)` + // F attrib name

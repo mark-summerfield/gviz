@@ -55,8 +55,8 @@ func (me *App) onFileExport() {
 		return
 	}
 	chooser := fltk.NewFileChooser(u.GetPath(me.filename),
-		"PNG Files (*.png)\tSVG Files (*.svg)", fltk.FileChooser_CREATE,
-		fmt.Sprintf("Export — %s", appName))
+		"SVG Files (*.svg)\tPNG Files (*.png)\tEPS Files (*.eps)",
+		fltk.FileChooser_CREATE, fmt.Sprintf("Export — %s", appName))
 	defer chooser.Destroy()
 	chooser.Popup()
 	names := chooser.Selection()
@@ -171,6 +171,8 @@ func (me *App) saveGraph(filename string) error {
 		format = "png"
 	case strings.HasSuffix(filename, "svg"):
 		format = "svg"
+	case strings.HasSuffix(filename, "eps"):
+		format = "ps2"
 	}
 	cmd := exec.Command(dotExe, "-T"+format, "-o"+filename, tempdot.Name())
 	if err = cmd.Run(); err != nil {

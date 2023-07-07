@@ -40,7 +40,7 @@ func makeWidgets(window *fltk.Window, app *App) {
 	vbox.Fixed(button, rowHeight)
 	button = makeViewOnLeftRow(app)
 	vbox.Fixed(button, rowHeight)
-	button = makeAutoFormatRow(app)
+	button = makeFormatRow(app)
 	vbox.Fixed(button, rowHeight)
 	hbox = makeButtonRow(window)
 	vbox.Fixed(hbox, rowHeight)
@@ -122,9 +122,8 @@ func makeViewOnLeftRow(app *App) *fltk.CheckButton {
 	return button
 }
 
-func makeAutoFormatRow(app *App) *fltk.CheckButton {
-	button := fltk.NewCheckButton(0, 0, width, rowHeight,
-		"&Auto Format on Save")
+func makeFormatRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, width, rowHeight, "&Format on Save")
 	button.SetTooltip("if checked the dot text will automatically " +
 		"be saved in canonical format")
 	button.SetValue(app.config.AutoFormat)
