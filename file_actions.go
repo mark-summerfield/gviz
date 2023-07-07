@@ -6,11 +6,9 @@ package main
 import (
 	"errors"
 	"fmt"
-	"math"
 	"os"
 	"os/exec"
 	"path/filepath"
-	"strconv"
 	"strings"
 
 	"github.com/awalterschulze/gographviz"
@@ -182,7 +180,7 @@ func (me *App) saveGraph(filename string) error {
 }
 
 func (me *App) getTempGraph() (*os.File, error) {
-	dot, err := me.getDotText()
+	graph, err := me.getGraph()
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +188,7 @@ func (me *App) getTempGraph() (*os.File, error) {
 	if err != nil {
 		return nil, err
 	}
-	if _, err = tempdot.Write([]byte(dot)); err != nil {
+	if _, err = tempdot.Write([]byte(graph.String())); err != nil {
 		return nil, err
 	}
 	if err = tempdot.Close(); err != nil {
@@ -199,25 +197,14 @@ func (me *App) getTempGraph() (*os.File, error) {
 	return tempdot, nil
 }
 
-func (me *App) getDotText() (string, error) {
+func (me *App) getGraph() (*gographviz.Graph, error) {
 	graphAst, err := gographviz.ParseString(me.buffer.Text())
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 	graph := gographviz.NewGraph()
 	if err = gographviz.Analyse(graphAst, graph); err != nil {
-		return "", err
+		return nil, err
 	}
-	me.updateNextNodeId(graph)
-	return graph.String(), nil
-}
-
-func (me *App) updateNextNodeId(graph *gographviz.Graph) {
-	for i := me.nextNodeId; i < math.MaxInt; i++ {
-		name := "n" + strconv.Itoa(i)
-		if !graph.IsNode(name) {
-			me.nextNodeId = i
-			break
-		}
-	}
+	return graph, nil
 }

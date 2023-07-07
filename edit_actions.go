@@ -25,13 +25,13 @@ func (me *App) onEditFindAgain() {
 	if me.findText == "" {
 		me.onEditFind()
 	} else {
-		i := me.buffer.Search(me.editor.GetInsertPosition(), me.findText,
+		i := me.buffer.Search(me.editor.GetInsertPosition()+1, me.findText,
 			false, me.findMatchCase)
 		if i == -1 {
 			me.onInfo(fmt.Sprintf("Didn't find %q searching forward.",
 				me.findText))
 		} else {
-			span := len([]byte(me.findText))
+			span := len(me.findText) // byte count is what we want
 			me.buffer.Select(i, i+span)
 			me.editor.SetInsertPosition(i)
 		}
