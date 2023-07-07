@@ -39,7 +39,7 @@ func (me *App) onTextChanged(changed bool) {
 	}
 	me.applySyntaxHighlighting()
 	temppng := fmt.Sprintf("gviz-%d.png", os.Getpid())
-	if err := me.exportGraph(temppng); err != nil {
+	if err := me.saveGraph(temppng); err != nil {
 		me.onError(err)
 		me.updateView()
 		return

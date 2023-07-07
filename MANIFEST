@@ -1,4 +1,5 @@
 # TODO
+# - &Edit→&Find... Ctrl+F & →Find &Again F3
 # - &Insert... shapes each with node id of nextNodeId
 #   + insert node & edge attributes
 #   + insert keyword: strict|graph|digraph|node|edge|subgraph

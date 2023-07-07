@@ -25,6 +25,7 @@ type Config struct {
 	ViewOnLeft bool
 	Linos      bool
 	LastFile   string
+	AutoFormat bool
 }
 
 func newConfig() *Config {

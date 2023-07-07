@@ -17,6 +17,7 @@ const (
 	linoWidth   = 32
 	defaultText = "graph {\n    Gviz [shape=tab]\n}"
 	tinyTimeout = 0.005
+	dotExe      = "dot"
 
 	boxShape     = "box"
 	polygonShape = "polygon"

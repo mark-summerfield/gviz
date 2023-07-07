@@ -64,7 +64,7 @@ func (me *App) onFileExport() {
 	names := chooser.Selection()
 	if len(names) == 1 {
 		filename := names[0]
-		if err := me.exportGraph(filename); err != nil {
+		if err := me.saveGraph(filename); err != nil {
 			me.onError(err)
 		} else {
 			me.onInfo(fmt.Sprintf("Exported to %q", filename))
@@ -108,7 +108,12 @@ func (me *App) maybeSave(saveAs bool) bool {
 				return false // didn't choose a name
 			}
 		}
-		text += "\n"
+		if me.config.AutoFormat {
+			if err := me.saveGraph(me.filename); err == nil {
+				me.dirty = false
+				return true
+			} // else fallthrough and save what text we have
+		}
 		if err := os.WriteFile(me.filename, []byte(text),
 			gong.ModeUserRW); err != nil {
 			me.onError(err)
@@ -156,17 +161,20 @@ func (me *App) clear() {
 	fltk.AddTimeout(0.1, func() { me.onTextChanged(false) })
 }
 
-func (me *App) exportGraph(filename string) error {
+func (me *App) saveGraph(filename string) error {
 	tempdot, err := me.getTempGraph()
 	if err != nil {
 		return err
 	}
 	defer os.Remove(tempdot.Name())
-	format := "png"
-	if strings.HasSuffix(filename, "svg") {
+	format := "canon" // suffix: "gv"
+	switch {
+	case strings.HasSuffix(filename, "png"):
+		format = "png"
+	case strings.HasSuffix(filename, "svg"):
 		format = "svg"
 	}
-	cmd := exec.Command("dot", "-T"+format, "-o"+filename, tempdot.Name())
+	cmd := exec.Command(dotExe, "-T"+format, "-o"+filename, tempdot.Name())
 	if err = cmd.Run(); err != nil {
 		return err
 	}
@@ -174,16 +182,10 @@ func (me *App) exportGraph(filename string) error {
 }
 
 func (me *App) getTempGraph() (*os.File, error) {
-	graphAst, err := gographviz.ParseString(me.buffer.Text())
+	dot, err := me.getDotText()
 	if err != nil {
 		return nil, err
 	}
-	graph := gographviz.NewGraph()
-	if err = gographviz.Analyse(graphAst, graph); err != nil {
-		return nil, err
-	}
-	me.updateNextNodeId(graph)
-	dot := graph.String()
 	tempdot, err := os.CreateTemp("", "*.gv")
 	if err != nil {
 		return nil, err
@@ -195,6 +197,19 @@ func (me *App) getTempGraph() (*os.File, error) {
 		return nil, err
 	}
 	return tempdot, nil
+}
+
+func (me *App) getDotText() (string, error) {
+	graphAst, err := gographviz.ParseString(me.buffer.Text())
+	if err != nil {
+		return "", err
+	}
+	graph := gographviz.NewGraph()
+	if err = gographviz.Analyse(graphAst, graph); err != nil {
+		return "", err
+	}
+	me.updateNextNodeId(graph)
+	return graph.String(), nil
 }
 
 func (me *App) updateNextNodeId(graph *gographviz.Graph) {

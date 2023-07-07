@@ -12,7 +12,7 @@ const (
 	rowHeight = 32
 	colWidth  = 60
 	width     = 200
-	height    = 190
+	height    = 220
 )
 
 func (me *App) onConfigure() {
@@ -39,6 +39,8 @@ func makeWidgets(window *fltk.Window, app *App) {
 	button := makeLinosRow(app)
 	vbox.Fixed(button, rowHeight)
 	button = makeViewOnLeftRow(app)
+	vbox.Fixed(button, rowHeight)
+	button = makeAutoFormatRow(app)
 	vbox.Fixed(button, rowHeight)
 	hbox = makeButtonRow(window)
 	vbox.Fixed(hbox, rowHeight)
@@ -116,6 +118,18 @@ func makeViewOnLeftRow(app *App) *fltk.CheckButton {
 	button.SetValue(app.config.ViewOnLeft)
 	button.SetCallback(func() {
 		app.config.ViewOnLeft = button.Value()
+	})
+	return button
+}
+
+func makeAutoFormatRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, width, rowHeight,
+		"&Auto Format on Save")
+	button.SetTooltip("if checked the dot text will automatically " +
+		"be saved in canonical format")
+	button.SetValue(app.config.AutoFormat)
+	button.SetCallback(func() {
+		app.config.AutoFormat = button.Value()
 	})
 	return button
 }
