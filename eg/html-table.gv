@@ -1,0 +1,19 @@
+digraph html {
+	abc [shape=none, margin=0, label=<
+<table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+	<tr>
+		<td rowspan="3"><font color="red"><b>Hello</b></font><br/>Gviz</td>
+		<td colspan="3">b</td>
+		<td rowspan="3" bgcolor="lightgrey">g</td>
+		<td rowspan="3">h</td>
+	</tr>
+	<tr>
+		<td>c</td>
+		<td port="here">d</td>
+		<td>e</td>
+	</tr>
+	<tr>
+		<td colspan="3">f</td>
+	</tr>
+</table>>];
+}

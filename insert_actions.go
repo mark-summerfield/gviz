@@ -7,7 +7,15 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
+
+	"github.com/awalterschulze/gographviz"
 )
+
+func (me *App) onInsertWord(word string) {
+	me.editor.InsertText(strings.ReplaceAll(word, "&", ""))
+	me.onTextChanged(true)
+}
 
 func (me *App) onInsertShape(shape string) {
 	nodeId := me.getNextNodeId()
@@ -31,4 +39,16 @@ func (me *App) getNextNodeId() int {
 		}
 	}
 	return 0
+}
+
+func (me *App) getGraph() (*gographviz.Graph, error) {
+	graphAst, err := gographviz.ParseString(me.buffer.Text())
+	if err != nil {
+		return nil, err
+	}
+	graph := gographviz.NewGraph()
+	if err = gographviz.Analyse(graphAst, graph); err != nil {
+		return nil, err
+	}
+	return graph, nil
 }

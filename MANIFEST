@@ -7,11 +7,14 @@
 #
 # - Find & Find Again toolbuttons
 #
-# - &Insert... shapes each with node id of nextNodeId
-#   + insert node & edge attributes
-#   + insert keyword: strict|graph|digraph|node|edge|subgraph
-# - editing support specifically for graphviz format
-# - completion: could do in onEditEvent()
+# - Add the remaining Shapes to the Insert menu:
+#   point egg triangle plaintext plain diamond trapezium parallelogram house
+#   pentagon hexagon septagon octagon square star none underline cylinder
+#   note tab folder box3d component promoter cds terminator utr primersite
+#   restrictionsite fivepoverhang threepoverhang noverhang assembly
+#   signature insulator ribosite rnastab proteasesite proteinstab rpromoter
+#   rarrow larrow lpromoter
+#
 # - File→Open &Recent...
 # - Edit→&Replace...
 # See: http://magjac.com/graphviz-visual-editor/

@@ -11,7 +11,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/awalterschulze/gographviz"
 	"github.com/mark-summerfield/gong"
 	"github.com/mark-summerfield/gviz/gui"
 	"github.com/mark-summerfield/gviz/u"
@@ -55,8 +54,8 @@ func (me *App) onFileExport() {
 		return
 	}
 	chooser := fltk.NewFileChooser(u.GetPath(me.filename),
-		"SVG Files (*.svg)\tPNG Files (*.png)\tEPS Files (*.eps)",
-		fltk.FileChooser_CREATE, fmt.Sprintf("Export — %s", appName))
+		"SVG Files (*.svg)\tPNG Files (*.png)", fltk.FileChooser_CREATE,
+		fmt.Sprintf("Export — %s", appName))
 	defer chooser.Destroy()
 	chooser.Popup()
 	names := chooser.Selection()
@@ -160,7 +159,7 @@ func (me *App) clear() {
 }
 
 func (me *App) saveGraph(filename string) error {
-	tempdot, err := me.getTempGraph()
+	tempdot, err := me.getTempDot()
 	if err != nil {
 		return err
 	}
@@ -171,8 +170,6 @@ func (me *App) saveGraph(filename string) error {
 		format = "png"
 	case strings.HasSuffix(filename, "svg"):
 		format = "svg"
-	case strings.HasSuffix(filename, "eps"):
-		format = "ps2"
 	}
 	cmd := exec.Command(dotExe, "-T"+format, "-o"+filename, tempdot.Name())
 	if err = cmd.Run(); err != nil {
@@ -181,32 +178,16 @@ func (me *App) saveGraph(filename string) error {
 	return nil
 }
 
-func (me *App) getTempGraph() (*os.File, error) {
-	graph, err := me.getGraph()
-	if err != nil {
-		return nil, err
-	}
+func (me *App) getTempDot() (*os.File, error) {
 	tempdot, err := os.CreateTemp("", "*.gv")
 	if err != nil {
 		return nil, err
 	}
-	if _, err = tempdot.Write([]byte(graph.String())); err != nil {
+	if _, err = tempdot.Write([]byte(me.buffer.Text())); err != nil {
 		return nil, err
 	}
 	if err = tempdot.Close(); err != nil {
 		return nil, err
 	}
 	return tempdot, nil
-}
-
-func (me *App) getGraph() (*gographviz.Graph, error) {
-	graphAst, err := gographviz.ParseString(me.buffer.Text())
-	if err != nil {
-		return nil, err
-	}
-	graph := gographviz.NewGraph()
-	if err = gographviz.Analyse(graphAst, graph); err != nil {
-		return nil, err
-	}
-	return graph, nil
 }

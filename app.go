@@ -4,6 +4,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/mark-summerfield/gong"
@@ -108,16 +109,18 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.AddEx("Edit/Find &Again", fltk.F3, me.onEditFindAgain,
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
-	// TODO node & edge attributes
-	//menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
-	//menuBar.AddEx("Insert/&Keyword", 0, nil, fltk.SUBMENU)
-	menuBar.AddEx("Insert/&Shape", 0, nil, fltk.SUBMENU)
-	menuBar.Add("Insert/Shape/&Box", func() { me.onInsertShape(boxShape) })
-	menuBar.Add("Insert/Shape/&Circle",
-		func() { me.onInsertShape(circleShape) })
-	menuBar.Add("Insert/Shape/&Oval (ellipse)",
+	menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
+	me.makeSubmenuItems(menuBar, "Insert/Attribute/", []string{
+		"&color=", "&fillcolor=", "&label=", "&style="})
+	menuBar.AddEx("Insert/&Keyword", 0, nil, fltk.SUBMENU|fltk.MENU_DIVIDER)
+	me.makeSubmenuItems(menuBar, "Insert/Keyword/", []string{
+		"&bold", "&dashed", "d&otted", "&edge", "&filled", "&invis",
+		"&node", "&rounded", "&solid", "s&ubgraph"})
+	menuBar.Add("Insert/&Box", func() { me.onInsertShape(boxShape) })
+	menuBar.Add("Insert/&Circle", func() { me.onInsertShape(circleShape) })
+	menuBar.Add("Insert/&Oval (ellipse)",
 		func() { me.onInsertShape(ovalShape) })
-	menuBar.Add("Insert/Shape/&Polygon",
+	menuBar.Add("Insert/&Polygon",
 		func() { me.onInsertShape(polygonShape) })
 	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
 	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
@@ -127,6 +130,15 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar.Add("Help/&About", me.onHelpAbout)
 	menuBar.AddEx("Help/&Help", fltk.F1, me.onHelpHelp, fltk.MENU_VALUE)
 	vbox.Fixed(menuBar, gui.ButtonHeight)
+}
+
+func (me *App) makeSubmenuItems(menuBar *fltk.MenuBar, submenu string,
+	words []string) {
+	for _, word := range words {
+		word := word
+		menuBar.Add(fmt.Sprintf(submenu+word),
+			func() { me.onInsertWord(word) })
+	}
 }
 
 func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
