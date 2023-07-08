@@ -20,9 +20,16 @@ const (
 	dotExe      = "dot"
 
 	boxShape     = "box"
-	polygonShape = "polygon"
-	ovalShape    = "oval"
 	circleShape  = "circle"
+	ovalShape    = "oval"
+	polygonShape = "polygon"
+
+	cdsShape        = "cds"
+	componentShape  = "component"
+	primersiteShape = "primersite"
+	promoterShape   = "promoter"
+	terminatorShape = "terminator"
+	utrShape        = "utr"
 )
 
 //go:embed data/icon.svg
@@ -75,3 +82,12 @@ var ovalSvg string
 
 //go:embed data/polygon.svg
 var polygonSvg string
+
+//go:embed data/cds.svg
+var cdsSvg string
+
+//go:embed data/component.svg
+var componentSvg string
+
+//go:embed data/primersite.svg
+var primersiteSvg string

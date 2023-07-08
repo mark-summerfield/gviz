@@ -15,23 +15,24 @@ import (
 )
 
 type Config struct {
-	filename   string
-	X          int
-	Y          int
-	Width      int
-	Height     int
-	Scale      float32
-	TextSize   int
-	ViewOnLeft bool
-	Linos      bool
-	LastFile   string
-	AutoFormat bool
+	filename        string
+	X               int
+	Y               int
+	Width           int
+	Height          int
+	Scale           float32
+	TextSize        int
+	ViewOnLeft      bool
+	Linos           bool
+	LastFile        string
+	AutoFormat      bool
+	ShowExtraShapes bool
 }
 
 func newConfig() *Config {
 	filename, found := gong.GetIniFile(domain, appName)
 	config := &Config{filename: filename, X: -1, Width: 800, Height: 600,
-		Scale: 1.0, TextSize: 14, Linos: true}
+		Scale: 1.0, TextSize: 14, Linos: true, ShowExtraShapes: true}
 	if found {
 		cfg, err := ini.Load(filename)
 		if err != nil {

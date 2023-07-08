@@ -20,6 +20,7 @@ func main() {
 	fltk.SetScheme("Oxy")
 	config := newConfig()
 	fltk.SetScreenScale(0, config.Scale)
+	fmt.Println(config.ShowExtraShapes)
 	app := newApp(config)
 	app.Show()
 	fltk.Run()

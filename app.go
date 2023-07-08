@@ -64,7 +64,9 @@ func (me *App) makeWidgets() {
 	vbox := gui.MakeVBox(x, y, width, height, gui.Pad)
 	me.makeMenuBar(vbox, width)
 	y += gui.ButtonHeight
-	me.makeToolBar(vbox, y, width)
+	me.makeStandardToolBar(vbox, y, width)
+	y += gui.ButtonHeight
+	me.makeExtraToolBar(vbox, y, width)
 	y += gui.ButtonHeight
 	height -= 2 * gui.ButtonHeight
 	tile := fltk.NewTile(x, y, width, height)
@@ -108,18 +110,20 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
 	menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
-	me.makeSubmenuItems(menuBar, "Insert/Attribute/", []string{
+	me.makeSubmenuTextItems(menuBar, "Insert/Attribute/", []string{
 		"&color=", "&fillcolor=", "&label=", "&style="})
 	menuBar.AddEx("Insert/&Keyword", 0, nil, fltk.SUBMENU|fltk.MENU_DIVIDER)
-	me.makeSubmenuItems(menuBar, "Insert/Keyword/", []string{
+	me.makeSubmenuTextItems(menuBar, "Insert/Keyword/", []string{
 		"&bold", "&dashed", "d&otted", "&edge", "&filled", "&invis",
 		"&node", "&rounded", "&solid", "s&ubgraph"})
-	menuBar.Add("Insert/&Box", func() { me.onInsertShape(boxShape) })
-	menuBar.Add("Insert/&Circle", func() { me.onInsertShape(circleShape) })
-	menuBar.Add("Insert/&Oval (ellipse)",
-		func() { me.onInsertShape(ovalShape) })
-	menuBar.Add("Insert/&Polygon",
-		func() { me.onInsertShape(polygonShape) })
+	me.makeSubmenuShapeItems(menuBar, "Insert/", []pair{
+		{"&Box", boxShape}, {"&Circle", circleShape}, {"&Oval", ovalShape},
+		{"&Polygon", polygonShape}})
+	menuBar.AddEx("Insert/E&xtra", 0, nil, fltk.SUBMENU)
+	me.makeSubmenuShapeItems(menuBar, "Insert/Extra/", []pair{
+		{"&CDS", cdsShape}, {"C&omponent", componentShape},
+		{"&Primersite", primersiteShape}, {"P&romoter", promoterShape},
+		{"&Terminator", terminatorShape}, {"&UTR", utrShape}})
 	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
 	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
 	menuBar.Add("View/Zoom &Restore", me.onViewZoomRestore)
@@ -130,7 +134,7 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	vbox.Fixed(menuBar, gui.ButtonHeight)
 }
 
-func (me *App) makeSubmenuItems(menuBar *fltk.MenuBar, submenu string,
+func (me *App) makeSubmenuTextItems(menuBar *fltk.MenuBar, submenu string,
 	words []string) {
 	for _, word := range words {
 		word := word
@@ -139,7 +143,21 @@ func (me *App) makeSubmenuItems(menuBar *fltk.MenuBar, submenu string,
 	}
 }
 
-func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
+type pair struct {
+	menuName  string
+	shapeName string
+}
+
+func (me *App) makeSubmenuShapeItems(menuBar *fltk.MenuBar, submenu string,
+	pairs []pair) {
+	for _, pair := range pairs {
+		pair := pair
+		menuBar.Add(fmt.Sprintf(submenu+pair.menuName),
+			func() { me.onInsertShape(pair.shapeName) })
+	}
+}
+
+func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
 	openButton := gui.MakeToolbutton(openSvg)
 	openButton.SetCallback(me.onFileOpen)
@@ -192,6 +210,27 @@ func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 		undoButton, redoButton, copyButton, cutButton, pasteButton,
 		zoomInButton, zoomRestoreButton, zoomOutButton, boxButton,
 		circleButton, ovalButton, polygonButton} {
+		hbox.Fixed(button, gui.ButtonHeight)
+	}
+	hbox.End()
+	vbox.Fixed(hbox, gui.ButtonHeight)
+}
+
+func (me *App) makeExtraToolBar(vbox *fltk.Flex, y, width int) {
+	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
+	cdsButton := gui.MakeToolbutton(cdsSvg)
+	cdsButton.SetCallback(func() { me.onInsertShape(cdsShape) })
+	cdsButton.SetTooltip("Insert CDS")
+	componentButton := gui.MakeToolbutton(componentSvg)
+	componentButton.SetCallback(func() { me.onInsertShape(componentShape) })
+	componentButton.SetTooltip("Insert Component")
+	primersiteButton := gui.MakeToolbutton(primersiteSvg)
+	primersiteButton.SetCallback(
+		func() { me.onInsertShape(primersiteShape) })
+	primersiteButton.SetTooltip("Insert Primersite")
+	// TODO
+	for _, button := range []*fltk.Button{cdsButton, componentButton,
+		primersiteButton} {
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()

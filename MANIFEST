@@ -1,4 +1,10 @@
 # TODO
+#
+# Config
+#   - keep a pointer to extraShapesToolbar
+#   - config showExtraShapes bool
+#   - config_form [ ] Show E&xtra Shapes (callback to Hide|Show)
+#
 # - Find dialog (copy config_form.go):
 #
 #   Find [                ]
@@ -8,19 +14,17 @@
 # - Find & Find Again toolbuttons
 #
 # - Add the remaining Shapes to the Insert menu:
+#
 #   point egg triangle plaintext plain diamond trapezium parallelogram house
 #   pentagon hexagon septagon octagon square star none underline cylinder
 #   note tab folder box3d
 #
 # - Add these to Insert/E&xtra/ submenu and as a separate toolbar in its
 #   own row (like the original shapes toolbar):
-#   component promoter cds terminator utr primersite
+#
 #   restrictionsite fivepoverhang threepoverhang noverhang assembly
 #   signature insulator ribosite rnastab proteasesite proteinstab rpromoter
 #   rarrow larrow lpromoter
-#   - keep a pointer to extraShapesToolbar
-#   - config showExtraShapes bool
-#   - config_form [ ] Show E&xtra Shapes
 #
 # - File→Open &Recent...
 #

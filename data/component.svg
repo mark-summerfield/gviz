@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="63pt"
-   height="44pt"
-   viewBox="0.00 0.00 63.33 44.00"
+   width="70pt"
+   height="70pt"
+   viewBox="0 0 70 70"
    version="1.1"
    id="svg14"
-   sodipodi:docname="oval.svg"
+   sodipodi:docname="component.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -40,23 +40,30 @@
      inkscape:window-height="1010"
      id="namedview16"
      showgrid="false"
-     inkscape:zoom="8.3511905"
-     inkscape:cx="-4.0114041"
-     inkscape:cy="29.277263"
+     inkscape:zoom="4.2102273"
+     inkscape:cx="-6.294197"
+     inkscape:cy="34.08367"
      inkscape:current-layer="svg14"
      inkscape:document-rotation="0"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
      inkscape:pagecheckerboard="0"
      inkscape:document-units="pt"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
-  <ellipse
-     fill="none"
-     stroke="#000000"
-     cx="31.665001"
-     cy="22"
-     rx="25.036469"
-     ry="16.131449"
-     id="ellipse8"
-     style="stroke-width:3.76964;stroke-miterlimit:4;stroke-dasharray:none;fill:#ffffff;stroke:#000080" />
+  <path
+     id="polygon8"
+     style="fill:#ffffff;stroke:#000080;stroke-width:3.77628;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 63.116789,14.420348 H 15.221311 v 41.159305 h 47.895478 z" />
+  <path
+     id="polygon8-3"
+     style="fill:none;stroke:#000080;stroke-width:3.5;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 30.381874,21.642669 H 5.356687 v 9.283218 h 25.025187 z" />
+  <path
+     id="polygon8-3-6"
+     style="fill:none;stroke:#000080;stroke-width:3.5;stroke-miterlimit:4;stroke-dasharray:none"
+     d="M 29.956328,39.232068 H 4.9311383 v 9.283217 H 29.956328 Z" />
 </svg>
