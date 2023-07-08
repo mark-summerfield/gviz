@@ -64,9 +64,7 @@ func (me *App) makeWidgets() {
 	vbox := gui.MakeVBox(x, y, width, height, gui.Pad)
 	me.makeMenuBar(vbox, width)
 	y += gui.ButtonHeight
-	me.makeStandardToolBar(vbox, y, width)
-	y += gui.ButtonHeight
-	me.makeShapeToolBar(vbox, y, width)
+	me.makeToolBar(vbox, y, width)
 	y += gui.ButtonHeight
 	height -= 2 * gui.ButtonHeight
 	tile := fltk.NewTile(x, y, width, height)
@@ -141,7 +139,7 @@ func (me *App) makeSubmenuItems(menuBar *fltk.MenuBar, submenu string,
 	}
 }
 
-func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
+func (me *App) makeToolBar(vbox *fltk.Flex, y, width int) {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
 	openButton := gui.MakeToolbutton(openSvg)
 	openButton.SetCallback(me.onFileOpen)
@@ -177,17 +175,7 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	zoomOutButton := gui.MakeToolbutton(zoomOutSvg)
 	zoomOutButton.SetCallback(me.onViewZoomOut)
 	zoomOutButton.SetTooltip("Zoom Out")
-	for _, button := range []*fltk.Button{openButton, saveButton,
-		undoButton, redoButton, copyButton, cutButton, pasteButton,
-		zoomInButton, zoomRestoreButton, zoomOutButton} {
-		hbox.Fixed(button, gui.ButtonHeight)
-	}
-	hbox.End()
-	vbox.Fixed(hbox, gui.ButtonHeight)
-}
-
-func (me *App) makeShapeToolBar(vbox *fltk.Flex, y, width int) {
-	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
+	gui.MakeSep(y, hbox)
 	boxButton := gui.MakeToolbutton(boxSvg)
 	boxButton.SetCallback(func() { me.onInsertShape(boxShape) })
 	boxButton.SetTooltip("Insert Box")
@@ -200,8 +188,10 @@ func (me *App) makeShapeToolBar(vbox *fltk.Flex, y, width int) {
 	polygonButton := gui.MakeToolbutton(polygonSvg)
 	polygonButton.SetCallback(func() { me.onInsertShape(polygonShape) })
 	polygonButton.SetTooltip("Insert Polygon")
-	for _, button := range []*fltk.Button{boxButton, circleButton,
-		ovalButton, polygonButton} {
+	for _, button := range []*fltk.Button{openButton, saveButton,
+		undoButton, redoButton, copyButton, cutButton, pasteButton,
+		zoomInButton, zoomRestoreButton, zoomOutButton, boxButton,
+		circleButton, ovalButton, polygonButton} {
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()
