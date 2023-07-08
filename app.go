@@ -117,8 +117,8 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 		"&bold", "&dashed", "d&otted", "&edge", "&filled", "&invis",
 		"&node", "&rounded", "&solid", "s&ubgraph"})
 	me.makeSubmenuShapeItems(menuBar, "Insert/", []pair{
-		{"&Box", boxShape}, {"&Circle", circleShape}, {"&Oval", ovalShape},
-		{"&Polygon", polygonShape}})
+		{"&Box (rectangle)", boxShape}, {"&Circle", circleShape},
+		{"&Oval (ellipse)", ovalShape}, {"&Polygon", polygonShape}})
 	menuBar.AddEx("Insert/E&xtra", 0, nil, fltk.SUBMENU)
 	me.makeSubmenuShapeItems(menuBar, "Insert/Extra/", []pair{
 		{"&CDS", cdsShape}, {"C&omponent", componentShape},
@@ -196,7 +196,7 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	gui.MakeSep(y, hbox)
 	boxButton := gui.MakeToolbutton(boxSvg)
 	boxButton.SetCallback(func() { me.onInsertShape(boxShape) })
-	boxButton.SetTooltip("Insert Box")
+	boxButton.SetTooltip("Insert Box (rectangle)")
 	circleButton := gui.MakeToolbutton(circleSvg)
 	circleButton.SetCallback(func() { me.onInsertShape(circleShape) })
 	circleButton.SetTooltip("Insert Circle")
