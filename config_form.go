@@ -11,8 +11,8 @@ import (
 const (
 	rowHeight = 32
 	colWidth  = 60
-	width     = 200
-	height    = 220
+	width     = 240
+	height    = 260
 )
 
 func (me *App) onConfigure() {
@@ -37,6 +37,8 @@ func makeWidgets(window *fltk.Window, app *App) {
 	hbox = makeTextSizeRow(app)
 	vbox.Fixed(hbox, rowHeight)
 	button := makeLinosRow(app)
+	vbox.Fixed(button, rowHeight)
+	button = makeExtraShapesRow(app)
 	vbox.Fixed(button, rowHeight)
 	button = makeViewOnLeftRow(app)
 	vbox.Fixed(button, rowHeight)
@@ -105,6 +107,18 @@ func makeLinosRow(app *App) *fltk.CheckButton {
 		app.config.Linos = button.Value()
 		app.onLinosChange()
 		fltk.AddTimeout(tinyTimeout, func() { app.editor.Redraw() })
+	})
+	return button
+}
+
+func makeExtraShapesRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, width, rowHeight,
+		"Show E&xtra Shapes Toolbar")
+	button.SetTooltip("Toggles the extra shapes toolbar")
+	button.SetValue(app.config.ShowExtraShapes)
+	button.SetCallback(func() {
+		app.config.ShowExtraShapes = button.Value()
+		app.onToggleExtraShapesToolbar()
 	})
 	return button
 }

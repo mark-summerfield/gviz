@@ -14,18 +14,19 @@ import (
 
 type App struct {
 	*fltk.Window
-	config          *Config
-	filename        string
-	dirty           bool
-	editor          *fltk.TextEditor
-	buffer          *fltk.TextBuffer
-	highlightBuffer *fltk.TextBuffer
-	textStyles      []fltk.StyleTableEntry
-	scroll          *fltk.Scroll
-	view            *fltk.Box
-	zoomLevel       float64
-	findText        string
-	findMatchCase   bool
+	config             *Config
+	filename           string
+	dirty              bool
+	extraShapesToolbar *fltk.Flex
+	editor             *fltk.TextEditor
+	buffer             *fltk.TextBuffer
+	highlightBuffer    *fltk.TextBuffer
+	textStyles         []fltk.StyleTableEntry
+	scroll             *fltk.Scroll
+	view               *fltk.Box
+	zoomLevel          float64
+	findText           string
+	findMatchCase      bool
 }
 
 func newApp(config *Config) *App {
@@ -34,11 +35,12 @@ func newApp(config *Config) *App {
 	app.makeWidgets()
 	app.Window.End()
 	if len(os.Args) > 1 && gong.FileExists(os.Args[1]) {
-		fltk.AddTimeout(0.1, func() { app.loadFile(os.Args[1]) })
+		fltk.AddTimeout(smallTimeout, func() { app.loadFile(os.Args[1]) })
 	} else if config.LastFile != "" && gong.FileExists(config.LastFile) {
-		fltk.AddTimeout(0.1, func() { app.loadFile(config.LastFile) })
+		fltk.AddTimeout(smallTimeout,
+			func() { app.loadFile(config.LastFile) })
 	} else {
-		fltk.AddTimeout(0.1, func() {
+		fltk.AddTimeout(smallTimeout, func() {
 			app.onTextChanged(false)
 			app.dirty = false
 		})
@@ -66,7 +68,7 @@ func (me *App) makeWidgets() {
 	y += gui.ButtonHeight
 	me.makeStandardToolBar(vbox, y, width)
 	y += gui.ButtonHeight
-	me.makeExtraToolBar(vbox, y, width)
+	me.extraShapesToolbar = me.makeExtraShapesToolBar(vbox, y, width)
 	y += gui.ButtonHeight
 	height -= 2 * gui.ButtonHeight
 	tile := fltk.NewTile(x, y, width, height)
@@ -216,7 +218,8 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	vbox.Fixed(hbox, gui.ButtonHeight)
 }
 
-func (me *App) makeExtraToolBar(vbox *fltk.Flex, y, width int) {
+func (me *App) makeExtraShapesToolBar(vbox *fltk.Flex, y,
+	width int) *fltk.Flex {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
 	cdsButton := gui.MakeToolbutton(cdsSvg)
 	cdsButton.SetCallback(func() { me.onInsertShape(cdsShape) })
@@ -235,6 +238,7 @@ func (me *App) makeExtraToolBar(vbox *fltk.Flex, y, width int) {
 	}
 	hbox.End()
 	vbox.Fixed(hbox, gui.ButtonHeight)
+	return hbox
 }
 
 func (me *App) makePanels(x, y, width, height int) {

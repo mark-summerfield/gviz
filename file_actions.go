@@ -130,7 +130,7 @@ func (me *App) loadFile(filename string) {
 		me.onTextChanged(false)
 		me.updateTitle()
 		me.dirty = false
-		fltk.AddTimeout(0.1, func() { me.scroll.ScrollTo(0, 0) })
+		fltk.AddTimeout(smallTimeout, func() { me.scroll.ScrollTo(0, 0) })
 	} else {
 		me.onError(err)
 	}

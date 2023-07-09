@@ -32,7 +32,7 @@ type Config struct {
 func newConfig() *Config {
 	filename, found := gong.GetIniFile(domain, appName)
 	config := &Config{filename: filename, X: -1, Width: 800, Height: 600,
-		Scale: 1.0, TextSize: 14, Linos: true, ShowExtraShapes: true}
+		Scale: 1.0, TextSize: 14, Linos: true}
 	if found {
 		cfg, err := ini.Load(filename)
 		if err != nil {

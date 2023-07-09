@@ -19,6 +19,8 @@ import (
 func (me *App) onEvent(event fltk.Event) bool {
 	key := fltk.EventKey()
 	switch fltk.EventType() {
+	case fltk.SHOW:
+		me.onToggleExtraShapesToolbar()
 	case fltk.SHORTCUT:
 		if key == fltk.ESCAPE {
 			return true // ignore
@@ -91,6 +93,27 @@ func (me *App) onLinosChange() {
 func (me *App) clearView() {
 	me.view.SetLabelColor(fltk.BLACK)
 	me.view.SetLabel("")
+}
+
+func (me *App) onToggleExtraShapesToolbar() {
+	if me.config.ShowExtraShapes {
+		me.extraShapesToolbar.Show()
+	} else {
+		me.extraShapesToolbar.Hide()
+	}
+	timeout := 0.02
+	fltk.AddTimeout(timeout, func() {
+		fullscreen := me.Window.FullscreenActive()
+		me.Window.SetFullscreen(true)
+		fltk.AddTimeout(timeout, func() {
+			me.Window.SetFullscreen(false)
+			if fullscreen {
+				fltk.AddTimeout(timeout, func() {
+					me.Window.SetFullscreen(true)
+				})
+			}
+		})
+	})
 }
 
 func (me *App) onError(err error) {

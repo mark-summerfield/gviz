@@ -1,10 +1,5 @@
 # TODO
 #
-# Config
-#   - keep a pointer to extraShapesToolbar
-#   - config showExtraShapes bool
-#   - config_form [ ] Show E&xtra Shapes (callback to Hide|Show)
-#
 # - Find dialog (copy config_form.go):
 #
 #   Find [                ]
