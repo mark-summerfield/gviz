@@ -29,6 +29,7 @@ func (me *App) initializeEditor() {
 	})
 	me.onTextChanged(false)
 	me.onLinosChange()
+	me.editor.TakeFocus()
 }
 
 func (me *App) makeTextStyles() {

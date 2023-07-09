@@ -18,6 +18,7 @@ type App struct {
 	config             *Config
 	filename           string
 	dirty              bool
+	mainVBox           *fltk.Flex
 	standardToolbar    *fltk.Flex
 	extraShapesToolbar *fltk.Flex
 	editor             *fltk.TextEditor
@@ -77,6 +78,7 @@ func (me *App) makeWidgets() {
 	me.makePanels(x, y, width/2, height)
 	tile.End()
 	vbox.End()
+	me.mainVBox = vbox
 }
 
 func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
@@ -102,11 +104,11 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 		fltk.MENU_VALUE)
 	menuBar.AddEx("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z', me.onEditRedo,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	menuBar.AddEx("Edit/&Copy", fltk.CTRL+'c', me.editor.Copy,
+	menuBar.AddEx("Edit/&Copy", fltk.CTRL+'c', me.onEditCopy,
 		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/Cu&t", fltk.CTRL+'x', me.editor.Cut,
+	menuBar.AddEx("Edit/Cu&t", fltk.CTRL+'x', me.onEditCut,
 		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/&Paste", fltk.CTRL+'v', me.editor.Paste,
+	menuBar.AddEx("Edit/&Paste", fltk.CTRL+'v', me.onEditPaste,
 		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
 	menuBar.AddEx("Edit/&Find…", fltk.CTRL+'f', me.onEditFind,
 		fltk.MENU_VALUE)
@@ -159,20 +161,20 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y,
 	saveButton.SetTooltip("Save")
 	gui.MakeSep(y, hbox)
 	undoButton := gui.MakeToolbutton(undoSvg)
-	undoButton.SetCallback(me.editor.Undo)
+	undoButton.SetCallback(me.onEditUndo)
 	undoButton.SetTooltip("Undo")
 	redoButton := gui.MakeToolbutton(redoSvg)
-	redoButton.SetCallback(me.editor.Redo)
+	redoButton.SetCallback(me.onEditRedo)
 	redoButton.SetTooltip("Redo")
 	gui.MakeSep(y, hbox)
 	copyButton := gui.MakeToolbutton(copySvg)
-	copyButton.SetCallback(me.editor.Copy)
+	copyButton.SetCallback(me.onEditCopy)
 	copyButton.SetTooltip("Copy")
 	cutButton := gui.MakeToolbutton(cutSvg)
-	cutButton.SetCallback(me.editor.Cut)
+	cutButton.SetCallback(me.onEditCut)
 	cutButton.SetTooltip("Cut")
 	pasteButton := gui.MakeToolbutton(pasteSvg)
-	pasteButton.SetCallback(me.editor.Paste)
+	pasteButton.SetCallback(me.onEditPaste)
 	pasteButton.SetTooltip("Paste")
 	// TODO sep + find & find again
 	gui.MakeSep(y, hbox)

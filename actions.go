@@ -120,6 +120,7 @@ func (me *App) onToggleExtraShapesToolbar(refresh bool) {
 }
 
 func (me *App) refresh() {
+	// TODO replace with me.mainVBox.Layout() or me.mainVBox.InitSizes()
 	const timeout = 0.02
 	fltk.AddTimeout(timeout, func() {
 		fullscreen := me.Window.FullscreenActive()

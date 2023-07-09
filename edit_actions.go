@@ -6,16 +6,34 @@ package main
 import "fmt"
 
 func (me *App) onEditUndo() {
-	if me.editor.Changed() != 0 {
+	if me.editor != nil && me.editor.Changed() != 0 {
 		me.editor.Undo()
 		me.applySyntaxHighlighting()
 	}
 }
 
 func (me *App) onEditRedo() {
-	if me.editor.Changed() != 0 {
+	if me.editor != nil && me.editor.Changed() != 0 {
 		me.editor.Redo()
 		me.applySyntaxHighlighting()
+	}
+}
+
+func (me *App) onEditCopy() {
+	if me.editor != nil {
+		me.editor.Copy()
+	}
+}
+
+func (me *App) onEditCut() {
+	if me.editor != nil {
+		me.editor.Cut()
+	}
+}
+
+func (me *App) onEditPaste() {
+	if me.editor != nil {
+		me.editor.Paste()
 	}
 }
 
