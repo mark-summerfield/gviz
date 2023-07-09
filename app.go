@@ -18,6 +18,7 @@ type App struct {
 	config             *Config
 	filename           string
 	dirty              bool
+	standardToolbar    *fltk.Flex
 	extraShapesToolbar *fltk.Flex
 	editor             *fltk.TextEditor
 	buffer             *fltk.TextBuffer
@@ -67,7 +68,7 @@ func (me *App) makeWidgets() {
 	vbox := gui.MakeVBox(x, y, width, height, gui.Pad)
 	me.makeMenuBar(vbox, width)
 	y += gui.ButtonHeight
-	me.makeStandardToolBar(vbox, y, width)
+	me.standardToolbar = me.makeStandardToolBar(vbox, y, width)
 	y += gui.ButtonHeight
 	me.extraShapesToolbar = me.makeExtraShapesToolBar(vbox, y, width)
 	y += gui.ButtonHeight
@@ -147,7 +148,8 @@ func (me *App) makeSubmenuShapeItems(menuBar *fltk.MenuBar, submenu string,
 	}
 }
 
-func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
+func (me *App) makeStandardToolBar(vbox *fltk.Flex, y,
+	width int) *fltk.Flex {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
 	openButton := gui.MakeToolbutton(openSvg)
 	openButton.SetCallback(me.onFileOpen)
@@ -196,6 +198,7 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	}
 	hbox.End()
 	vbox.Fixed(hbox, gui.ButtonHeight)
+	return hbox
 }
 
 func (me *App) makeExtraShapesToolBar(vbox *fltk.Flex, y,

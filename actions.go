@@ -20,7 +20,9 @@ func (me *App) onEvent(event fltk.Event) bool {
 	key := fltk.EventKey()
 	switch fltk.EventType() {
 	case fltk.SHOW:
-		me.onToggleExtraShapesToolbar()
+		me.onToggleStandardToolbar(false)
+		me.onToggleExtraShapesToolbar(false)
+		me.refresh()
 	case fltk.SHORTCUT:
 		if key == fltk.ESCAPE {
 			return true // ignore
@@ -95,13 +97,30 @@ func (me *App) clearView() {
 	me.view.SetLabel("")
 }
 
-func (me *App) onToggleExtraShapesToolbar() {
+func (me *App) onToggleStandardToolbar(refresh bool) {
+	if me.config.ShowStandard {
+		me.standardToolbar.Show()
+	} else {
+		me.standardToolbar.Hide()
+	}
+	if refresh {
+		me.refresh()
+	}
+}
+
+func (me *App) onToggleExtraShapesToolbar(refresh bool) {
 	if me.config.ShowExtraShapes {
 		me.extraShapesToolbar.Show()
 	} else {
 		me.extraShapesToolbar.Hide()
 	}
-	timeout := 0.02
+	if refresh {
+		me.refresh()
+	}
+}
+
+func (me *App) refresh() {
+	const timeout = 0.02
 	fltk.AddTimeout(timeout, func() {
 		fullscreen := me.Window.FullscreenActive()
 		me.Window.SetFullscreen(true)

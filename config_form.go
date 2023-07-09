@@ -12,7 +12,7 @@ const (
 	rowHeight = 32
 	colWidth  = 60
 	width     = 240
-	height    = 260
+	height    = 300
 )
 
 func (me *App) onConfigure() {
@@ -37,6 +37,8 @@ func makeWidgets(window *fltk.Window, app *App) {
 	hbox = makeTextSizeRow(app)
 	vbox.Fixed(hbox, rowHeight)
 	button := makeLinosRow(app)
+	vbox.Fixed(button, rowHeight)
+	button = makeStandardToolbarRow(app)
 	vbox.Fixed(button, rowHeight)
 	button = makeExtraShapesRow(app)
 	vbox.Fixed(button, rowHeight)
@@ -111,6 +113,18 @@ func makeLinosRow(app *App) *fltk.CheckButton {
 	return button
 }
 
+func makeStandardToolbarRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, width, rowHeight,
+		"Sho&w Standard Toolbar")
+	button.SetTooltip("Toggles the standard toolbar")
+	button.SetValue(app.config.ShowStandard)
+	button.SetCallback(func() {
+		app.config.ShowStandard = button.Value()
+		app.onToggleStandardToolbar(true)
+	})
+	return button
+}
+
 func makeExtraShapesRow(app *App) *fltk.CheckButton {
 	button := fltk.NewCheckButton(0, 0, width, rowHeight,
 		"Show E&xtra Shapes Toolbar")
@@ -118,7 +132,7 @@ func makeExtraShapesRow(app *App) *fltk.CheckButton {
 	button.SetValue(app.config.ShowExtraShapes)
 	button.SetCallback(func() {
 		app.config.ShowExtraShapes = button.Value()
-		app.onToggleExtraShapesToolbar()
+		app.onToggleExtraShapesToolbar(true)
 	})
 	return button
 }
