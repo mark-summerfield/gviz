@@ -6,14 +6,14 @@ package main
 import "fmt"
 
 func (me *App) onEditUndo() {
-	if me.editor != nil && me.editor.Changed() != 0 {
+	if me.editor != nil {
 		me.editor.Undo()
 		me.applySyntaxHighlighting()
 	}
 }
 
 func (me *App) onEditRedo() {
-	if me.editor != nil && me.editor.Changed() != 0 {
+	if me.editor != nil {
 		me.editor.Redo()
 		me.applySyntaxHighlighting()
 	}
