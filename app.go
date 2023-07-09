@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/mark-summerfield/gong"
 	"github.com/mark-summerfield/gviz/gui"
@@ -112,20 +113,12 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 		fltk.MENU_VALUE)
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
 	menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
-	me.makeSubmenuTextItems(menuBar, "Insert/Attribute/", []string{
-		"&color=", "&fillcolor=", "&label=", "&style="})
+	me.makeSubmenuTextItems(menuBar, "Insert/Attribute/", attributes)
 	menuBar.AddEx("Insert/&Keyword", 0, nil, fltk.SUBMENU|fltk.MENU_DIVIDER)
-	me.makeSubmenuTextItems(menuBar, "Insert/Keyword/", []string{
-		"&bold", "&dashed", "d&otted", "&edge", "&filled", "&invis",
-		"&node", "&rounded", "&solid", "s&ubgraph"})
-	me.makeSubmenuShapeItems(menuBar, "Insert/", []pair{
-		{"&Box (rectangle)", boxShape}, {"&Circle", circleShape},
-		{"&Oval (ellipse)", ovalShape}, {"&Polygon", polygonShape}})
+	me.makeSubmenuTextItems(menuBar, "Insert/Keyword/", keywords)
+	me.makeSubmenuShapeItems(menuBar, "Insert/", shapeData)
 	menuBar.AddEx("Insert/E&xtra", 0, nil, fltk.SUBMENU)
-	me.makeSubmenuShapeItems(menuBar, "Insert/Extra/", []pair{
-		{"&CDS", cdsShape}, {"C&omponent", componentShape},
-		{"&Primersite", primersiteShape}, {"P&romoter", promoterShape},
-		{"&Terminator", terminatorShape}, {"&UTR", utrShape}})
+	me.makeSubmenuShapeItems(menuBar, "Insert/Extra/", extraShapeData)
 	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
 	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
 	menuBar.Add("View/Zoom &Restore", me.onViewZoomRestore)
@@ -145,17 +138,12 @@ func (me *App) makeSubmenuTextItems(menuBar *fltk.MenuBar, submenu string,
 	}
 }
 
-type pair struct {
-	menuName  string
-	shapeName string
-}
-
 func (me *App) makeSubmenuShapeItems(menuBar *fltk.MenuBar, submenu string,
-	pairs []pair) {
-	for _, pair := range pairs {
-		pair := pair
-		menuBar.Add(fmt.Sprintf(submenu+pair.menuName),
-			func() { me.onInsertShape(pair.shapeName) })
+	data []shapeDatum) {
+	for _, datum := range data {
+		datum := datum
+		menuBar.Add(fmt.Sprintf(submenu+datum.display),
+			func() { me.onInsertShape(datum.name) })
 	}
 }
 
@@ -196,22 +184,14 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 	zoomOutButton.SetCallback(me.onViewZoomOut)
 	zoomOutButton.SetTooltip("Zoom Out")
 	gui.MakeSep(y, hbox)
-	boxButton := gui.MakeToolbutton(boxSvg)
-	boxButton.SetCallback(func() { me.onInsertShape(boxShape) })
-	boxButton.SetTooltip("Insert Box (rectangle)")
-	circleButton := gui.MakeToolbutton(circleSvg)
-	circleButton.SetCallback(func() { me.onInsertShape(circleShape) })
-	circleButton.SetTooltip("Insert Circle")
-	ovalButton := gui.MakeToolbutton(ovalSvg)
-	ovalButton.SetCallback(func() { me.onInsertShape(ovalShape) })
-	ovalButton.SetTooltip("Insert Oval (ellipse)")
-	polygonButton := gui.MakeToolbutton(polygonSvg)
-	polygonButton.SetCallback(func() { me.onInsertShape(polygonShape) })
-	polygonButton.SetTooltip("Insert Polygon")
 	for _, button := range []*fltk.Button{openButton, saveButton,
 		undoButton, redoButton, copyButton, cutButton, pasteButton,
-		zoomInButton, zoomRestoreButton, zoomOutButton, boxButton,
-		circleButton, ovalButton, polygonButton} {
+		zoomInButton, zoomRestoreButton, zoomOutButton} {
+		hbox.Fixed(button, gui.ButtonHeight)
+	}
+	for _, datum := range shapeData {
+		datum := datum
+		button := me.makeShapeToolbutton(datum)
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()
@@ -221,24 +201,25 @@ func (me *App) makeStandardToolBar(vbox *fltk.Flex, y, width int) {
 func (me *App) makeExtraShapesToolBar(vbox *fltk.Flex, y,
 	width int) *fltk.Flex {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
-	cdsButton := gui.MakeToolbutton(cdsSvg)
-	cdsButton.SetCallback(func() { me.onInsertShape(cdsShape) })
-	cdsButton.SetTooltip("Insert CDS")
-	componentButton := gui.MakeToolbutton(componentSvg)
-	componentButton.SetCallback(func() { me.onInsertShape(componentShape) })
-	componentButton.SetTooltip("Insert Component")
-	primersiteButton := gui.MakeToolbutton(primersiteSvg)
-	primersiteButton.SetCallback(
-		func() { me.onInsertShape(primersiteShape) })
-	primersiteButton.SetTooltip("Insert Primersite")
-	// TODO
-	for _, button := range []*fltk.Button{cdsButton, componentButton,
-		primersiteButton} {
+	for _, datum := range extraShapeData {
+		if datum.svg == "" { // TODO delete once all icons done
+			continue
+		}
+		datum := datum
+		button := me.makeShapeToolbutton(datum)
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()
 	vbox.Fixed(hbox, gui.ButtonHeight)
 	return hbox
+}
+
+func (me *App) makeShapeToolbutton(datum shapeDatum) *fltk.Button {
+	button := gui.MakeToolbutton(datum.svg)
+	button.SetCallback(func() { me.onInsertShape(datum.name) })
+	button.SetTooltip("Insert " +
+		strings.ReplaceAll(datum.display, "&", ""))
+	return button
 }
 
 func (me *App) makePanels(x, y, width, height int) {

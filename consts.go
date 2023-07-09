@@ -19,18 +19,32 @@ const (
 	tinyTimeout  = 0.005
 	smallTimeout = 0.1
 	dotExe       = "dot"
+)
 
-	boxShape     = "box"
-	circleShape  = "circle"
-	ovalShape    = "oval"
-	polygonShape = "polygon"
+type shapeDatum struct {
+	display string
+	name    string
+	svg     string
+}
 
-	cdsShape        = "cds"
-	componentShape  = "component"
-	primersiteShape = "primersite"
-	promoterShape   = "promoter"
-	terminatorShape = "terminator"
-	utrShape        = "utr"
+var (
+	attributes = []string{"&color=", "&fillcolor=", "&label=", "&style="}
+	keywords   = []string{"&bold", "&dashed", "d&otted", "&edge", "f&alse",
+		"&filled", "&invis", "&node", "&rounded", "&solid", "s&ubgraph",
+		"&true"}
+
+	shapeData = []shapeDatum{
+		{"&Box (rectangle)", "box", boxSvg},
+		{"&Circle", "circle", circleSvg},
+		{"&Oval (ellipse)", "oval", ovalSvg},
+		{"&Polygon", "polygon", polygonSvg}}
+	// TODO remaining std shapes
+	extraShapeData = []shapeDatum{
+		{"&CDS", "cds", cdsSvg}, {"C&omponent", "component", componentSvg},
+		{"&Primersite", "primersite", primersiteSvg},
+		// TODO icons & remaining extra chapes
+		{"P&romoter", "promoter", ""}, {"&Terminator", "terminator", ""},
+		{"&UTR", "utr", ""}}
 )
 
 //go:embed data/icon.svg
