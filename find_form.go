@@ -52,6 +52,7 @@ func (me *findForm) makeFindTextRow() *fltk.Flex {
 	me.findTextInput = fltk.NewInput(0, 0, findFormWidth-colWidth,
 		rowHeight)
 	me.findTextInput.SetValue(*me.findResult.findText)
+	me.findTextInput.SetInsertPosition(0, len(*me.findResult.findText))
 	hbox.Fixed(findLabel, colWidth)
 	hbox.End()
 	findLabel.SetCallback(func() { me.findTextInput.TakeFocus() })
