@@ -1,10 +1,12 @@
 # TODO
 #
+# - Convert config_form to a type struct (like the find_form) to reduce the
+# exposed namespace
+#
 # - Add the remaining Shapes to the Insert menu:
 #
-#   point egg triangle plain diamond trapezium parallelogram house
-#   pentagon hexagon septagon octagon square star underline cylinder
-#   note tab folder box3d
+#   point egg plain diamond trapezium parallelogram house
+#   star underline cylinder note tab folder box3d
 #
 # - Add these to Insert/E&xtra/ submenu and as a separate toolbar in its
 #   own row (like the original shapes toolbar):

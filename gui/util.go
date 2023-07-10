@@ -61,3 +61,23 @@ func makeVHBox(kind fltk.FlexType, x, y, width, height,
 	box.SetSpacing(spacing)
 	return box
 }
+
+type MenuItem struct {
+	Text     string
+	Shortcut int
+	Method   func()
+	Divider  bool
+}
+
+func NewMenuItem(Text string, Shortcut int, Method func(),
+	Divider bool) MenuItem {
+	return MenuItem{Text, Shortcut, Method, Divider}
+}
+
+func MakeMenuItem(menuBar *fltk.MenuBar, item MenuItem) {
+	flag := fltk.MENU_VALUE
+	if item.Divider {
+		flag |= fltk.MENU_DIVIDER
+	}
+	menuBar.AddEx(item.Text, item.Shortcut, item.Method, flag)
+}

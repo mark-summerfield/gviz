@@ -3,13 +3,6 @@
 
 package main
 
-type menuItemDatum struct {
-	text     string
-	shortcut int
-	method   func()
-	divider  bool
-}
-
 type toolbuttonDatum struct {
 	svg    string
 	method func()

@@ -87,36 +87,39 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	me.makeFileMenu(menuBar)
 	me.makeEditMenu(menuBar)
 	me.makeInsertMenu(menuBar)
-	me.makeViewMenu(menuBar)
+	me.makeZoomMenu(menuBar)
 	me.makeHelpMenu(menuBar)
 	vbox.Fixed(menuBar, gui.ButtonHeight)
 }
 
 func (me *App) makeFileMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
-	for _, item := range []menuItemDatum{
-		{"File/&New", fltk.CTRL + 'n', me.onFileNew, false},
-		{"File/&Open", fltk.CTRL + 'o', me.onFileOpen, false},
-		{"File/&Save", fltk.CTRL + 's', me.onFileSave, false},
-		{"File/Save &As…", 0, me.onFileSaveAs, false},
-		{"File/&Export…", 0, me.onFileExport, true},
-		{"File/&Configure…", 0, me.onConfigure, true},
-		{"File/&Quit", fltk.CTRL + 'q', me.onFileQuit, false}} {
-		me.makeMenuItem(menuBar, item)
+	for _, item := range []gui.MenuItem{
+		gui.NewMenuItem("File/&New", fltk.CTRL+'n', me.onFileNew, false),
+		gui.NewMenuItem("File/&Open", fltk.CTRL+'o', me.onFileOpen, false),
+		gui.NewMenuItem("File/&Save", fltk.CTRL+'s', me.onFileSave, false),
+		gui.NewMenuItem("File/Save &As…", 0, me.onFileSaveAs, false),
+		gui.NewMenuItem("File/&Export…", 0, me.onFileExport, true),
+		gui.NewMenuItem("File/&Configure…", 0, me.onConfigure, true),
+		gui.NewMenuItem("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
+			false)} {
+		gui.MakeMenuItem(menuBar, item)
 	}
 }
 
 func (me *App) makeEditMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
-	for _, item := range []menuItemDatum{
-		{"Edit/&Undo", fltk.CTRL + 'z', me.onEditUndo, false},
-		{"Edit/&Redo", fltk.CTRL + fltk.SHIFT + 'z', me.onEditRedo, true},
-		{"Edit/&Copy", fltk.CTRL + 'c', me.onEditCopy, false},
-		{"Edit/Cu&t", fltk.CTRL + 'x', me.onEditCut, false},
-		{"Edit/&Paste", fltk.CTRL + 'v', me.onEditPaste, true},
-		{"Edit/&Find…", fltk.CTRL + 'f', me.onEditFind, false},
-		{"Edit/Find &Again", fltk.F3, me.onEditFindAgain, false}} {
-		me.makeMenuItem(menuBar, item)
+	for _, item := range []gui.MenuItem{
+		gui.NewMenuItem("Edit/&Undo", fltk.CTRL+'z', me.onEditUndo, false),
+		gui.NewMenuItem("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z',
+			me.onEditRedo, true),
+		gui.NewMenuItem("Edit/&Copy", fltk.CTRL+'c', me.onEditCopy, false),
+		gui.NewMenuItem("Edit/Cu&t", fltk.CTRL+'x', me.onEditCut, false),
+		gui.NewMenuItem("Edit/&Paste", fltk.CTRL+'v', me.onEditPaste, true),
+		gui.NewMenuItem("Edit/&Find…", fltk.CTRL+'f', me.onEditFind, false),
+		gui.NewMenuItem("Edit/Find &Again", fltk.F3, me.onEditFindAgain,
+			false)} {
+		gui.MakeMenuItem(menuBar, item)
 	}
 }
 
@@ -131,25 +134,22 @@ func (me *App) makeInsertMenu(menuBar *fltk.MenuBar) {
 	me.makeSubmenuShapeItems(menuBar, "Insert/Extra/", extraShapeData)
 }
 
-func (me *App) makeViewMenu(menuBar *fltk.MenuBar) {
-	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
-	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
-	menuBar.Add("View/Zoom &Restore", me.onViewZoomRestore)
-	menuBar.Add("View/Zoom &Out", me.onViewZoomOut)
+func (me *App) makeZoomMenu(menuBar *fltk.MenuBar) {
+	menuBar.AddEx("&Zoom", 0, nil, fltk.SUBMENU)
+	for _, item := range []gui.MenuItem{
+		gui.NewMenuItem("Zoom/&In", fltk.CTRL+'+', me.onViewZoomIn, false),
+		gui.NewMenuItem("Zoom/&Restore", fltk.CTRL+'=',
+			me.onViewZoomRestore, false),
+		gui.NewMenuItem("Zoom/&Out", fltk.CTRL+'-', me.onViewZoomOut,
+			false)} {
+		gui.MakeMenuItem(menuBar, item)
+	}
 }
 
 func (me *App) makeHelpMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
 	menuBar.AddEx("Help/&Help", fltk.F1, me.onHelpHelp, fltk.MENU_VALUE)
-}
-
-func (me *App) makeMenuItem(menuBar *fltk.MenuBar, item menuItemDatum) {
-	flag := fltk.MENU_VALUE
-	if item.divider {
-		flag |= fltk.MENU_DIVIDER
-	}
-	menuBar.AddEx(item.text, item.shortcut, item.method, flag)
 }
 
 func (me *App) makeSubmenuTextItems(menuBar *fltk.MenuBar, submenu string,

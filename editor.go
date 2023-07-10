@@ -24,9 +24,7 @@ func (me *App) initializeEditor() {
 	me.highlightBuffer = fltk.NewTextBuffer()
 	me.makeTextStyles()
 	me.editor.SetHighlightData(me.highlightBuffer, me.textStyles)
-	me.editor.SetCallback(func() {
-		me.onTextChanged(true)
-	})
+	me.editor.SetCallback(func() { me.onTextChanged(true) })
 	me.onTextChanged(false)
 	me.onLinosChange()
 	me.editor.TakeFocus()

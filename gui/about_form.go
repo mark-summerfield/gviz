@@ -10,7 +10,7 @@ import (
 )
 
 func ShowAbout(appName, descHtml, iconSvg string, textSize int) {
-	form := MakeInfoForm("About", appName, descHtml, iconSvg, 440, 300,
+	form := MakeInfoForm("About", appName, descHtml, iconSvg, 440, 320,
 		textSize, false)
 	form.SetModal()
 	form.Show()
