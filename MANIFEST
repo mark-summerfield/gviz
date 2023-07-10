@@ -1,8 +1,5 @@
 # TODO
 #
-# - Convert config_form to a type struct (like the find_form) to reduce the
-# exposed namespace
-#
 # - Add the remaining Shapes to the Insert menu:
 #
 #   point egg plain diamond trapezium parallelogram house

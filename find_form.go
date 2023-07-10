@@ -7,16 +7,13 @@ import (
 	"github.com/pwiecz/go-fltk"
 )
 
-const (
-	findFormWidth  = 260
-	findFormHeight = 120
-)
-
 type findForm struct {
 	*fltk.Window
 	findTextInput         *fltk.Input
 	findMatchCaseCheckbox *fltk.CheckButton
 	findResult            *findResult
+	width                 int
+	height                int
 }
 
 type findResult struct {
@@ -26,17 +23,17 @@ type findResult struct {
 }
 
 func newFindForm(findResult *findResult) *findForm {
-	findForm := &findForm{findResult: findResult}
-	findForm.Window = fltk.NewWindow(findFormWidth, findFormHeight)
-	findForm.SetLabel("Find — " + appName)
-	gui.AddWindowIcon(findForm.Window, iconSvg)
-	findForm.makeWidgets()
-	findForm.End()
-	return findForm
+	form := &findForm{findResult: findResult, width: 260, height: 120}
+	form.Window = fltk.NewWindow(form.width, form.height)
+	form.SetLabel("Find — " + appName)
+	gui.AddWindowIcon(form.Window, iconSvg)
+	form.makeWidgets()
+	form.End()
+	return form
 }
 
 func (me *findForm) makeWidgets() {
-	vbox := gui.MakeVBox(0, 0, findFormWidth, findFormHeight, gui.Pad)
+	vbox := gui.MakeVBox(0, 0, me.width, me.height, gui.Pad)
 	hbox := me.makeFindTextRow()
 	vbox.Fixed(hbox, rowHeight)
 	me.makeMatchCaseRow()
@@ -47,10 +44,9 @@ func (me *findForm) makeWidgets() {
 }
 
 func (me *findForm) makeFindTextRow() *fltk.Flex {
-	hbox := gui.MakeHBox(0, 0, findFormWidth, rowHeight, gui.Pad)
+	hbox := gui.MakeHBox(0, 0, me.width, rowHeight, gui.Pad)
 	findLabel := gui.MakeAccelLabel(colWidth, rowHeight, "Find &Text")
-	me.findTextInput = fltk.NewInput(0, 0, findFormWidth-colWidth,
-		rowHeight)
+	me.findTextInput = fltk.NewInput(0, 0, me.width-colWidth, rowHeight)
 	me.findTextInput.SetValue(*me.findResult.findText)
 	me.findTextInput.SetInsertPosition(0, len(*me.findResult.findText))
 	hbox.Fixed(findLabel, colWidth)
@@ -61,14 +57,14 @@ func (me *findForm) makeFindTextRow() *fltk.Flex {
 }
 
 func (me *findForm) makeMatchCaseRow() {
-	me.findMatchCaseCheckbox = fltk.NewCheckButton(0, 0,
-		findFormWidth, rowHeight, "Case &Sensitive")
+	me.findMatchCaseCheckbox = fltk.NewCheckButton(0, 0, me.width,
+		rowHeight, "Case &Sensitive")
 	me.findMatchCaseCheckbox.SetValue(*me.findResult.findMatchCase)
 }
 
 func (me *findForm) makeFindButtonRow() *fltk.Flex {
-	hbox := gui.MakeHBox(0, 0, findFormWidth, rowHeight, gui.Pad)
-	spacerWidth := (findFormWidth - gui.ButtonWidth) / 2
+	hbox := gui.MakeHBox(0, 0, me.width, rowHeight, gui.Pad)
+	spacerWidth := (me.width - gui.ButtonWidth) / 2
 	leftSpacer := gui.MakeHBox(0, 0, spacerWidth, gui.ButtonHeight, 0)
 	leftSpacer.End()
 	findButton := fltk.NewReturnButton(0, 0, gui.ButtonHeight,
