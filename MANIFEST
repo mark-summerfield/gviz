@@ -1,11 +1,9 @@
 # TODO
 #
-# - Find & Find Again toolbuttons
-#
 # - Add the remaining Shapes to the Insert menu:
 #
-#   point egg triangle plaintext plain diamond trapezium parallelogram house
-#   pentagon hexagon septagon octagon square star none underline cylinder
+#   point egg triangle plain diamond trapezium parallelogram house
+#   pentagon hexagon septagon octagon square star underline cylinder
 #   note tab folder box3d
 #
 # - Add these to Insert/E&xtra/ submenu and as a separate toolbar in its

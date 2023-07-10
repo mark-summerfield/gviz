@@ -52,6 +52,12 @@ var openSvg string
 //go:embed data/save.svg
 var saveSvg string
 
+//go:embed data/edit-undo.svg
+var undoSvg string
+
+//go:embed data/edit-redo.svg
+var redoSvg string
+
 //go:embed data/edit-copy.svg
 var copySvg string
 
@@ -61,11 +67,11 @@ var cutSvg string
 //go:embed data/edit-paste.svg
 var pasteSvg string
 
-//go:embed data/edit-redo.svg
-var redoSvg string
+//go:embed data/edit-find.svg
+var findSvg string
 
-//go:embed data/edit-undo.svg
-var undoSvg string
+//go:embed data/edit-find-again.svg
+var findAgainSvg string
 
 //go:embed data/zoom-in.svg
 var zoomInSvg string

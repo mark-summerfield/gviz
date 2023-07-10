@@ -192,7 +192,10 @@ func (me *App) makeStandardToolbuttons(y int, hbox *fltk.Flex) {
 		{copySvg, me.onEditCopy, "Copy"},
 		{cutSvg, me.onEditCut, "Cut"},
 		{pasteSvg, me.onEditPaste, "Paste"},
-		sep, // TODO sep + find & find again
+		sep,
+		{findSvg, me.onEditFind, "Find"},
+		{findAgainSvg, me.onEditFindAgain, "Find"},
+		sep,
 		{zoomInSvg, me.onViewZoomIn, "Zoom In"},
 		{zoomRestoreSvg, me.onViewZoomRestore, "Zoom Restore"},
 		{zoomOutSvg, me.onViewZoomOut, "Zoom Out"},
