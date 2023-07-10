@@ -69,6 +69,12 @@ func (me *App) onFileExport() {
 	}
 }
 
+func (me *App) onConfigure() {
+	form := makeConfigForm(me)
+	form.SetModal()
+	form.Show()
+}
+
 func (me *App) onFileQuit() {
 	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
 		gui.YesNo("Unsaved Changes — "+appName, "Save unsaved changes?",

@@ -19,6 +19,8 @@ const (
 	tinyTimeout  = 0.005
 	smallTimeout = 0.1
 	dotExe       = "dot"
+	rowHeight    = 32
+	colWidth     = 60
 )
 
 var (

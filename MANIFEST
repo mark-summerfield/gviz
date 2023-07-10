@@ -1,11 +1,5 @@
 # TODO
 #
-# - Find dialog (copy config_form.go):
-#
-#   Find [                ]
-#   [ ] Case-sensitive
-#            [&Find] [&Cancel]
-#
 # - Find & Find Again toolbuttons
 #
 # - Add the remaining Shapes to the Insert menu:
@@ -31,6 +25,7 @@ editor.go
 actions.go
 file_actions.go
 edit_actions.go
+find_form.go
 insert_actions.go
 view_actions.go
 help_actions.go

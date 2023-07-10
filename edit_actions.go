@@ -3,7 +3,11 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/pwiecz/go-fltk"
+)
 
 func (me *App) onEditUndo() {
 	if me.editor != nil {
@@ -38,7 +42,17 @@ func (me *App) onEditPaste() {
 }
 
 func (me *App) onEditFind() {
-	fmt.Println("onEditFind") // TODO
+	findResult := &findResult{findText: &me.findText,
+		findMatchCase: &me.findMatchCase}
+	form := newFindForm(findResult)
+	form.SetModal()
+	form.Show()
+	for form.IsShown() {
+		fltk.Wait(0.01)
+	}
+	if form.findResult.ok {
+		me.onEditFindAgain()
+	}
 }
 
 func (me *App) onEditFindAgain() {
