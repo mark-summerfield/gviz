@@ -117,9 +117,9 @@ func makeStandardToolbarRow(app *App) *fltk.CheckButton {
 	button := fltk.NewCheckButton(0, 0, width, rowHeight,
 		"Sho&w Standard Toolbar")
 	button.SetTooltip("Toggles the standard toolbar")
-	button.SetValue(app.config.ShowStandard)
+	button.SetValue(app.config.ShowStandardToolbar)
 	button.SetCallback(func() {
-		app.config.ShowStandard = button.Value()
+		app.config.ShowStandardToolbar = button.Value()
 		app.onToggleStandardToolbar(true)
 	})
 	return button
@@ -129,9 +129,9 @@ func makeExtraShapesRow(app *App) *fltk.CheckButton {
 	button := fltk.NewCheckButton(0, 0, width, rowHeight,
 		"Show E&xtra Shapes Toolbar")
 	button.SetTooltip("Toggles the extra shapes toolbar")
-	button.SetValue(app.config.ShowExtraShapes)
+	button.SetValue(app.config.ShowExtraShapesToolbar)
 	button.SetCallback(func() {
-		app.config.ShowExtraShapes = button.Value()
+		app.config.ShowExtraShapesToolbar = button.Value()
 		app.onToggleExtraShapesToolbar(true)
 	})
 	return button

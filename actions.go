@@ -98,7 +98,7 @@ func (me *App) clearView() {
 }
 
 func (me *App) onToggleStandardToolbar(refresh bool) {
-	if me.config.ShowStandard {
+	if me.config.ShowStandardToolbar {
 		me.standardToolbar.Show()
 	} else {
 		me.standardToolbar.Hide()
@@ -109,7 +109,7 @@ func (me *App) onToggleStandardToolbar(refresh bool) {
 }
 
 func (me *App) onToggleExtraShapesToolbar(refresh bool) {
-	if me.config.ShowExtraShapes {
+	if me.config.ShowExtraShapesToolbar {
 		me.extraShapesToolbar.Show()
 	} else {
 		me.extraShapesToolbar.Hide()

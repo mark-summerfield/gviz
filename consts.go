@@ -21,12 +21,6 @@ const (
 	dotExe       = "dot"
 )
 
-type shapeDatum struct {
-	display string
-	name    string
-	svg     string
-}
-
 var (
 	attributes = []string{"&color=", "&fillcolor=", "&label=", "&style="}
 	keywords   = []string{"&bold", "&dashed", "d&otted", "&edge", "f&alse",

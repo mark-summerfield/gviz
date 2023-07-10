@@ -84,36 +84,43 @@ func (me *App) makeWidgets() {
 func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	menuBar := fltk.NewMenuBar(0, 0, width, gui.ButtonHeight)
 	menuBar.Activate()
+	me.makeFileMenu(menuBar)
+	me.makeEditMenu(menuBar)
+	me.makeInsertMenu(menuBar)
+	me.makeViewMenu(menuBar)
+	me.makeHelpMenu(menuBar)
+	vbox.Fixed(menuBar, gui.ButtonHeight)
+}
+
+func (me *App) makeFileMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
-	menuBar.AddEx("File/&New", fltk.CTRL+'n', me.onFileNew,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("File/&Open", fltk.CTRL+'o', me.onFileOpen,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("File/&Save", fltk.CTRL+'s', me.onFileSave,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("File/Save &As…", 0, me.onFileSaveAs,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("File/&Export…", 0, me.onFileExport,
-		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	menuBar.AddEx("File/&Configure…", 0, me.onConfigure,
-		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	menuBar.AddEx("File/&Quit", fltk.CTRL+'q', me.onFileQuit,
-		fltk.MENU_VALUE)
+	for _, item := range []menuItemDatum{
+		{"File/&New", fltk.CTRL + 'n', me.onFileNew, false},
+		{"File/&Open", fltk.CTRL + 'o', me.onFileOpen, false},
+		{"File/&Save", fltk.CTRL + 's', me.onFileSave, false},
+		{"File/Save &As…", 0, me.onFileSaveAs, false},
+		{"File/&Export…", 0, me.onFileExport, true},
+		{"File/&Configure…", 0, me.onConfigure, true},
+		{"File/&Quit", fltk.CTRL + 'q', me.onFileQuit, false}} {
+		me.makeMenuItem(menuBar, item)
+	}
+}
+
+func (me *App) makeEditMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&Edit", 0, nil, fltk.SUBMENU)
-	menuBar.AddEx("Edit/&Undo", fltk.CTRL+'z', me.onEditUndo,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/&Redo", fltk.CTRL+fltk.SHIFT+'z', me.onEditRedo,
-		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	menuBar.AddEx("Edit/&Copy", fltk.CTRL+'c', me.onEditCopy,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/Cu&t", fltk.CTRL+'x', me.onEditCut,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/&Paste", fltk.CTRL+'v', me.onEditPaste,
-		fltk.MENU_VALUE|fltk.MENU_DIVIDER)
-	menuBar.AddEx("Edit/&Find…", fltk.CTRL+'f', me.onEditFind,
-		fltk.MENU_VALUE)
-	menuBar.AddEx("Edit/Find &Again", fltk.F3, me.onEditFindAgain,
-		fltk.MENU_VALUE)
+	for _, item := range []menuItemDatum{
+		{"Edit/&Undo", fltk.CTRL + 'z', me.onEditUndo, false},
+		{"Edit/&Redo", fltk.CTRL + fltk.SHIFT + 'z', me.onEditRedo, true},
+		{"Edit/&Copy", fltk.CTRL + 'c', me.onEditCopy, false},
+		{"Edit/Cu&t", fltk.CTRL + 'x', me.onEditCut, false},
+		{"Edit/&Paste", fltk.CTRL + 'v', me.onEditPaste, true},
+		{"Edit/&Find…", fltk.CTRL + 'f', me.onEditFind, false},
+		{"Edit/Find &Again", fltk.F3, me.onEditFindAgain, false}} {
+		me.makeMenuItem(menuBar, item)
+	}
+}
+
+func (me *App) makeInsertMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
 	menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
 	me.makeSubmenuTextItems(menuBar, "Insert/Attribute/", attributes)
@@ -122,14 +129,27 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	me.makeSubmenuShapeItems(menuBar, "Insert/", shapeData)
 	menuBar.AddEx("Insert/E&xtra", 0, nil, fltk.SUBMENU)
 	me.makeSubmenuShapeItems(menuBar, "Insert/Extra/", extraShapeData)
+}
+
+func (me *App) makeViewMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&View", 0, nil, fltk.SUBMENU)
 	menuBar.Add("View/Zoom &In", me.onViewZoomIn)
 	menuBar.Add("View/Zoom &Restore", me.onViewZoomRestore)
 	menuBar.Add("View/Zoom &Out", me.onViewZoomOut)
+}
+
+func (me *App) makeHelpMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&Help", 0, nil, fltk.SUBMENU)
 	menuBar.Add("Help/&About", me.onHelpAbout)
 	menuBar.AddEx("Help/&Help", fltk.F1, me.onHelpHelp, fltk.MENU_VALUE)
-	vbox.Fixed(menuBar, gui.ButtonHeight)
+}
+
+func (me *App) makeMenuItem(menuBar *fltk.MenuBar, item menuItemDatum) {
+	flag := fltk.MENU_VALUE
+	if item.divider {
+		flag |= fltk.MENU_DIVIDER
+	}
+	menuBar.AddEx(item.text, item.shortcut, item.method, flag)
 }
 
 func (me *App) makeSubmenuTextItems(menuBar *fltk.MenuBar, submenu string,
@@ -142,76 +162,69 @@ func (me *App) makeSubmenuTextItems(menuBar *fltk.MenuBar, submenu string,
 }
 
 func (me *App) makeSubmenuShapeItems(menuBar *fltk.MenuBar, submenu string,
-	data []shapeDatum) {
-	for _, datum := range data {
-		datum := datum
-		menuBar.Add(fmt.Sprintf(submenu+datum.display),
-			func() { me.onInsertShape(datum.name) })
+	shapes []shapeDatum) {
+	for _, shape := range shapes {
+		shape := shape
+		menuBar.Add(fmt.Sprintf(submenu+shape.display),
+			func() { me.onInsertShape(shape.name) })
 	}
 }
 
 func (me *App) makeStandardToolBar(vbox *fltk.Flex, y,
 	width int) *fltk.Flex {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
-	openButton := gui.MakeToolbutton(openSvg)
-	openButton.SetCallback(me.onFileOpen)
-	openButton.SetTooltip("Open")
-	saveButton := gui.MakeToolbutton(saveSvg)
-	saveButton.SetCallback(me.onFileSave)
-	saveButton.SetTooltip("Save")
-	gui.MakeSep(y, hbox)
-	undoButton := gui.MakeToolbutton(undoSvg)
-	undoButton.SetCallback(me.onEditUndo)
-	undoButton.SetTooltip("Undo")
-	redoButton := gui.MakeToolbutton(redoSvg)
-	redoButton.SetCallback(me.onEditRedo)
-	redoButton.SetTooltip("Redo")
-	gui.MakeSep(y, hbox)
-	copyButton := gui.MakeToolbutton(copySvg)
-	copyButton.SetCallback(me.onEditCopy)
-	copyButton.SetTooltip("Copy")
-	cutButton := gui.MakeToolbutton(cutSvg)
-	cutButton.SetCallback(me.onEditCut)
-	cutButton.SetTooltip("Cut")
-	pasteButton := gui.MakeToolbutton(pasteSvg)
-	pasteButton.SetCallback(me.onEditPaste)
-	pasteButton.SetTooltip("Paste")
-	// TODO sep + find & find again
-	gui.MakeSep(y, hbox)
-	zoomInButton := gui.MakeToolbutton(zoomInSvg)
-	zoomInButton.SetCallback(me.onViewZoomIn)
-	zoomInButton.SetTooltip("Zoom In")
-	zoomRestoreButton := gui.MakeToolbutton(zoomRestoreSvg)
-	zoomRestoreButton.SetCallback(me.onViewZoomRestore)
-	zoomRestoreButton.SetTooltip("Zoom Restore")
-	zoomOutButton := gui.MakeToolbutton(zoomOutSvg)
-	zoomOutButton.SetCallback(me.onViewZoomOut)
-	zoomOutButton.SetTooltip("Zoom Out")
-	gui.MakeSep(y, hbox)
-	for _, button := range []*fltk.Button{openButton, saveButton,
-		undoButton, redoButton, copyButton, cutButton, pasteButton,
-		zoomInButton, zoomRestoreButton, zoomOutButton} {
-		hbox.Fixed(button, gui.ButtonHeight)
-	}
-	for _, datum := range shapeData {
-		datum := datum
-		button := me.makeShapeToolbutton(datum)
-		hbox.Fixed(button, gui.ButtonHeight)
-	}
+	me.makeStandardToolbuttons(y, hbox)
+	me.makeStandardShapeToolbuttons(hbox)
 	hbox.End()
 	vbox.Fixed(hbox, gui.ButtonHeight)
 	return hbox
+}
+
+func (me *App) makeStandardToolbuttons(y int, hbox *fltk.Flex) {
+	sep := toolbuttonDatum{"", nil, ""}
+	for _, toolbutton := range []toolbuttonDatum{
+		{openSvg, me.onFileOpen, "Open"},
+		{saveSvg, me.onFileSave, "Save"},
+		sep,
+		{undoSvg, me.onEditUndo, "Undo"},
+		{redoSvg, me.onEditRedo, "Redo"},
+		sep,
+		{copySvg, me.onEditCopy, "Copy"},
+		{cutSvg, me.onEditCut, "Cut"},
+		{pasteSvg, me.onEditPaste, "Paste"},
+		sep, // TODO sep + find & find again
+		{zoomInSvg, me.onViewZoomIn, "Zoom In"},
+		{zoomRestoreSvg, me.onViewZoomRestore, "Zoom Restore"},
+		{zoomOutSvg, me.onViewZoomOut, "Zoom Out"},
+		sep} {
+		if toolbutton.svg == "" {
+			gui.MakeSep(y, hbox)
+		} else {
+			button := gui.MakeToolbutton(toolbutton.svg)
+			button.SetCallback(toolbutton.method)
+			button.SetTooltip(toolbutton.tip)
+			hbox.Fixed(button, gui.ButtonHeight)
+		}
+	}
+}
+
+func (me *App) makeStandardShapeToolbuttons(hbox *fltk.Flex) {
+	for _, shape := range shapeData {
+		shape := shape
+		button := me.makeShapeToolbutton(shape)
+		hbox.Fixed(button, gui.ButtonHeight)
+	}
 }
 
 func (me *App) makeExtraShapesToolBar(vbox *fltk.Flex, y,
 	width int) *fltk.Flex {
 	hbox := gui.MakeHBox(0, y, width, gui.ButtonHeight, 0)
-	for _, datum := range extraShapeData {
-		if datum.svg == "" { // TODO delete once all icons done
+	for _, shape := range extraShapeData {
+		if shape.svg == "" { // TODO delete once all icons done
 			continue
 		}
-		datum := datum
-		button := me.makeShapeToolbutton(datum)
+		shape := shape
+		button := me.makeShapeToolbutton(shape)
 		hbox.Fixed(button, gui.ButtonHeight)
 	}
 	hbox.End()
@@ -219,11 +232,11 @@ func (me *App) makeExtraShapesToolBar(vbox *fltk.Flex, y,
 	return hbox
 }
 
-func (me *App) makeShapeToolbutton(datum shapeDatum) *fltk.Button {
-	button := gui.MakeToolbutton(datum.svg)
-	button.SetCallback(func() { me.onInsertShape(datum.name) })
+func (me *App) makeShapeToolbutton(shape shapeDatum) *fltk.Button {
+	button := gui.MakeToolbutton(shape.svg)
+	button.SetCallback(func() { me.onInsertShape(shape.name) })
 	button.SetTooltip("Insert " +
-		strings.ReplaceAll(datum.display, "&", ""))
+		strings.ReplaceAll(shape.display, "&", ""))
 	return button
 }
 

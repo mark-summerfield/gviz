@@ -36,6 +36,7 @@ view_actions.go
 help_actions.go
 config.go
 config_form.go
+structs.go
 consts.go
 
 u/util.go

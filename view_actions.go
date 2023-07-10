@@ -13,6 +13,7 @@ func (me *App) onViewZoomOut() {
 
 func (me *App) zoomView(amount float64) {
 	me.zoomLevel *= amount
+	me.layout()
 	me.onTextChanged(false)
 }
 
