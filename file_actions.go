@@ -70,7 +70,7 @@ func (me *App) onFileExport() {
 }
 
 func (me *App) onConfigure() {
-	form := makeConfigForm(me)
+	form := newConfigForm(me)
 	form.SetModal()
 	form.Show()
 }

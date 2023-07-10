@@ -8,45 +8,47 @@ import (
 	"github.com/pwiecz/go-fltk"
 )
 
-const (
-	configFormWidth  = 240
-	configFormHeight = 300
-)
-
-func makeConfigForm(app *App) *fltk.Window {
-	window := fltk.NewWindow(configFormWidth, configFormHeight)
-	window.SetLabel("Configure — " + appName)
-	gui.AddWindowIcon(window, iconSvg)
-	makeConfigWidgets(window, app)
-	window.End()
-	return window
+type configForm struct {
+	*fltk.Window
+	width  int
+	height int
 }
 
-func makeConfigWidgets(window *fltk.Window, app *App) {
-	vbox := gui.MakeVBox(0, 0, configFormWidth, configFormHeight, gui.Pad)
-	hbox := makeScaleRow()
+func newConfigForm(app *App) configForm {
+	form := configForm{width: 240, height: 300}
+	form.Window = fltk.NewWindow(form.width, form.height)
+	form.Window.SetLabel("Configure — " + appName)
+	gui.AddWindowIcon(form.Window, iconSvg)
+	form.makeWidgets(app)
+	form.Window.End()
+	return form
+}
+
+func (me *configForm) makeWidgets(app *App) {
+	vbox := gui.MakeVBox(0, 0, me.width, me.height, gui.Pad)
+	hbox := me.makeScaleRow()
 	vbox.Fixed(hbox, rowHeight)
-	hbox = makeTextSizeRow(app)
+	hbox = me.makeTextSizeRow(app)
 	vbox.Fixed(hbox, rowHeight)
-	button := makeLinosRow(app)
+	button := me.makeLinosRow(app)
 	vbox.Fixed(button, rowHeight)
-	button = makeStandardToolbarRow(app)
+	button = me.makeStandardToolbarRow(app)
 	vbox.Fixed(button, rowHeight)
-	button = makeExtraShapesRow(app)
+	button = me.makeExtraShapesRow(app)
 	vbox.Fixed(button, rowHeight)
-	button = makeViewOnLeftRow(app)
+	button = me.makeViewOnLeftRow(app)
 	vbox.Fixed(button, rowHeight)
-	button = makeFormatRow(app)
+	button = me.makeFormatRow(app)
 	vbox.Fixed(button, rowHeight)
-	hbox = makeConfigButtonRow(window)
+	hbox = me.makeButtonRow()
 	vbox.Fixed(hbox, rowHeight)
 	vbox.End()
 }
 
-func makeScaleRow() *fltk.Flex {
-	hbox := gui.MakeHBox(0, 0, configFormWidth, rowHeight, gui.Pad)
+func (me *configForm) makeScaleRow() *fltk.Flex {
+	hbox := gui.MakeHBox(0, 0, me.width, rowHeight, gui.Pad)
 	scaleLabel := gui.MakeAccelLabel(colWidth, rowHeight, "&Scale")
-	scaleSpinner := makeScaleSpinner()
+	scaleSpinner := me.makeScaleSpinner()
 	scaleLabel.SetCallback(func() { scaleSpinner.TakeFocus() })
 	hbox.Fixed(scaleLabel, colWidth)
 	hbox.End()
@@ -54,7 +56,7 @@ func makeScaleRow() *fltk.Flex {
 	return hbox
 }
 
-func makeScaleSpinner() *fltk.Spinner {
+func (me *configForm) makeScaleSpinner() *fltk.Spinner {
 	spinner := fltk.NewSpinner(0, 0, colWidth, rowHeight)
 	spinner.SetTooltip("Sets the application's scale.")
 	spinner.SetType(fltk.SPINNER_FLOAT_INPUT)
@@ -68,8 +70,8 @@ func makeScaleSpinner() *fltk.Spinner {
 	return spinner
 }
 
-func makeTextSizeRow(app *App) *fltk.Flex {
-	hbox := gui.MakeHBox(0, 0, configFormWidth, rowHeight, gui.Pad)
+func (me *configForm) makeTextSizeRow(app *App) *fltk.Flex {
+	hbox := gui.MakeHBox(0, 0, me.width, rowHeight, gui.Pad)
 	sizeLabel := gui.MakeAccelLabel(gui.LabelWidth, gui.ButtonHeight,
 		"&Text Size")
 	spinner := fltk.NewSpinner(0, 0, gui.LabelWidth, gui.ButtonHeight)
@@ -92,8 +94,8 @@ func makeTextSizeRow(app *App) *fltk.Flex {
 	return hbox
 }
 
-func makeLinosRow(app *App) *fltk.CheckButton {
-	button := fltk.NewCheckButton(0, 0, configFormWidth, rowHeight,
+func (me *configForm) makeLinosRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, me.width, rowHeight,
 		"Show &Line Numbers")
 	button.SetTooltip("Toggles the editor's line numbers")
 	button.SetValue(app.config.Linos)
@@ -105,8 +107,8 @@ func makeLinosRow(app *App) *fltk.CheckButton {
 	return button
 }
 
-func makeStandardToolbarRow(app *App) *fltk.CheckButton {
-	button := fltk.NewCheckButton(0, 0, configFormWidth, rowHeight,
+func (me *configForm) makeStandardToolbarRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, me.width, rowHeight,
 		"Sho&w Standard Toolbar")
 	button.SetTooltip("Toggles the standard toolbar")
 	button.SetValue(app.config.ShowStandardToolbar)
@@ -117,8 +119,8 @@ func makeStandardToolbarRow(app *App) *fltk.CheckButton {
 	return button
 }
 
-func makeExtraShapesRow(app *App) *fltk.CheckButton {
-	button := fltk.NewCheckButton(0, 0, configFormWidth, rowHeight,
+func (me *configForm) makeExtraShapesRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, me.width, rowHeight,
 		"Show E&xtra Shapes Toolbar")
 	button.SetTooltip("Toggles the extra shapes toolbar")
 	button.SetValue(app.config.ShowExtraShapesToolbar)
@@ -129,8 +131,8 @@ func makeExtraShapesRow(app *App) *fltk.CheckButton {
 	return button
 }
 
-func makeViewOnLeftRow(app *App) *fltk.CheckButton {
-	button := fltk.NewCheckButton(0, 0, configFormWidth, rowHeight,
+func (me *configForm) makeViewOnLeftRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, me.width, rowHeight,
 		"&View on Left")
 	button.SetTooltip("if checked the view is on the left and the editor " +
 		"is on the right. If changed, quit and rerun for the setting to " +
@@ -142,8 +144,8 @@ func makeViewOnLeftRow(app *App) *fltk.CheckButton {
 	return button
 }
 
-func makeFormatRow(app *App) *fltk.CheckButton {
-	button := fltk.NewCheckButton(0, 0, configFormWidth, rowHeight,
+func (me *configForm) makeFormatRow(app *App) *fltk.CheckButton {
+	button := fltk.NewCheckButton(0, 0, me.width, rowHeight,
 		"&Format on Save")
 	button.SetTooltip("if checked the dot text will automatically " +
 		"be saved in canonical format")
@@ -154,14 +156,14 @@ func makeFormatRow(app *App) *fltk.CheckButton {
 	return button
 }
 
-func makeConfigButtonRow(window *fltk.Window) *fltk.Flex {
-	hbox := gui.MakeHBox(0, 0, configFormWidth, rowHeight, gui.Pad)
-	spacerWidth := (configFormWidth - gui.ButtonWidth) / 2
+func (me *configForm) makeButtonRow() *fltk.Flex {
+	hbox := gui.MakeHBox(0, 0, me.width, rowHeight, gui.Pad)
+	spacerWidth := (me.width - gui.ButtonWidth) / 2
 	leftSpacer := gui.MakeHBox(0, 0, spacerWidth, gui.ButtonHeight, 0)
 	leftSpacer.End()
 	button := fltk.NewButton(0, 0, gui.ButtonHeight, gui.ButtonWidth,
 		"&Close")
-	button.SetCallback(func() { window.Destroy() })
+	button.SetCallback(func() { me.Window.Destroy() })
 	righttSpacer := gui.MakeHBox(spacerWidth+gui.ButtonWidth, 0,
 		spacerWidth, gui.ButtonHeight, 0)
 	righttSpacer.End()
