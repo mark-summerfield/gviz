@@ -22,7 +22,7 @@ func (me *App) onEvent(event fltk.Event) bool {
 	case fltk.SHOW:
 		me.onToggleStandardToolbar(false)
 		me.onToggleExtraShapesToolbar(false)
-		me.layout()
+		me.mainVBox.Layout()
 		me.updateRecentFileMenu()
 	case fltk.SHORTCUT:
 		if key == fltk.ESCAPE {
@@ -105,7 +105,7 @@ func (me *App) onToggleStandardToolbar(refresh bool) {
 		me.standardToolbar.Hide()
 	}
 	if refresh {
-		me.layout()
+		me.mainVBox.Layout()
 	}
 }
 
@@ -116,14 +116,8 @@ func (me *App) onToggleExtraShapesToolbar(refresh bool) {
 		me.extraShapesToolbar.Hide()
 	}
 	if refresh {
-		me.layout()
+		me.mainVBox.Layout()
 	}
-}
-
-func (me *App) layout() {
-	me.mainVBox.Resize(me.mainVBox.X(), me.mainVBox.Y(), me.mainVBox.W(),
-		me.mainVBox.H())
-	me.mainVBox.Redraw()
 }
 
 func (me *App) onError(err error) {

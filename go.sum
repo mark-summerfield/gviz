@@ -8,10 +8,10 @@ github.com/gonutz/w32/v2 v2.10.0/go.mod h1:MgtHx0AScDVNKyB+kjyPder4xIi3XAcHS6LDD
 github.com/mark-summerfield/gong v1.4.2 h1:OdN0S/dmXFMez0GGHjt02JTSb0uYuBRyr+Z1CRT7YNU=
 github.com/mark-summerfield/gong v1.4.2/go.mod h1:5kGj4lCGcOmseSRIGGo9GQdfjWP00BDXYmlIhuLauOY=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
-github.com/pwiecz/go-fltk v0.0.0-20230702182510-3291a88387d2 h1:FAwYN+kz9uMPJEC3Fo8hJVtos7hvmh1fITfEsEGYi4U=
-github.com/pwiecz/go-fltk v0.0.0-20230702182510-3291a88387d2/go.mod h1:uMK5daOr9p+ba2BPs5QadbfaqqrHR5TGj13yWGsAsmw=
+github.com/pwiecz/go-fltk v0.0.0-20230709181941-9022f7dcc9e2 h1:5OT6MPtB9ydczCDkIj1xNjDPeO/hiZH6RIg48OraRxM=
+github.com/pwiecz/go-fltk v0.0.0-20230709181941-9022f7dcc9e2/go.mod h1:uMK5daOr9p+ba2BPs5QadbfaqqrHR5TGj13yWGsAsmw=
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/stretchr/testify v1.8.4/go.mod h1:sz/lmYIOXD/1dqDmKjjqLyZ2RngseejIcXlSw2iwfAo=
-golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df h1:UA2aFVmmsIlefxMk29Dp2juaUSth8Pyn3Tq5Y5mJGME=
-golang.org/x/exp v0.0.0-20230626212559-97b1e661b5df/go.mod h1:FXUEEKJgO7OQYeo8N01OfiKP8RXMtf6e8aTskBGqWdc=
+golang.org/x/exp v0.0.0-20230711023510-fffb14384f22 h1:FqrVOBQxQ8r/UwwXibI0KMolVhvFiGobSfdE33deHJM=
+golang.org/x/exp v0.0.0-20230711023510-fffb14384f22/go.mod h1:FXUEEKJgO7OQYeo8N01OfiKP8RXMtf6e8aTskBGqWdc=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
