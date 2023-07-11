@@ -1,10 +1,5 @@
 # TODO
 #
-# - Add the remaining Shapes to the Insert menu:
-#
-#   point egg plain diamond trapezium parallelogram house
-#   star underline cylinder note tab folder box3d
-#
 # - Add these to Insert/E&xtra/ submenu and as a separate toolbar in its
 #   own row (like the original shapes toolbar):
 #

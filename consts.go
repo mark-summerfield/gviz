@@ -32,15 +32,28 @@ var (
 
 	shapeData = []shapeDatum{
 		{"&Box (rectangle)", "box", boxSvg},
+		{"Box &3D", "box3d", box3dSvg},
 		{"&Circle", "circle", circleSvg},
+		{"C&ylinder", "cylinder", cylinderSvg},
+		{"&Diamond", "diamond", diamondSvg},
+		{"&Egg", "egg", eggSvg},
+		{"&Folder", "folder", folderSvg},
+		{"&House", "house", houseSvg},
+		{"&Note", "note", noteSvg},
 		{"&Oval (ellipse)", "oval", ovalSvg},
-		{"&Polygon", "polygon", polygonSvg}}
-	// TODO remaining std shapes
+		{"P&lain", "plain", ""},
+		{"&Polygon", "polygon", polygonSvg},
+		{"&Star", "star", starSvg},
+		{"&Tab", "tab", tabSvg},
+		{"&Underline", "underline", ""},
+		{"Trape&zium", "trapezium", trapeziumSvg}}
 	extraShapeData = []shapeDatum{
-		{"&CDS", "cds", cdsSvg}, {"C&omponent", "component", componentSvg},
+		{"&CDS", "cds", cdsSvg},
+		{"C&omponent", "component", componentSvg},
 		{"&Primersite", "primersite", primersiteSvg},
 		// TODO icons & remaining extra chapes
-		{"P&romoter", "promoter", ""}, {"&Terminator", "terminator", ""},
+		{"P&romoter", "promoter", ""},
+		{"&Terminator", "terminator", ""},
 		{"&UTR", "utr", ""}}
 )
 
@@ -92,6 +105,9 @@ var helpHtml string
 //go:embed data/box.svg
 var boxSvg string
 
+//go:embed data/box3d.svg
+var box3dSvg string
+
 //go:embed data/circle.svg
 var circleSvg string
 
@@ -100,6 +116,33 @@ var ovalSvg string
 
 //go:embed data/polygon.svg
 var polygonSvg string
+
+//go:embed data/cylinder.svg
+var cylinderSvg string
+
+//go:embed data/diamond.svg
+var diamondSvg string
+
+//go:embed data/egg.svg
+var eggSvg string
+
+//go:embed data/folder.svg
+var folderSvg string
+
+//go:embed data/house.svg
+var houseSvg string
+
+//go:embed data/note.svg
+var noteSvg string
+
+//go:embed data/star.svg
+var starSvg string
+
+//go:embed data/tab.svg
+var tabSvg string
+
+//go:embed data/trapezium.svg
+var trapeziumSvg string
 
 //go:embed data/cds.svg
 var cdsSvg string

@@ -221,8 +221,10 @@ func (me *App) makeStandardToolbuttons(y int, hbox *fltk.Flex) {
 func (me *App) makeStandardShapeToolbuttons(hbox *fltk.Flex) {
 	for _, shape := range shapeData {
 		shape := shape
-		button := me.makeShapeToolbutton(shape)
-		hbox.Fixed(button, gui.ButtonHeight)
+		if shape.svg != "" {
+			button := me.makeShapeToolbutton(shape)
+			hbox.Fixed(button, gui.ButtonHeight)
+		}
 	}
 }
 
