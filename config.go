@@ -92,14 +92,16 @@ func (me *Config) save() {
 
 func (me *Config) maybeAddRecentFile(filename string) {
 	for i, name := range me.RecentFiles {
-		if name == filename { // cut out since we'll add to front
+		if name == "" || name == filename { // cut since we'll add to front
 			me.RecentFiles = append(me.RecentFiles[:i],
 				me.RecentFiles[i+1:]...)
 			break
 		}
 	}
-	me.RecentFiles = append([]string{filename}, me.RecentFiles...)
-	if len(me.RecentFiles) > maxRecentFiles {
-		me.RecentFiles = me.RecentFiles[:maxRecentFiles]
+	if filename != "" && gong.FileExists(filename) {
+		me.RecentFiles = append([]string{filename}, me.RecentFiles...)
+		if len(me.RecentFiles) > maxRecentFiles {
+			me.RecentFiles = me.RecentFiles[:maxRecentFiles]
+		}
 	}
 }

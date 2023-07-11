@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 
 	"github.com/mark-summerfield/gong"
@@ -122,7 +123,7 @@ func (me *App) maybeSave(saveAs bool) bool {
 			me.onError(err)
 			return false
 		} else {
-			me.config.maybeAddRecentFile(me.filename)
+			me.updateRecentFileMenu()
 			me.dirty = false
 		}
 	}
@@ -136,7 +137,7 @@ func (me *App) loadFile(filename string) {
 		me.buffer.SetText(string(raw))
 		me.onTextChanged(false)
 		me.updateTitle()
-		me.config.maybeAddRecentFile(me.filename)
+		me.updateRecentFileMenu()
 		me.dirty = false
 		fltk.AddTimeout(smallTimeout, func() { me.scroll.ScrollTo(0, 0) })
 	} else {
@@ -198,4 +199,21 @@ func (me *App) getTempDot() (*os.File, error) {
 		return nil, err
 	}
 	return tempdot, nil
+}
+
+func (me *App) updateRecentFileMenu() {
+	me.config.maybeAddRecentFile(me.filename)
+	rx := regexp.MustCompile(`^&\d `)
+	// Delete old recent files
+	for i := me.menuBar.Size() - 1; i >= 0; i-- {
+		if rx.MatchString(me.menuBar.Text(i)) {
+			me.menuBar.Remove(i)
+		}
+	}
+	for i, filename := range me.config.RecentFiles {
+		filename := filename
+		me.menuBar.Add(fmt.Sprintf("File/Open Recent/&%d %s", i+1,
+			strings.ReplaceAll(filename, "/", "\\/")),
+			func() { me.loadFile(filename) })
+	}
 }

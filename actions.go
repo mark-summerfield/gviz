@@ -23,6 +23,7 @@ func (me *App) onEvent(event fltk.Event) bool {
 		me.onToggleStandardToolbar(false)
 		me.onToggleExtraShapesToolbar(false)
 		me.layout()
+		me.updateRecentFileMenu()
 	case fltk.SHORTCUT:
 		if key == fltk.ESCAPE {
 			return true // ignore

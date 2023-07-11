@@ -18,6 +18,7 @@ type App struct {
 	config             *Config
 	filename           string
 	dirty              bool
+	menuBar            *fltk.MenuBar
 	mainVBox           *fltk.Flex
 	standardToolbar    *fltk.Flex
 	extraShapesToolbar *fltk.Flex
@@ -90,14 +91,19 @@ func (me *App) makeMenuBar(vbox *fltk.Flex, width int) {
 	me.makeZoomMenu(menuBar)
 	me.makeHelpMenu(menuBar)
 	vbox.Fixed(menuBar, gui.ButtonHeight)
+	me.menuBar = menuBar
 }
 
 func (me *App) makeFileMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&File", 0, nil, fltk.SUBMENU)
 	for _, item := range []gui.MenuItem{
 		gui.NewMenuItem("File/&New", fltk.CTRL+'n', me.onFileNew, false),
-		gui.NewMenuItem("File/&Open", fltk.CTRL+'o', me.onFileOpen, false),
-		gui.NewMenuItem(recentFilesMenuText, 0, nil, false),
+		gui.NewMenuItem("File/&Open", fltk.CTRL+'o', me.onFileOpen,
+			false)} {
+		gui.MakeMenuItem(menuBar, item)
+	}
+	menuBar.AddEx("File/Open &Recent", 0, nil, fltk.SUBMENU)
+	for _, item := range []gui.MenuItem{
 		gui.NewMenuItem("File/&Save", fltk.CTRL+'s', me.onFileSave, false),
 		gui.NewMenuItem("File/Save &As…", 0, me.onFileSaveAs, false),
 		gui.NewMenuItem("File/&Export…", 0, me.onFileExport, true),

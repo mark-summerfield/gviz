@@ -11,8 +11,6 @@
 #   restrictionsite fivepoverhang threepoverhang noverhang assembly
 #   signature insulator ribosite rnastab proteasesite proteinstab rpromoter
 #   rarrow larrow lpromoter
-#
-# - File→Open &Recent...
 
 gviz.go
 app.go
