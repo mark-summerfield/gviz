@@ -97,6 +97,7 @@ func (me *App) makeFileMenu(menuBar *fltk.MenuBar) {
 	for _, item := range []gui.MenuItem{
 		gui.NewMenuItem("File/&New", fltk.CTRL+'n', me.onFileNew, false),
 		gui.NewMenuItem("File/&Open", fltk.CTRL+'o', me.onFileOpen, false),
+		gui.NewMenuItem(recentFilesMenuText, 0, nil, false),
 		gui.NewMenuItem("File/&Save", fltk.CTRL+'s', me.onFileSave, false),
 		gui.NewMenuItem("File/Save &As…", 0, me.onFileSaveAs, false),
 		gui.NewMenuItem("File/&Export…", 0, me.onFileExport, true),

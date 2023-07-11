@@ -122,6 +122,7 @@ func (me *App) maybeSave(saveAs bool) bool {
 			me.onError(err)
 			return false
 		} else {
+			me.config.maybeAddRecentFile(me.filename)
 			me.dirty = false
 		}
 	}
@@ -135,6 +136,7 @@ func (me *App) loadFile(filename string) {
 		me.buffer.SetText(string(raw))
 		me.onTextChanged(false)
 		me.updateTitle()
+		me.config.maybeAddRecentFile(me.filename)
 		me.dirty = false
 		fltk.AddTimeout(smallTimeout, func() { me.scroll.ScrollTo(0, 0) })
 	} else {

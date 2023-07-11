@@ -13,8 +13,6 @@
 #   rarrow larrow lpromoter
 #
 # - File→Open &Recent...
-#
-# - Edit→&Replace...
 
 gviz.go
 app.go

@@ -28,6 +28,7 @@ type Config struct {
 	AutoFormat             bool
 	ShowStandardToolbar    bool
 	ShowExtraShapesToolbar bool
+	RecentFiles            []string
 }
 
 func newConfig() *Config {
@@ -58,7 +59,13 @@ func newConfig() *Config {
 					config.TextSize = 14
 				}
 			}
-
+			recentFiles := make([]string, 0, len(config.RecentFiles))
+			for _, filename := range config.RecentFiles {
+				if gong.FileExists(filename) {
+					recentFiles = append(recentFiles, filename)
+				}
+			}
+			config.RecentFiles = recentFiles
 		}
 	}
 	return config
@@ -80,5 +87,19 @@ func (me *Config) save() {
 		if err != nil {
 			fmt.Println("save #2", me.filename, err)
 		}
+	}
+}
+
+func (me *Config) maybeAddRecentFile(filename string) {
+	for i, name := range me.RecentFiles {
+		if name == filename { // cut out since we'll add to front
+			me.RecentFiles = append(me.RecentFiles[:i],
+				me.RecentFiles[i+1:]...)
+			break
+		}
+	}
+	me.RecentFiles = append([]string{filename}, me.RecentFiles...)
+	if len(me.RecentFiles) > maxRecentFiles {
+		me.RecentFiles = me.RecentFiles[:maxRecentFiles]
 	}
 }
