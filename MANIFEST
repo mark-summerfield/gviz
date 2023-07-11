@@ -1,6 +1,8 @@
 # TODO
 #
-# - Add these to extra shapes toolbar:
+# (1) Move some shapes from std to extra toolbar
+#
+# (2) Add to extra shapes toolbar:
 #
 #   restrictionsite fivepoverhang threepoverhang noverhang assembly
 #   signature insulator ribosite rnastab proteasesite proteinstab rpromoter
