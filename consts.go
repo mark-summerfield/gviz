@@ -32,25 +32,23 @@ var (
 
 	shapeData = []shapeDatum{
 		{"&Box (rectangle)", "box", boxSvg},
-		{"Box &3D", "box3d", box3dSvg},
 		{"&Circle", "circle", circleSvg},
 		{"C&ylinder", "cylinder", cylinderSvg},
 		{"&Diamond", "diamond", diamondSvg},
-		{"&Egg", "egg", eggSvg},
 		{"&Folder", "folder", folderSvg},
 		{"&House", "house", houseSvg},
 		{"&Note", "note", noteSvg},
 		{"&Oval (ellipse)", "oval", ovalSvg},
 		{"P&lain", "plain", ""},
 		{"&Polygon", "polygon", polygonSvg},
-		{"&Star", "star", starSvg},
 		{"&Tab", "tab", tabSvg},
-		{"Trape&zium", "trapezium", trapeziumSvg},
-		{"&Underline", "underline", ""}}
-	extraShapeData = []shapeDatum{ // TODO icons & remaining extra chapes
-		{"Assembly", "assembly", ""},
-		{"C&DS", "cds", cdsSvg},
+		{"Trape&zium", "trapezium", trapeziumSvg}}
+	extraShapeData = []shapeDatum{ // TODO missing icons
+		{"Assembl&y", "assembly", ""},
+		{"&Box 3D", "box3d", box3dSvg},
+		{"CDS", "cds", cdsSvg},
 		{"&Component", "component", componentSvg},
+		{"&Egg", "egg", eggSvg},
 		{"&Fivepoverhang", "fivepoverhang", ""},
 		{"&Insulator", "insulator", ""},
 		{"L&arrow", "larrow", ""},
@@ -58,16 +56,18 @@ var (
 		{"&Noverhang", "noverhang", ""},
 		{"Primersite", "primersite", primersiteSvg},
 		{"Promoter", "promoter", promoterSvg},
-		{"Pr&oteasesite", "proteasesite", ""},
+		{"Proteasesite", "proteasesite", ""},
 		{"&Proteinstab", "proteinstab", ""},
 		{"Rarro&w", "rarrow", ""},
-		{"R&estrictionsite", "restrictionsite", ""},
-		{"Ri&bosite", "ribosite", ""},
+		{"Restrictionsite", "restrictionsite", ""},
+		{"Rib&osite", "ribosite", ""},
 		{"&Rnastab", "rnastab", ""},
 		{"Rpro&moter", "rpromoter", ""},
-		{"&Signature", "signature", ""},
+		{"Si&gnature", "signature", ""},
+		{"&Star", "star", starSvg},
 		{"&Terminator", "terminator", terminatorSvg},
 		{"T&hreepoverhang", "threepoverhang", ""},
+		{"Un&derline", "underline", ""},
 		{"&UTR", "utr", utrSvg}}
 )
 

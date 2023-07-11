@@ -1,8 +1,6 @@
 # TODO
 #
-# (1) Move some shapes from std to extra toolbar
-#
-# (2) Add to extra shapes toolbar:
+# - Add to extra shapes toolbar all those missing icons, e.g.:
 #
 #   restrictionsite fivepoverhang threepoverhang noverhang assembly
 #   signature insulator ribosite rnastab proteasesite proteinstab rpromoter
