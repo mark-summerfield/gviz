@@ -45,16 +45,30 @@ var (
 		{"&Polygon", "polygon", polygonSvg},
 		{"&Star", "star", starSvg},
 		{"&Tab", "tab", tabSvg},
-		{"&Underline", "underline", ""},
-		{"Trape&zium", "trapezium", trapeziumSvg}}
-	extraShapeData = []shapeDatum{
-		{"&CDS", "cds", cdsSvg},
-		{"C&omponent", "component", componentSvg},
-		{"&Primersite", "primersite", primersiteSvg},
-		// TODO icons & remaining extra chapes
-		{"P&romoter", "promoter", ""},
-		{"&Terminator", "terminator", ""},
-		{"&UTR", "utr", ""}}
+		{"Trape&zium", "trapezium", trapeziumSvg},
+		{"&Underline", "underline", ""}}
+	extraShapeData = []shapeDatum{ // TODO icons & remaining extra chapes
+		{"Assembly", "assembly", ""},
+		{"C&DS", "cds", cdsSvg},
+		{"&Component", "component", componentSvg},
+		{"&Fivepoverhang", "fivepoverhang", ""},
+		{"&Insulator", "insulator", ""},
+		{"L&arrow", "larrow", ""},
+		{"&Lpromoter", "lpromoter", ""},
+		{"&Noverhang", "noverhang", ""},
+		{"Primersite", "primersite", primersiteSvg},
+		{"Promoter", "promoter", promoterSvg},
+		{"Pr&oteasesite", "proteasesite", ""},
+		{"&Proteinstab", "proteinstab", ""},
+		{"Rarro&w", "rarrow", ""},
+		{"R&estrictionsite", "restrictionsite", ""},
+		{"Ri&bosite", "ribosite", ""},
+		{"&Rnastab", "rnastab", ""},
+		{"Rpro&moter", "rpromoter", ""},
+		{"&Signature", "signature", ""},
+		{"&Terminator", "terminator", terminatorSvg},
+		{"T&hreepoverhang", "threepoverhang", ""},
+		{"&UTR", "utr", utrSvg}}
 )
 
 //go:embed data/icon.svg
@@ -152,3 +166,12 @@ var componentSvg string
 
 //go:embed data/primersite.svg
 var primersiteSvg string
+
+//go:embed data/promoter.svg
+var promoterSvg string
+
+//go:embed data/terminator.svg
+var terminatorSvg string
+
+//go:embed data/utr.svg
+var utrSvg string
