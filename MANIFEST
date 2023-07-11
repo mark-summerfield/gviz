@@ -1,7 +1,6 @@
 # TODO
 #
-# - Add these to Insert/E&xtra/ submenu and as a separate toolbar in its
-#   own row (like the original shapes toolbar):
+# - Add these to extra shapes toolbar:
 #
 #   restrictionsite fivepoverhang threepoverhang noverhang assembly
 #   signature insulator ribosite rnastab proteasesite proteinstab rpromoter
