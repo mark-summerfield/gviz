@@ -1,11 +1,3 @@
-# TODO
-#
-# - Add to extra shapes toolbar all those missing icons, e.g.:
-#
-#   restrictionsite fivepoverhang threepoverhang noverhang assembly
-#   signature insulator ribosite rnastab proteasesite proteinstab rpromoter
-#   rarrow larrow lpromoter
-
 gviz.go
 app.go
 editor.go

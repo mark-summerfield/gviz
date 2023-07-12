@@ -43,30 +43,30 @@ var (
 		{"&Polygon", "polygon", polygonSvg},
 		{"&Tab", "tab", tabSvg},
 		{"Trape&zium", "trapezium", trapeziumSvg}}
-	extraShapeData = []shapeDatum{ // TODO missing icons
-		{"Assembl&y", "assembly", ""},
+	extraShapeData = []shapeDatum{
+		{"Assembl&y", "assembly", assemblySvg},
 		{"&Box 3D", "box3d", box3dSvg},
 		{"CDS", "cds", cdsSvg},
 		{"&Component", "component", componentSvg},
 		{"&Egg", "egg", eggSvg},
-		{"&Fivepoverhang", "fivepoverhang", ""},
-		{"&Insulator", "insulator", ""},
-		{"L&arrow", "larrow", ""},
-		{"&Lpromoter", "lpromoter", ""},
-		{"&Noverhang", "noverhang", ""},
+		{"&Fivepoverhang", "fivepoverhang", fivepoverhangSvg},
+		{"&Insulator", "insulator", insulatorSvg},
+		{"L&arrow", "larrow", larrowSvg},
+		{"Lpromoter", "lpromoter", lpromoterSvg},
+		{"&Noverhang", "noverhang", noverhangSvg},
 		{"Primersite", "primersite", primersiteSvg},
 		{"Promoter", "promoter", promoterSvg},
-		{"Proteasesite", "proteasesite", ""},
-		{"&Proteinstab", "proteinstab", ""},
-		{"Rarro&w", "rarrow", ""},
-		{"Restrictionsite", "restrictionsite", ""},
-		{"Rib&osite", "ribosite", ""},
-		{"&Rnastab", "rnastab", ""},
-		{"Rpro&moter", "rpromoter", ""},
-		{"Si&gnature", "signature", ""},
+		{"Proteasesite", "proteasesite", proteasesiteSvg},
+		{"&Proteinstab", "proteinstab", proteinstabSvg},
+		{"Rarro&w", "rarrow", rarrowSvg},
+		{"Restrictionsite", "restrictionsite", restrictionsiteSvg},
+		{"Rib&osite", "ribosite", ribositeSvg},
+		{"&Rnastab", "rnastab", rnastabSvg},
+		{"Rpro&moter", "rpromoter", rpromoterSvg},
+		{"Si&gnature", "signature", signatureSvg},
 		{"&Star", "star", starSvg},
 		{"&Terminator", "terminator", terminatorSvg},
-		{"T&hreepoverhang", "threepoverhang", ""},
+		{"T&hreepoverhang", "threepoverhang", threepoverhangSvg},
 		{"Un&derline", "underline", ""},
 		{"&UTR", "utr", utrSvg}}
 )
@@ -175,3 +175,48 @@ var terminatorSvg string
 
 //go:embed data/utr.svg
 var utrSvg string
+
+//go:embed data/assembly.svg
+var assemblySvg string
+
+//go:embed data/fivepoverhang.svg
+var fivepoverhangSvg string
+
+//go:embed data/insulator.svg
+var insulatorSvg string
+
+//go:embed data/larrow.svg
+var larrowSvg string
+
+//go:embed data/lpromoter.svg
+var lpromoterSvg string
+
+//go:embed data/noverhang.svg
+var noverhangSvg string
+
+//go:embed data/proteasesite.svg
+var proteasesiteSvg string
+
+//go:embed data/threepoverhang.svg
+var threepoverhangSvg string
+
+//go:embed data/proteinstab.svg
+var proteinstabSvg string
+
+//go:embed data/rarrow.svg
+var rarrowSvg string
+
+//go:embed data/restrictionsite.svg
+var restrictionsiteSvg string
+
+//go:embed data/ribosite.svg
+var ribositeSvg string
+
+//go:embed data/rnastab.svg
+var rnastabSvg string
+
+//go:embed data/rpromoter.svg
+var rpromoterSvg string
+
+//go:embed data/signature.svg
+var signatureSvg string

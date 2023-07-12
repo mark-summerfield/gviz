@@ -13,7 +13,14 @@ import (
 )
 
 func (me *App) onInsertWord(word string) {
-	me.editor.InsertText(strings.ReplaceAll(word, "&", ""))
+	text := strings.ReplaceAll(word, "&", "")
+	i, j := me.buffer.GetSelectionPosition()
+	if i < j {
+		me.buffer.ReplaceSelection(text)
+		me.editor.SetInsertPosition(i + len(text))
+	} else {
+		me.editor.InsertText(text)
+	}
 	me.onTextChanged(true)
 }
 
@@ -25,7 +32,13 @@ func (me *App) onInsertShape(shape string) {
 	} else {
 		text = fmt.Sprintf("n%d [shape=%s]", nodeId, shape)
 	}
-	me.editor.InsertText(text)
+	i, j := me.buffer.GetSelectionPosition()
+	if i < j {
+		me.buffer.ReplaceSelection(text)
+		me.editor.SetInsertPosition(i + len(text))
+	} else {
+		me.editor.InsertText(text)
+	}
 	me.onTextChanged(true)
 }
 
