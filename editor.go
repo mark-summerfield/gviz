@@ -98,7 +98,7 @@ func (me *App) onEditorEvent(event fltk.Event) bool {
 func (me *App) onEditorEnter() bool {
 	j := me.editor.GetInsertPosition()
 	text := me.buffer.Text()
-	if j < 0 || text == "" {
+	if j <= 0 || text == "" {
 		return false
 	}
 	raw := []byte(text)
@@ -124,7 +124,7 @@ func (me *App) onEditorEnter() bool {
 func (me *App) onEditorBackspace(ctrl bool) bool {
 	j := me.editor.GetInsertPosition()
 	text := me.buffer.Text()
-	if j < 0 || text == "" {
+	if j <= 0 || text == "" {
 		return false
 	}
 	raw := []byte(text)
@@ -157,7 +157,7 @@ func (me *App) onEditorBackspace(ctrl bool) bool {
 func (me *App) onEditorDelete(ctrl bool) bool {
 	i := me.editor.GetInsertPosition()
 	text := me.buffer.Text()
-	if i < 0 || text == "" {
+	if i <= 0 || text == "" {
 		return false
 	}
 	if ctrl {
