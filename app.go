@@ -134,6 +134,8 @@ func (me *App) makeInsertMenu(menuBar *fltk.MenuBar) {
 	menuBar.AddEx("&Insert", 0, nil, fltk.SUBMENU)
 	menuBar.AddEx("Insert/&Attribute", 0, nil, fltk.SUBMENU)
 	me.makeSubmenuTextItems(menuBar, "Insert/Attribute/", attributes)
+	menuBar.AddEx("Insert/&HTML", 0, nil, fltk.SUBMENU)
+	me.makeSubmenuTextItems(menuBar, "Insert/HTML/", htmlwords)
 	menuBar.AddEx("Insert/&Keyword", 0, nil, fltk.SUBMENU|fltk.MENU_DIVIDER)
 	me.makeSubmenuTextItems(menuBar, "Insert/Keyword/", keywords)
 	me.makeSubmenuShapeItems(menuBar, "Insert/", shapeData)

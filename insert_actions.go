@@ -14,12 +14,36 @@ import (
 
 func (me *App) onInsertWord(word string) {
 	text := strings.ReplaceAll(word, "&", "")
+	tag := true
+	switch text {
+	case "bold tag":
+		text = "<b></b>"
+	case "font tag":
+		text = "<font></font>"
+	case "italic tag":
+		text = "<i></i>"
+	case "table tag":
+		text = "<table></table>"
+	case "tr (row) tag":
+		text = "<tr></tr>"
+	case "td (cell) tag":
+		text = "<td></td>"
+	default:
+		tag = false
+	}
+	offset := 0
+	if tag {
+		offset = len(text) - strings.IndexByte(text, '/') + 1
+	}
 	i, j := me.buffer.GetSelectionPosition()
 	if i < j {
 		me.buffer.ReplaceSelection(text)
 		me.editor.SetInsertPosition(i + len(text))
 	} else {
 		me.editor.InsertText(text)
+	}
+	if tag {
+		me.editor.SetInsertPosition(me.editor.GetInsertPosition() - offset)
 	}
 	me.onTextChanged(true)
 }

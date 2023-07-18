@@ -29,6 +29,9 @@ var (
 	keywords   = []string{"&bold", "&dashed", "d&otted", "&edge", "f&alse",
 		"&filled", "&invis", "&node", "&rounded", "&solid", "s&ubgraph",
 		"&true"}
+	htmlwords = []string{"&bold tag", "b&gcolor=", "&colspan=",
+		"&font tag", "&italic tag", "r&owspan=", "&table tag",
+		"t&r (row) tag", "t&d (cell) tag"}
 
 	shapeData = []shapeDatum{
 		{"&Box (rectangle)", "box", boxSvg},
@@ -36,7 +39,7 @@ var (
 		{"C&ylinder", "cylinder", cylinderSvg},
 		{"&Diamond", "diamond", diamondSvg},
 		{"&Folder", "folder", folderSvg},
-		{"&House", "house", houseSvg},
+		{"Ho&use", "house", houseSvg},
 		{"&Note", "note", noteSvg},
 		{"&Oval (ellipse)", "oval", ovalSvg},
 		{"P&lain", "plain", ""},

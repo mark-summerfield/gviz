@@ -41,6 +41,7 @@ func (me *App) onFileOpen() {
 
 func (me *App) onFileSave() {
 	me.maybeSave(false)
+	me.updateTitle()
 }
 
 func (me *App) onFileSaveAs() {
@@ -147,8 +148,12 @@ func (me *App) loadFile(filename string) {
 
 func (me *App) updateTitle() {
 	if me.filename != "" {
-		me.Window.SetLabel(fmt.Sprintf("%s — %s", appName,
-			filepath.Base(me.filename)))
+		mod := ""
+		if me.dirty {
+			mod = " *"
+		}
+		me.Window.SetLabel(fmt.Sprintf("%s — %s%s", appName,
+			filepath.Base(me.filename), mod))
 	} else {
 		me.Window.SetLabel(appName)
 	}

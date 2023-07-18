@@ -44,6 +44,9 @@ func (me *App) onTextChanged(changed bool) {
 	if changed {
 		me.dirty = true
 	}
+	if me.dirty {
+		me.updateTitle()
+	}
 	me.applySyntaxHighlighting()
 	temppng := fmt.Sprintf("gviz-%d.png", os.Getpid())
 	if err := me.saveGraph(temppng); err != nil {
