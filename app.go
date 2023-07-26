@@ -60,7 +60,7 @@ func (me *App) makeMainWindow() {
 	me.Window.Resizable(me.Window)
 	me.Window.SetEventHandler(me.onEvent)
 	me.Window.SetLabel(appName)
-	gui.AddWindowIcon(me.Window, iconSvg)
+	gui.AddWindowIcon(me.Window, getEmbStr(iconSvg))
 }
 
 func (me *App) makeWidgets() {
@@ -212,7 +212,7 @@ func (me *App) makeStandardToolbuttons(y int, hbox *fltk.Flex) {
 		if toolbutton.svg == "" {
 			gui.MakeSep(y, hbox)
 		} else {
-			button := gui.MakeToolbutton(toolbutton.svg)
+			button := gui.MakeToolbutton(getEmbStr(toolbutton.svg))
 			button.SetCallback(toolbutton.method)
 			button.SetTooltip(toolbutton.tip)
 			hbox.Fixed(button, gui.ButtonHeight)
@@ -247,7 +247,7 @@ func (me *App) makeExtraShapesToolBar(vbox *fltk.Flex, y,
 }
 
 func (me *App) makeShapeToolbutton(shape shapeDatum) *fltk.Button {
-	button := gui.MakeToolbutton(shape.svg)
+	button := gui.MakeToolbutton(getEmbStr(shape.svg))
 	button.SetCallback(func() { me.onInsertShape(shape.name) })
 	button.SetTooltip("Insert " +
 		strings.ReplaceAll(shape.display, "&", ""))

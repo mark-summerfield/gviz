@@ -26,7 +26,7 @@ func newFindForm(findResult *findResult) *findForm {
 	form := &findForm{findResult: findResult, width: 260, height: 120}
 	form.Window = fltk.NewWindow(form.width, form.height)
 	form.SetLabel("Find — " + appName)
-	gui.AddWindowIcon(form.Window, iconSvg)
+	gui.AddWindowIcon(form.Window, getEmbStr(iconSvg))
 	form.makeWidgets()
 	form.End()
 	return form

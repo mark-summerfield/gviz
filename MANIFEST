@@ -12,6 +12,7 @@ config.go
 config_form.go
 structs.go
 consts.go
+embedded.go
 
 u/util.go
 gui/util.go

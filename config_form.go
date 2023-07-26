@@ -18,7 +18,7 @@ func newConfigForm(app *App) configForm {
 	form := configForm{width: 240, height: 300}
 	form.Window = fltk.NewWindow(form.width, form.height)
 	form.Window.SetLabel("Configure — " + appName)
-	gui.AddWindowIcon(form.Window, iconSvg)
+	gui.AddWindowIcon(form.Window, getEmbStr(iconSvg))
 	form.makeWidgets(app)
 	form.Window.End()
 	return form

@@ -80,7 +80,7 @@ func (me *App) onConfigure() {
 func (me *App) onFileQuit() {
 	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
 		gui.YesNo("Unsaved Changes — "+appName, "Save unsaved changes?",
-			iconSvg, me.config.TextSize) == gui.YES &&
+			getEmbStr(iconSvg), me.config.TextSize) == gui.YES &&
 		!me.maybeSave(false) {
 		return
 	}
@@ -163,7 +163,8 @@ func (me *App) clear() {
 	me.filename = ""
 	me.buffer.SetText(defaultText)
 	me.updateTitle()
-	if png, err := fltk.NewPngImageFromData(dummyPng); err == nil {
+	if png, err := fltk.NewPngImageFromData(
+		getEmbRaw(dummyPng)); err == nil {
 		me.view.SetImage(png)
 	}
 	me.view.SetLabelColor(fltk.BLUE)
