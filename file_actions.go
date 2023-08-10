@@ -78,11 +78,17 @@ func (me *App) onConfigure() {
 }
 
 func (me *App) onFileQuit() {
-	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" &&
-		gui.YesNo("Unsaved Changes — "+appName, "Save unsaved changes?",
-			getEmbStr(iconSvg), me.config.TextSize) == gui.YES &&
-		!me.maybeSave(false) {
-		return
+	if me.dirty && strings.TrimSpace(me.buffer.Text()) != "" {
+		switch gui.Ask("Unsaved Changes — "+appName,
+			"Save unsaved changes?", getEmbStr(iconSvg), me.config.TextSize,
+			"&Save", "&Don't Save", "&Cancel") {
+		case gui.BUTTON_ONE: // save
+			if !me.maybeSave(false) { // don't quit if save fails
+				return
+			}
+		case gui.BUTTON_THREE:
+			return // don't save and don't quit
+		}
 	}
 	me.config.X = me.Window.X()
 	me.config.Y = me.Window.Y()

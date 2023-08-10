@@ -1,5 +1,5 @@
 // Copyright © 2023 Mark Summerfield. All rights reserved.
-// License: GPL-3
+// License: Apache-2.0
 
 package gui
 
@@ -8,26 +8,19 @@ import (
 )
 
 const (
-	CANCELED = 0
-	OK       = 1
-	YES      = 1
-	CANCEL   = 2
-	NO       = 2
+	BUTTON_ONE   = 1
+	BUTTON_TWO   = 2
+	BUTTON_THREE = 3
 )
 
-func YesNo(title, bodyText, iconSvg string, textSize int) int {
-	return ask(title, bodyText, iconSvg, textSize, "&Yes", "&No")
-}
-
-// func OkCancel(title, bodyText, iconSvg string, textSize int) int {
-// 	return ask(title, bodyText, iconSvg, textSize, "&OK", "&Cancel")
-// }
-
-func ask(title, bodyText, iconSvg string, textSize int, text1,
-	text2 string) int {
-	result := CANCELED
+func Ask(title, bodyText, iconSvg string, textSize int, text1,
+	text2, text3 string) int {
+	result := BUTTON_TWO
+	if text3 != "" {
+		result = BUTTON_THREE
+	}
 	form := makeAskForm(title, bodyText, iconSvg, textSize, text1, text2,
-		&result)
+		text3, &result)
 	form.SetModal()
 	form.Show()
 	for form.IsShown() {
@@ -37,11 +30,12 @@ func ask(title, bodyText, iconSvg string, textSize int, text1,
 }
 
 func makeAskForm(title, bodyText, iconSvg string, textSize int, text1,
-	text2 string, result *int) *fltk.Window {
-	const (
-		width  = 320
-		height = 140
-	)
+	text2, text3 string, result *int) *fltk.Window {
+	const height = 160
+	width := 320
+	if text3 != "" {
+		width += ButtonWidth / 2
+	}
 	window := fltk.NewWindow(width, height)
 	window.SetLabel(title)
 	AddWindowIcon(window, iconSvg)
@@ -51,21 +45,37 @@ func makeAskForm(title, bodyText, iconSvg string, textSize int, text1,
 	bodyBox.SetAlign(fltk.ALIGN_IMAGE_NEXT_TO_TEXT)
 	bodyBox.SetLabel(bodyText)
 	bodyBox.SetLabelSize(textSize)
-	y := height - ButtonHeight
+	y := height - (ButtonHeight * 3 / 2)
 	hbox := MakeHBox(0, y, width, ButtonHeight, Pad)
-	spacerWidth := (width - (2 * ButtonWidth)) / 2
+	var spacerWidth int
+	if text3 == "" {
+		spacerWidth = (width - (2 * ButtonWidth)) / 2
+	} else {
+		spacerWidth = (width - (3 * ButtonWidth)) / 2
+	}
 	leftSpacer := MakeHBox(0, y, spacerWidth, ButtonHeight, 0)
 	leftSpacer.End()
 	button1 := fltk.NewReturnButton(0, 0, ButtonHeight, ButtonWidth, text1)
-	button1.SetCallback(func() { *result = YES; window.Destroy() })
+	button1.SetCallback(func() { *result = BUTTON_ONE; window.Destroy() })
 	button1.TakeFocus()
 	button2 := fltk.NewButton(0, 0, ButtonHeight, ButtonWidth, text2)
-	button2.SetCallback(func() { *result = NO; window.Destroy() })
+	button2.SetCallback(func() { *result = BUTTON_TWO; window.Destroy() })
+	var button3 *fltk.Button
+	if text3 != "" {
+		button3 = fltk.NewButton(0, 0, ButtonHeight, ButtonWidth, text3)
+		button3.SetCallback(func() {
+			*result = BUTTON_THREE
+			window.Destroy()
+		})
+	}
 	righttSpacer := MakeHBox(spacerWidth+ButtonWidth, y, spacerWidth,
 		ButtonHeight, 0)
 	righttSpacer.End()
 	hbox.Fixed(button1, ButtonWidth)
 	hbox.Fixed(button2, ButtonWidth)
+	if button3 != nil {
+		hbox.Fixed(button3, ButtonWidth)
+	}
 	hbox.End()
 	vbox.Fixed(hbox, ButtonHeight)
 	vbox.End()
