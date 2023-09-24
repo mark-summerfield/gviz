@@ -18,7 +18,7 @@ func ImageForSvgText(svgText string, size int) *fltk.RgbImage {
 		if size != 0 {
 			svg.Scale(size, size, true, true)
 		}
-		return fltk.NewRgbImageFromSvg(svg)
+		return &svg.RgbImage
 	}
 	return nil
 }
