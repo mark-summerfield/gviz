@@ -60,6 +60,7 @@ func (me *App) makeMainWindow() {
 	me.Window.Resizable(me.Window)
 	me.Window.SetEventHandler(me.onEvent)
 	me.Window.SetLabel(appName)
+	me.Window.SetXClass(appName)
 	gui.AddWindowIcon(me.Window, getEmbStr(iconSvg))
 }
 
